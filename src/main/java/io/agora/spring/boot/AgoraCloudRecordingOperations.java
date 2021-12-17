@@ -113,7 +113,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
         String reqUrl = AgoraApiAddress.ACQUIRE_RESOURCE_ID.getUrl(getAgoraProperties().getAppId());
         AcquireResourceResponse resp = super.request(AgoraApiAddress.ACQUIRE_RESOURCE_ID, reqUrl, requestBody, AcquireResourceResponse.class);
         if(Objects.isNull(resp.getData())) {
-        	resp.setData(new DataBody());
+        	resp.setData(new AcquireResourceResponse.DataBody());
         }
         resp.getData().setCname(cnameString);
         return resp;
@@ -298,6 +298,9 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 
         String reqUrl = AgoraApiAddress.START_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, mode.getName());
         CloudRecordingStartResponse resp = super.request(AgoraApiAddress.START_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingStartResponse.class);
+		if(Objects.isNull(resp.getData())) {
+			resp.setData(new CloudRecordingStartResponse.DataBody());
+		}
         return resp;
 	}
 
@@ -378,6 +381,9 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 
         String reqUrl = AgoraApiAddress.UPDATE_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
         CloudRecordingUpdateResponse resp = super.request(AgoraApiAddress.UPDATE_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingUpdateResponse.class);
+		if(Objects.isNull(resp.getData())) {
+			resp.setData(new CloudRecordingUpdateResponse.DataBody());
+		}
         return resp;
 	}
 
@@ -408,6 +414,9 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 
         String reqUrl = AgoraApiAddress.UPDATE_CLOUD_RECORDING_LAYOUT.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
         CloudRecordingUpdateLayoutResponse resp = super.request(AgoraApiAddress.UPDATE_CLOUD_RECORDING_LAYOUT, reqUrl, requestBody, CloudRecordingUpdateLayoutResponse.class);
+		if(Objects.isNull(resp.getData())) {
+			resp.setData(new CloudRecordingUpdateLayoutResponse.DataBody());
+		}
         return resp;
 	}
 
@@ -429,6 +438,9 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 	public CloudRecordingQueryResponse queryRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode) {
         String reqUrl = AgoraApiAddress.QUERY_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
         CloudRecordingQueryResponse resp = super.request(AgoraApiAddress.QUERY_CLOUD_RECORDING, reqUrl, Maps.newHashMap(), CloudRecordingQueryResponse.class);
+		if(Objects.isNull(resp.getData())) {
+			resp.setData(new CloudRecordingQueryResponse.DataBody());
+		}
         return resp;
 	}
 
@@ -460,6 +472,9 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 
 		String reqUrl = AgoraApiAddress.STOP_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
         CloudRecordingStopResponse resp = super.request(AgoraApiAddress.STOP_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingStopResponse.class);
+		if(Objects.isNull(resp.getData())) {
+			resp.setData(new CloudRecordingStopResponse.DataBody());
+		}
         return resp;
 	}
 
