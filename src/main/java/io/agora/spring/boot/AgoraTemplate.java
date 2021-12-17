@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.function.Consumer;
 
+import com.alibaba.fastjson.JSONObject;
 import io.agora.spring.boot.resp.AgoraResponse;
 import org.springframework.beans.BeanUtils;
 
@@ -94,8 +95,9 @@ public class AgoraTemplate {
 
     public <T> T readValue(String json, Class<T> cls) {
 		try {
-			return objectMapper.readValue(json, cls);
-		} catch (IOException e) {
+			return JSONObject.parseObject(json, cls);
+			//return objectMapper.readValue(json, cls);
+		} catch (Exception e) {
 			log.error(e.getMessage());
 			return BeanUtils.instantiateClass(cls);
 		}
@@ -120,7 +122,7 @@ public class AgoraTemplate {
 				if (response.isSuccessful()) {
 					String body = response.body().string();
 					log.info("Agora Request Success : url : {}, params : {}, code : {}, body : {} , use time : {} ", url, params, response.code(), body , System.currentTimeMillis() - start);
-					res = objectMapper.readValue(body, cls);
+					res = this.readValue(body, cls);
 	            } else {
 	            	log.error("Agora Request Failure : url : {}, params : {}, code : {}, message : {}, use time : {} ", url, params, response.code(), response.message(), System.currentTimeMillis() - start);
 	            	res = BeanUtils.instantiateClass(cls);
