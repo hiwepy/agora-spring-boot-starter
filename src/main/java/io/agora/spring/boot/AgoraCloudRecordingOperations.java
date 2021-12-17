@@ -35,7 +35,6 @@ import io.agora.spring.boot.req.RecordingUpdateTranscodingConfig;
 import io.agora.spring.boot.req.RecordingUpdateWebConfig;
 import io.agora.spring.boot.req.TranscodingConfig;
 import io.agora.spring.boot.resp.AcquireResourceResponse;
-import io.agora.spring.boot.resp.AcquireResourceResponse.DataBody;
 import io.agora.spring.boot.resp.CloudRecordingQueryResponse;
 import io.agora.spring.boot.resp.CloudRecordingStartResponse;
 import io.agora.spring.boot.resp.CloudRecordingStopResponse;
@@ -68,18 +67,20 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 	 */
 	public AcquireResourceResponse acquireId(String userId, String uid) {
 
+		HashMap<String, Object> hashMap = new HashMap<>();
+		hashMap.put("resourceExpiredHour", 24);
+		hashMap.put("scene", 0);
+
 		String cnameString = getChannelByUserId(userId);
 		Map<String, Object> requestBody = new ImmutableMap.Builder<String, Object>()
 				.put("cname", cnameString)
 				.put("uid", uid)
+				.put("clientRequest", hashMap)
 				.build();
 
         String reqUrl = AgoraApiAddress.ACQUIRE_RESOURCE_ID.getUrl(getAgoraProperties().getAppId());
         AcquireResourceResponse resp = super.request(AgoraApiAddress.ACQUIRE_RESOURCE_ID, reqUrl, requestBody, AcquireResourceResponse.class);
-		if(Objects.isNull(resp.getData())) {
-			resp.setData(new AcquireResourceResponse.DataBody());
-		}
-        resp.getData().setCname(cnameString);
+        resp.setCname(cnameString);
         return resp;
 	}
 
@@ -115,10 +116,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 
         String reqUrl = AgoraApiAddress.ACQUIRE_RESOURCE_ID.getUrl(getAgoraProperties().getAppId());
         AcquireResourceResponse resp = super.request(AgoraApiAddress.ACQUIRE_RESOURCE_ID, reqUrl, requestBody, AcquireResourceResponse.class);
-        if(Objects.isNull(resp.getData())) {
-        	resp.setData(new AcquireResourceResponse.DataBody());
-        }
-        resp.getData().setCname(cnameString);
+        resp.setCname(cnameString);
         return resp;
 	}
 
@@ -301,9 +299,6 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 
         String reqUrl = AgoraApiAddress.START_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, mode.getName());
         CloudRecordingStartResponse resp = super.request(AgoraApiAddress.START_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingStartResponse.class);
-		if(Objects.isNull(resp.getData())) {
-			resp.setData(new CloudRecordingStartResponse.DataBody());
-		}
         return resp;
 	}
 
@@ -384,9 +379,6 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 
         String reqUrl = AgoraApiAddress.UPDATE_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
         CloudRecordingUpdateResponse resp = super.request(AgoraApiAddress.UPDATE_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingUpdateResponse.class);
-		if(Objects.isNull(resp.getData())) {
-			resp.setData(new CloudRecordingUpdateResponse.DataBody());
-		}
         return resp;
 	}
 
@@ -441,9 +433,6 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 	public CloudRecordingQueryResponse queryRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode) {
         String reqUrl = AgoraApiAddress.QUERY_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
         CloudRecordingQueryResponse resp = super.request(AgoraApiAddress.QUERY_CLOUD_RECORDING, reqUrl, Maps.newHashMap(), CloudRecordingQueryResponse.class);
-		if(Objects.isNull(resp.getData())) {
-			resp.setData(new CloudRecordingQueryResponse.DataBody());
-		}
         return resp;
 	}
 
@@ -475,9 +464,6 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 
 		String reqUrl = AgoraApiAddress.STOP_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
         CloudRecordingStopResponse resp = super.request(AgoraApiAddress.STOP_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingStopResponse.class);
-		if(Objects.isNull(resp.getData())) {
-			resp.setData(new CloudRecordingStopResponse.DataBody());
-		}
         return resp;
 	}
 

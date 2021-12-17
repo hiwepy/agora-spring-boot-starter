@@ -16,11 +16,12 @@
 package io.agora.spring.boot;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.function.Consumer;
 
+import io.agora.spring.boot.resp.AgoraResponse;
 import org.springframework.beans.BeanUtils;
 
-import io.agora.spring.boot.resp.AgoraResponse;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -39,47 +40,48 @@ public abstract class AgoraOperations {
 	public AgoraOperations(AgoraTemplate agoraTemplate) {
 		this.agoraTemplate = agoraTemplate;
 	}
-	
+
 	/**
 	 * 根据Agora频道名称获取用户id
-	 * 
+	 *
 	 * @param channel Agora频道名称
 	 * @return 从Agora频道名称解析出来的用户ID
 	 */
 	protected String getUserIdByChannel(String channel) {
 		return agoraTemplate.getUserIdByChannel(channel);
 	}
-	
+
 	/**
 	 * 根据用户id获取Agora频道名称
-	 * 
+	 *
 	 * @param userId 用户ID
 	 * @return 用户ID生成的Agora频道名称
 	 */
 	protected String getChannelByUserId(String userId) {
 		return agoraTemplate.getChannelByUserId(userId);
 	}
-	
+
 	protected AgoraProperties getAgoraProperties() {
 		return agoraTemplate.getAgoraProperties();
 	}
-	
+
 	protected <T extends AgoraResponse> T request(AgoraApiAddress address, String url, Object params, Class<T> cls) {
 		T res =  getAgoraTemplate().requestInvoke(url, params, cls);
-		if (res.isSuccess()) {
+		if (Objects.nonNull(res)) {
 			log.info("Agora {} >> Success, url : {}, params : {}, Code : {}, Body : {}", address.getOpt(), url, params, res.getCode());
 		} else {
 			log.error("Agora {} >> Failure, url : {}, params : {}, Code : {}", address.getOpt(), url, params, res.getCode());
 		}
 		return res;
 	}
-	
+
 	protected <T extends AgoraResponse> void asyncRequest(AgoraApiAddress address, String url, Object params, Class<T> cls, Consumer<T> consumer) {
 		getAgoraTemplate().requestAsyncInvoke(url, params, (response) -> {
 			if (response.isSuccessful()) {
 				try {
 					String body = response.body().string();
 					T res = getAgoraTemplate().readValue(body, cls);
+					res.setCode(response.code());
 					if (res.isSuccess()) {
 						log.info("Agora {} >> Success, url : {}, params : {}, Code : {}, Body : {}", address.getOpt(), url, params, res.getCode(), body);
 					} else {
@@ -93,13 +95,14 @@ public abstract class AgoraOperations {
 				}
             } else {
             	T res = BeanUtils.instantiateClass(cls);
+				res.setCode(response.code());
 				consumer.accept(res);
             }
 		});
 	}
-	
+
 	public AgoraTemplate getAgoraTemplate() {
 		return agoraTemplate;
 	}
-	
+
 }

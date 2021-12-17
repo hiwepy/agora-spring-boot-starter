@@ -30,26 +30,14 @@ import lombok.EqualsAndHashCode;
 public class AcquireResourceResponse extends AgoraResponse {
 
 	/**
-	 * 响应体
+	 * 1、云端录制资源 resource ID，使用这个 resource ID 可以开始一段云端录制。这个 resource ID 的有效期为 5 分钟，超时需要重新请求。
 	 */
-	@JsonProperty("Body")
-	private DataBody data;
+	@JsonProperty("resourceId")
+	private String resourceId;
 
-	@Data
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public static class DataBody {
-		
-		/**
-		 * 1、云端录制资源 resource ID，使用这个 resource ID 可以开始一段云端录制。这个 resource ID 的有效期为 5 分钟，超时需要重新请求。
-		 */
-		@JsonProperty("resourceId")
-		private String resourceId;
-
-		/**
-		 * 2、云端录制使用的频道名
-		 */
-		@JsonIgnore
-		private String cname;
-		
-	}
+	/**
+	 * 2、云端录制使用的频道名
+	 */
+	@JsonIgnore
+	private String cname;
 }
