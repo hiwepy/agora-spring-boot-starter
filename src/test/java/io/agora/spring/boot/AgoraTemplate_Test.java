@@ -48,8 +48,8 @@ public class AgoraTemplate_Test {
 		AcquireResourceResponse response =  template.opsForCloudRecording().acquireId("10000", "121212");
 		System.out.println(objectMapper.writeValueAsString(response));
 
-		String channelName = response.getData().getCname();
-		String resourceId = response.getData().getResourceId();
+		String channelName = response.getCname();
+		String resourceId = response.getResourceId();
 		String uid = "121212";
 
 		RecordingConfig recordingConfig = new RecordingConfig();
