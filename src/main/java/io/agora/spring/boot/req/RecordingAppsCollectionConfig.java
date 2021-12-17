@@ -1,10 +1,13 @@
 package io.agora.spring.boot.req;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
  * 应用设置
  */
+@JsonInclude( JsonInclude.Include.NON_NULL)
 @Data
 public class RecordingAppsCollectionConfig {
 
@@ -13,6 +16,7 @@ public class RecordingAppsCollectionConfig {
      *  "default"：（默认）除延时转码外，均选用此种方式。
      *  "postpone_transcoding"：如需延时转码，则选用此种方式。
      */
+    @JsonProperty("combinationPolicy")
     private String combinationPolicy = "default";
 
 }

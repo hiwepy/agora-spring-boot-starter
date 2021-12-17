@@ -63,14 +63,23 @@ public class AgoraTemplate {
 		return this.generateToken(userId, channelName, RtcTokenBuilder.Role.Role_Publisher);
 	}
 
-    public String generateToken(String userId, String channelName, RtcTokenBuilder.Role role) {
+    public String generateToken(int userId, String channelName, RtcTokenBuilder.Role role) {
         int timestamp = (int)(System.currentTimeMillis() / 1000 + agoraProperties.getExpirationTimeInSeconds());
         log.info("{} >> Agora Token Expiration Time : {}s ", channelName, timestamp);
-        String result = token.buildTokenWithUserAccount(agoraProperties.getAppId(), agoraProperties.getAppCertificate(),
+        String result = token.buildTokenWithUid(agoraProperties.getAppId(), agoraProperties.getAppCertificate(),
         		channelName, userId, role, timestamp);
         log.info("{} >> Agora Token : {} << AppId:{}, AppCertificate: {}, Role : {}", channelName, result, agoraProperties.getAppId(), agoraProperties.getAppCertificate(), role);
         return result;
     }
+
+	public String generateToken(String userId, String channelName, RtcTokenBuilder.Role role) {
+		int timestamp = (int)(System.currentTimeMillis() / 1000 + agoraProperties.getExpirationTimeInSeconds());
+		log.info("{} >> Agora Token Expiration Time : {}s ", channelName, timestamp);
+		String result = token.buildTokenWithUserAccount(agoraProperties.getAppId(), agoraProperties.getAppCertificate(),
+				channelName, userId, role, timestamp);
+		log.info("{} >> Agora Token : {} << AppId:{}, AppCertificate: {}, Role : {}", channelName, result, agoraProperties.getAppId(), agoraProperties.getAppCertificate(), role);
+		return result;
+	}
 
     /**
      * restful请求认证

@@ -45,6 +45,8 @@ public class AgoraTemplate_Test {
 	@Test
     public void testStartRecording() throws Exception {
 
+		String token = template.generateToken("10000", "121212");
+
 		AcquireResourceResponse response =  template.opsForCloudRecording().acquireId("10000", "121212");
 		System.out.println(objectMapper.writeValueAsString(response));
 
@@ -65,7 +67,7 @@ public class AgoraTemplate_Test {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
         storageConfig.setFileNamePrefix(Arrays.asList(AgoraConstant.VEIDO_PAHT, formatter.format(new Date())));
 
-    	template.opsForCloudRecording().startRecording(channelName, uid, resourceId, recordingConfig, recordingFileConfig, storageConfig);
+    	template.opsForCloudRecording().startRecording(channelName, uid, token, resourceId, recordingConfig, recordingFileConfig, storageConfig);
 
     }
 

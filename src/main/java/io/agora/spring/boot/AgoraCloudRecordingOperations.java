@@ -40,6 +40,7 @@ import io.agora.spring.boot.resp.CloudRecordingStartResponse;
 import io.agora.spring.boot.resp.CloudRecordingStopResponse;
 import io.agora.spring.boot.resp.CloudRecordingUpdateLayoutResponse;
 import io.agora.spring.boot.resp.CloudRecordingUpdateResponse;
+import org.springframework.util.StringUtils;
 
 /**
  * 1、云端录制
@@ -127,12 +128,13 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * a、非页面录制模式下，该参数用于设置待录制的频道名
      * b、对于页面录制，该参数用于区分录制进程。字符串长度不得超过 128 字节
      * @param uid  字符串内容为云端录制服务使用的 UID，用于标识该录制服务，需要和你在 acquire 请求中输入的 UID 相同
+	 * @param token 用于鉴权的动态密钥。如果你的项目已启用 App 证书，则务必在该参数中传入你项目的动态密钥。
      * @param resourceId  通过 acquire 请求获取的 resource ID
      * @param storageConfig  第三方云存储的设置
      * @return 云端录制操作结果
      */
-	public CloudRecordingStartResponse startRecording(String channelName, String uid, String resourceId, RecordingStorageConfig storageConfig) {
-		return this.startRecording(channelName, uid, resourceId, RecordingMode.MIX, null, null, null, null, storageConfig, null);
+	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId, RecordingStorageConfig storageConfig) {
+		return this.startRecording(channelName, uid, token, resourceId, RecordingMode.MIX, null, null, null, null, storageConfig, null);
 	}
 
 	/**
@@ -142,17 +144,18 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * a、非页面录制模式下，该参数用于设置待录制的频道名
      * b、对于页面录制，该参数用于区分录制进程。字符串长度不得超过 128 字节
      * @param uid  字符串内容为云端录制服务使用的 UID，用于标识该录制服务，需要和你在 acquire 请求中输入的 UID 相同
+	 * @param token 用于鉴权的动态密钥。如果你的项目已启用 App 证书，则务必在该参数中传入你项目的动态密钥。
      * @param resourceId  通过 acquire 请求获取的 resource ID
      * @param recordingConfig  媒体流订阅、转码、输出音视频属性的设置
      * @param recordingFileConfig  录制文件的设置
      * @param storageConfig  第三方云存储的设置
      * @return 云端录制操作结果
      */
-	public CloudRecordingStartResponse startRecording(String channelName, String uid, String resourceId,
+	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId,
 													  RecordingConfig recordingConfig,
 		    RecordingFileConfig recordingFileConfig,
 			RecordingStorageConfig storageConfig) {
-		return this.startRecording(channelName, uid, resourceId, RecordingMode.MIX, null, recordingConfig, recordingFileConfig, null, storageConfig, null);
+		return this.startRecording(channelName, uid, token, resourceId, RecordingMode.MIX, null, recordingConfig, recordingFileConfig, null, storageConfig, null);
 	}
 
 	/**
@@ -162,6 +165,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * a、非页面录制模式下，该参数用于设置待录制的频道名
      * b、对于页面录制，该参数用于区分录制进程。字符串长度不得超过 128 字节
      * @param uid  字符串内容为云端录制服务使用的 UID，用于标识该录制服务，需要和你在 acquire 请求中输入的 UID 相同
+	 * @param token 用于鉴权的动态密钥。如果你的项目已启用 App 证书，则务必在该参数中传入你项目的动态密钥。
      * @param resourceId  通过 acquire 请求获取的 resource ID
      * @param mode 录制模式，支持以下几种录制模式：
      * a、单流模式individual：分开录制频道内每个 UID 的音频流和视频流，每个 UID 均有其对应的音频文件和视频文件。
@@ -172,11 +176,11 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param storageConfig  第三方云存储的设置
      * @return 云端录制操作结果
      */
-	public CloudRecordingStartResponse startRecording(String channelName, String uid, String resourceId, RecordingMode mode,
+	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId, RecordingMode mode,
 			RecordingConfig recordingConfig,
 		    RecordingFileConfig recordingFileConfig,
 			RecordingStorageConfig storageConfig) {
-		return this.startRecording(channelName, uid, resourceId, mode, null, recordingConfig, recordingFileConfig, null, storageConfig, null);
+		return this.startRecording(channelName, uid, token, resourceId, mode, null, recordingConfig, recordingFileConfig, null, storageConfig, null);
 	}
 
 
@@ -187,6 +191,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * a、非页面录制模式下，该参数用于设置待录制的频道名
      * b、对于页面录制，该参数用于区分录制进程。字符串长度不得超过 128 字节
      * @param uid  字符串内容为云端录制服务使用的 UID，用于标识该录制服务，需要和你在 acquire 请求中输入的 UID 相同
+	 * @param token 用于鉴权的动态密钥。如果你的项目已启用 App 证书，则务必在该参数中传入你项目的动态密钥。
      * @param resourceId  通过 acquire 请求获取的 resource ID
      * @param mode 录制模式，支持以下几种录制模式：
      * a、单流模式individual：分开录制频道内每个 UID 的音频流和视频流，每个 UID 均有其对应的音频文件和视频文件。
@@ -198,12 +203,12 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param storageConfig  第三方云存储的设置
      * @return 云端录制操作结果
      */
-	public CloudRecordingStartResponse startRecording(String channelName, String uid, String resourceId, RecordingMode mode,
+	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId, RecordingMode mode,
 			RecordingAppsCollectionConfig appsCollection,
 			RecordingConfig recordingConfig,
 		    RecordingFileConfig recordingFileConfig,
 			RecordingStorageConfig storageConfig) {
-		return this.startRecording(channelName, uid, resourceId, mode, appsCollection, recordingConfig, recordingFileConfig, null, storageConfig, null);
+		return this.startRecording(channelName, uid, token, resourceId, mode, appsCollection, recordingConfig, recordingFileConfig, null, storageConfig, null);
 	}
 
 	/**
@@ -213,6 +218,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * a、非页面录制模式下，该参数用于设置待录制的频道名
      * b、对于页面录制，该参数用于区分录制进程。字符串长度不得超过 128 字节
      * @param uid  字符串内容为云端录制服务使用的 UID，用于标识该录制服务，需要和你在 acquire 请求中输入的 UID 相同
+	 * @param token 用于鉴权的动态密钥。如果你的项目已启用 App 证书，则务必在该参数中传入你项目的动态密钥。
      * @param resourceId  通过 acquire 请求获取的 resource ID
      * @param mode 录制模式，支持以下几种录制模式：
      * a、单流模式individual：分开录制频道内每个 UID 的音频流和视频流，每个 UID 均有其对应的音频文件和视频文件。
@@ -225,13 +231,13 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param storageConfig  第三方云存储的设置
      * @return 云端录制操作结果
      */
-	public CloudRecordingStartResponse startRecording(String channelName, String uid, String resourceId, RecordingMode mode,
+	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId, RecordingMode mode,
 			RecordingAppsCollectionConfig appsCollection,
 			RecordingConfig recordingConfig,
 		    RecordingFileConfig recordingFileConfig,
 		    RecordingSnapshotConfig snapshotConfig,
 			RecordingStorageConfig storageConfig) {
-		return this.startRecording(channelName, uid, resourceId, mode, appsCollection, recordingConfig, recordingFileConfig, snapshotConfig, storageConfig, null);
+		return this.startRecording(channelName, uid, token, resourceId, mode, appsCollection, recordingConfig, recordingFileConfig, snapshotConfig, storageConfig, null);
 	}
 
 	/**
@@ -241,6 +247,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * a、非页面录制模式下，该参数用于设置待录制的频道名
      * b、对于页面录制，该参数用于区分录制进程。字符串长度不得超过 128 字节
      * @param uid  字符串内容为云端录制服务使用的 UID，用于标识该录制服务，需要和你在 acquire 请求中输入的 UID 相同
+	 * @param token 用于鉴权的动态密钥。如果你的项目已启用 App 证书，则务必在该参数中传入你项目的动态密钥。
      * @param resourceId  通过 acquire 请求获取的 resource ID
      * @param mode 录制模式，支持以下几种录制模式：
      * a、单流模式individual：分开录制频道内每个 UID 的音频流和视频流，每个 UID 均有其对应的音频文件和视频文件。
@@ -254,7 +261,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param extensionServiceConfig 扩展服务的设置，目前包括阿里云视频点播服务和页面录制的设置
      * @return 云端录制操作结果
      */
-	public CloudRecordingStartResponse startRecording(String channelName, String uid, String resourceId, RecordingMode mode,
+	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId, RecordingMode mode,
 			RecordingAppsCollectionConfig appsCollection,
 			RecordingConfig recordingConfig,
 		    RecordingFileConfig recordingFileConfig,
@@ -263,7 +270,9 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 			RecordingExtensionServiceConfig extensionServiceConfig) {
 
 		HashMap<String, Object> hashMap = new HashMap<>();
-		hashMap.put("token", "");
+		if(StringUtils.hasText(token)){
+			hashMap.put("token", token);
+		}
 
 		// 2、应用设置
 		if(Objects.isNull(appsCollection)) {
