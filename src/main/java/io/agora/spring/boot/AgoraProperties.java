@@ -23,9 +23,9 @@ public class AgoraProperties {
 	private String appCertificate;
 	/** token过期时间 */
 	private int expirationTimeInSeconds = 3600;
-	/** 声网restful登录key */
+	/** 声网restful登录key: 必填 */
 	private String loginKey;
-	/** 声网restful登录密钥 */
+	/** 声网restful登录密钥: 必填 */
 	private String loginSecret;
 
 	/** 录制区域选择 7-香港 10 -新加坡 */

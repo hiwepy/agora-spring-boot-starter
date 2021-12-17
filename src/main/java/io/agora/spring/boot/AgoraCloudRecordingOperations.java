@@ -76,6 +76,9 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 
         String reqUrl = AgoraApiAddress.ACQUIRE_RESOURCE_ID.getUrl(getAgoraProperties().getAppId());
         AcquireResourceResponse resp = super.request(AgoraApiAddress.ACQUIRE_RESOURCE_ID, reqUrl, requestBody, AcquireResourceResponse.class);
+		if(Objects.isNull(resp.getData())) {
+			resp.setData(new AcquireResourceResponse.DataBody());
+		}
         resp.getData().setCname(cnameString);
         return resp;
 	}
