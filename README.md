@@ -21,5 +21,14 @@ https://docs.agora.io/cn/documents
 </dependency>
 ```
 
-### Sample
+### 本地录制
+
+##### 准备环境
+
+https://docs.agora.io/cn/Recording/recording_integrate_java?platform=Linux
+
+
+https://docs.agora.io/cn/Recording/landing-page?platform=Linux
+
+
  
