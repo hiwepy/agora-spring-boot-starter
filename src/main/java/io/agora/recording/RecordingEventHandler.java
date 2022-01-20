@@ -11,6 +11,8 @@ import io.agora.recording.common.Common.REMOTE_STREAM_STATE_CHANGED_REASON;
 import io.agora.recording.common.Common.CONNECTION_STATE_TYPE;
 import io.agora.recording.common.Common.CONNECTION_CHANGED_REASON_TYPE;
 
+import io.agora.recording.common.RecordingConfig;
+
 public interface RecordingEventHandler {
 
   String getChannel();
@@ -138,7 +140,7 @@ public interface RecordingEventHandler {
 
   /** This callback reports the list of users who are speaking and their volumes.
    *
-   * This callback works only when {@link io.agora.recording.common.RecordingConfig#audioIndicationInterval audioIndicationInterval} > 0.
+   * This callback works only when {@link RecordingConfig#audioIndicationInterval audioIndicationInterval} > 0.
    *
    * @param infos    An array containing the user ID and volume information for each speaker. For more information, see {@link io.agora.recording.common.Common#AudioVolumeInfo AudioVolumeInfo}.
    */

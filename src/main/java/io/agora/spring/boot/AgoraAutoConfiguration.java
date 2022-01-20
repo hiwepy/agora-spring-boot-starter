@@ -14,15 +14,15 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import okhttp3.OkHttpClient;
 
 @Configuration
-@EnableConfigurationProperties({ AgoraProperties.class})
+@EnableConfigurationProperties({ AgoraProperties.class, AgoraRecordingProperties.class})
 public class AgoraAutoConfiguration {
-	
+
 	@Bean
 	public AgoraTemplate agoraTemplate(AgoraProperties poolProperties,
 			   ObjectProvider<OkHttpClient> okhttp3ClientProvider,
 			   ObjectProvider<ObjectMapper> objectMapperProvider,
 				ObjectProvider<AgoraUserIdProvider> agoraUserIdProvider) {
-		
+
 		OkHttpClient okhttp3Client = okhttp3ClientProvider.getIfAvailable(() -> new OkHttpClient.Builder().build());
 
 		ObjectMapper objectMapper = objectMapperProvider.getIfAvailable(() -> {
@@ -34,10 +34,10 @@ public class AgoraAutoConfiguration {
 			objectMapperDef.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 			return objectMapperDef;
 		});
-		
+
 		return new AgoraTemplate(poolProperties, objectMapper, okhttp3Client, agoraUserIdProvider.getIfAvailable(() -> {
 			return new AgoraUserIdProvider() {};
 		}));
 	}
-	
+
 }

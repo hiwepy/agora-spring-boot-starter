@@ -1,10 +1,5 @@
 package io.agora.recording;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -36,7 +31,11 @@ public class RecordingSDK {
   /** Load Java library. */
 
   static {
-    System.loadLibrary("recording");
+    try {
+      System.loadLibrary("recording");
+    } catch (Throwable e) {
+      e.printStackTrace();
+    }
   }
 
   /** Main methods that can be invoked by your application.*/
@@ -58,9 +57,9 @@ public class RecordingSDK {
     }
   }
 
-  public RecordingEventHandler getRegisterOberserver(String channelKey) {
-    if (recordingEventHandlers.containsKey(channelKey)) {
-      return recordingEventHandlers.get(channelKey);
+  public RecordingEventHandler getRegisterOberserver(String channelName) {
+    if (recordingEventHandlers.containsKey(channelName)) {
+      return recordingEventHandlers.get(channelName);
     }
     return null;
   }
