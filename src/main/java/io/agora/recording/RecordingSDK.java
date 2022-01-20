@@ -669,4 +669,8 @@ public class RecordingSDK {
     }
   }
 
+  public void shutdown(){
+    recordingEventHandlers = null;
+  }
+
 }
