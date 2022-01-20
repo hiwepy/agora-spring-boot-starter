@@ -58,6 +58,13 @@ public class RecordingSDK {
     }
   }
 
+  public RecordingEventHandler getRegisterOberserver(String channelKey) {
+    if (recordingEventHandlers.containsKey(channelKey)) {
+      return recordingEventHandlers.get(channelKey);
+    }
+    return null;
+  }
+
   /** This method creates a channel and enables the recording server to join the channel.
    *
    * @param appId Set `appId` of the recording server the same as that of the Native/Web SDK. For more information, see <a href="https://docs.agora.io/en/Recording/token?platform=All%20Platforms">Getting an App ID</a>.
