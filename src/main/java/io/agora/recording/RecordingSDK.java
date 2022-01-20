@@ -20,7 +20,9 @@ import io.agora.recording.common.Common.REMOTE_STREAM_STATE;
 import io.agora.recording.common.Common.REMOTE_STREAM_STATE_CHANGED_REASON;
 import io.agora.recording.common.Common.CONNECTION_STATE_TYPE;
 import io.agora.recording.common.Common.CONNECTION_CHANGED_REASON_TYPE;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class RecordingSDK {
 
   private Map<String, RecordingEventHandler> recordingEventHandlers = null;
@@ -33,8 +35,10 @@ public class RecordingSDK {
   static {
     try {
       System.loadLibrary("recording");
+      log.info("Agora Recording Lib Load Success ! ");
     } catch (Throwable e) {
-      e.printStackTrace();
+      log.error("Agora Recording Lib Load Fail. ", e);
+      //e.printStackTrace();
     }
   }
 
