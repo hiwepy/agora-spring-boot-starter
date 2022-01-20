@@ -13,6 +13,8 @@ import io.agora.recording.common.Common.CONNECTION_CHANGED_REASON_TYPE;
 
 public interface RecordingEventHandler {
 
+  String getChannel();
+
   /** This callback is triggered when a user leaves the channel.
    *
    * @param reason The reasons why the recording server leaves the channel. See {@link io.agora.recording.common.Common#LEAVE_PATH_CODE LEAVE_PATH_CODE}.

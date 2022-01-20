@@ -5,6 +5,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 import io.agora.recording.common.Common.AudioFrame;
 import io.agora.recording.common.Common.VideoFrame;
@@ -25,7 +28,7 @@ import io.agora.recording.common.Common.CONNECTION_CHANGED_REASON_TYPE;
 
 public class RecordingSDK {
 
-  private List<RecordingEventHandler> recordingEventHandlers = null;
+  private Map<String, RecordingEventHandler> recordingEventHandlers = null;
   private long nativeHandle = 0;
   /** The maximum length of the user account.  */
   public static int MAX_USER_ACCOUNT_LENGTH = 256;
@@ -38,20 +41,20 @@ public class RecordingSDK {
 
   /** Main methods that can be invoked by your application.*/
   public RecordingSDK() {
-    recordingEventHandlers = new ArrayList<RecordingEventHandler>();
+    recordingEventHandlers = new ConcurrentHashMap<>();
   }
 
   /** To register observer to receive Recording event notification. */
   public void registerOberserver(RecordingEventHandler recordingEventHandler) {
-    if (!recordingEventHandlers.contains(recordingEventHandler)) {
-      recordingEventHandlers.add(recordingEventHandler);
+    if (!recordingEventHandlers.containsKey(recordingEventHandler.getChannel())) {
+      recordingEventHandlers.put(recordingEventHandler.getChannel(), recordingEventHandler);
     }
   }
 
   /** To remove previously registered observer. */
   public void unRegisterOberserver(RecordingEventHandler recordingEventHandler) {
-    if (recordingEventHandlers.contains(recordingEventHandler)) {
-      recordingEventHandlers.remove(recordingEventHandler);
+    if (recordingEventHandlers.containsKey(recordingEventHandler)) {
+      recordingEventHandlers.remove(recordingEventHandler.getChannel());
     }
   }
 
@@ -400,7 +403,7 @@ public class RecordingSDK {
    * LEAVE_PATH_CODE
    */
   private void onLeaveChannel(int reason) {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
       oberserver.onLeaveChannel(reason);
     }
   }
@@ -415,7 +418,7 @@ public class RecordingSDK {
    */
   private void onError(int error, int stat_code) {
     nativeHandle = 0;
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
       oberserver.onError(error, stat_code);
     }
   }
@@ -427,7 +430,7 @@ public class RecordingSDK {
    * @param warn Warning code, please refer to the define of WARN_CODE_TYPE	    }
    */
   private void onWarning(int warn) {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
       oberserver.onWarning(warn);
     }
   }
@@ -440,7 +443,7 @@ public class RecordingSDK {
    * USER_OFFLINE_REASON_TYPE
    */
   private void onUserOffline(long uid, int reason) {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
       oberserver.onUserOffline(uid, reason);
     }
   }
@@ -455,7 +458,7 @@ public class RecordingSDK {
    * USER_OFFLINE_REASON_TYPE
    */
   private void onRemoteAudioStreamStateChanged(long uid, int state, int reason) {
-    for (RecordingEventHandler observer : recordingEventHandlers) {
+    for (RecordingEventHandler observer : recordingEventHandlers.values()) {
       observer.onRemoteAudioStreamStateChanged(uid, REMOTE_STREAM_STATE.values()[state], REMOTE_STREAM_STATE_CHANGED_REASON.values()[reason]);
     }
   }
@@ -470,7 +473,7 @@ public class RecordingSDK {
    * USER_OFFLINE_REASON_TYPE
    */
   private void onRemoteVideoStreamStateChanged(long uid, int state, int reason) {
-    for (RecordingEventHandler observer : recordingEventHandlers) {
+    for (RecordingEventHandler observer : recordingEventHandlers.values()) {
       observer.onRemoteVideoStreamStateChanged(uid, REMOTE_STREAM_STATE.values()[state], REMOTE_STREAM_STATE_CHANGED_REASON.values()[reason]);
     }
   }
@@ -483,7 +486,7 @@ public class RecordingSDK {
    * @param recordingDir user recorded file directory
    */
   private void onUserJoined(long uid, String recordingDir) {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
       oberserver.onUserJoined(uid, recordingDir);
     }
   }
@@ -498,7 +501,7 @@ public class RecordingSDK {
 	 * @param frame reference of received audio frame
 	 */
   private void audioFrameReceived(long uid, AudioFrame frame) {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
       oberserver.audioFrameReceived(uid, frame);
     }
   }
@@ -508,7 +511,7 @@ public class RecordingSDK {
    * @param uid  user ID
    */
   private void onActiveSpeaker(long uid) {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
             oberserver.onActiveSpeaker(uid);
     }
   }
@@ -518,7 +521,7 @@ public class RecordingSDK {
    * @param AudioVolumeInfo[]  audio info arrary
    */
   private void onAudioVolumeIndication(AudioVolumeInfo[] infos) {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
             oberserver.onAudioVolumeIndication(infos);
     }
   }
@@ -529,7 +532,7 @@ public class RecordingSDK {
    * @param receivingVideo  receiving video stream status
    */
   private void onReceivingStreamStatusChanged(boolean receivingAudio, boolean receivingVideo) {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
             oberserver.onReceivingStreamStatusChanged(receivingAudio, receivingVideo);
     }
   }
@@ -538,7 +541,7 @@ public class RecordingSDK {
    * when the network can not worked well, the function will be called
    */
   private void onConnectionLost() {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
             oberserver.onConnectionLost();
     }
   }
@@ -547,7 +550,7 @@ public class RecordingSDK {
    * when local user disconnected by accident, the function will be called(then SDK will try to reconnect itself)
    */
   private void onConnectionInterrupted() {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
             oberserver.onConnectionInterrupted();
     }
   }
@@ -563,7 +566,7 @@ public class RecordingSDK {
    * @param elapsed the time elapsed from channel joined in ms
    */
   private void onFirstRemoteVideoDecoded(long uid, int width, int height, int elapsed) {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
             oberserver.onFirstRemoteVideoDecoded(uid, width, height, elapsed);
     }
   }
@@ -576,7 +579,7 @@ public class RecordingSDK {
    * @param elapsed the time elapsed from channel joined in ms
    */
   private void onFirstRemoteAudioFrame(long uid, int elapsed) {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
             oberserver.onFirstRemoteAudioFrame(uid, elapsed);
     }
   }
@@ -593,7 +596,7 @@ public class RecordingSDK {
      * @param rotation rotation of video
      */
   private void videoFrameReceived(long uid, int type, VideoFrame frame, int rotation) {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
       oberserver.videoFrameReceived(uid, type, frame, rotation);
     }
   }
@@ -611,7 +614,7 @@ public class RecordingSDK {
    * @param path recording file directory
    */
   private void recordingPathCallBack(String path) {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
       oberserver.recordingPathCallBack(path);
     }
   }
@@ -622,55 +625,57 @@ public class RecordingSDK {
    * @param uid          User ID
    */
   private void onJoinChannelSuccess(String channelId, long uid) {
-    for (RecordingEventHandler oberserver : recordingEventHandlers) {
+    for (RecordingEventHandler oberserver : recordingEventHandlers.values()) {
       oberserver.onJoinChannelSuccess(channelId, uid);
     }
   }
 
   private void onLocalUserRegistered(long uid, String userAccount) {
-    for (RecordingEventHandler observer : recordingEventHandlers) {
+    for (RecordingEventHandler observer : recordingEventHandlers.values()) {
       observer.onLocalUserRegistered(uid, userAccount);
     }
   }
 
   private void onUserInfoUpdated(long uid, String userAccount) {
-    for (RecordingEventHandler observer : recordingEventHandlers) {
+    for (RecordingEventHandler observer : recordingEventHandlers.values()) {
       observer.onUserInfoUpdated(uid, userAccount);
     }
   }
 
   void onRejoinChannelSuccess(String channelId, long uid) {
-    for (RecordingEventHandler observer : recordingEventHandlers) {
+    for (RecordingEventHandler observer : recordingEventHandlers.values()) {
       observer.onRejoinChannelSuccess(channelId, uid);
     }
   }
 
   void onConnectionStateChanged(int state, int reason) {
-    for (RecordingEventHandler observer : recordingEventHandlers) {
+    for (RecordingEventHandler observer : recordingEventHandlers.values()) {
       observer.onConnectionStateChanged(CONNECTION_STATE_TYPE.values()[state], CONNECTION_CHANGED_REASON_TYPE.values()[reason]);
     }
   }
 
   void onRemoteVideoStats(long uid, RemoteVideoStats stats) {
-    for (RecordingEventHandler observer : recordingEventHandlers) {
+    for (RecordingEventHandler observer : recordingEventHandlers.values()) {
       observer.onRemoteVideoStats(uid, stats);
     }
   }
 
   void onRemoteAudioStats(long uid, RemoteAudioStats stats) {
-    for (RecordingEventHandler observer : recordingEventHandlers) {
+    for (RecordingEventHandler observer : recordingEventHandlers.values()) {
       observer.onRemoteAudioStats(uid, stats);
     }
   }
 
   void onRecordingStats(RecordingStats stats) {
-    for (RecordingEventHandler observer : recordingEventHandlers) {
+    for (RecordingEventHandler observer : recordingEventHandlers.values()) {
       observer.onRecordingStats(stats);
     }
   }
 
   public void shutdown(){
-    recordingEventHandlers = null;
+    if(Objects.nonNull(recordingEventHandlers)){
+      recordingEventHandlers.clear();
+    }
   }
 
 }
