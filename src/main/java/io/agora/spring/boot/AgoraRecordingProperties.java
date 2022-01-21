@@ -32,7 +32,7 @@ public class AgoraRecordingProperties {
    *   <li>isAudioOnly and isVideoOnly can not be set as true at the same time.</li>
    * </ul>
    */
-  private boolean isAudioOnly = false;
+  private boolean audioOnly = false;
 
   /** Sets whether or not to record video only:
    * <ul>
@@ -48,7 +48,7 @@ public class AgoraRecordingProperties {
    *   <li>isAudioOnly and isVideoOnly can not be set as true at the same time.</li>
    * </ul>
    */
-  private boolean isVideoOnly = false;
+  private boolean videoOnly = false;
 
   /** Sets whether or not to enable the audio- or video-composite mode.
    *
@@ -57,7 +57,7 @@ public class AgoraRecordingProperties {
    *   <li>false: (Default) Enables individual recording mode, which means one audio or video file for each uid. The sampling rate of the recording file is 48 kHz, and the bitrate and audio channel number of the recording file are the same as those of the original audio stream. The video profile of the recording file is the same as that of the original video stream. </li>
    * </ul>
    */
-  private boolean isMixingEnabled = false;
+  private boolean mixingEnabled = false;
 
   /** If you set {@link AgoraRecordingProperties#isMixingEnabled isMixingEnabled} as true, {@link AgoraRecordingProperties#mixedVideoAudio mixedVideoAudio} allows you to mix the audio and video in an MP4 file in real time. For more information, see {@link Common#MIXED_AV_CODEC_TYPE MIXED_AV_CODEC_TYPE}.
    */
