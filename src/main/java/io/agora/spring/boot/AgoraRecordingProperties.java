@@ -69,7 +69,7 @@ public class AgoraRecordingProperties {
    *
    * See the <a href="https://docs.agora.io/en/faq/recording_video_profile">Video Profile Table</a>.
    */
-  private String mixResolution;
+  private String mixResolution = "";
 
   /** When the whole channel is encrypted, the recording SDK uses decryptionMode to enable the built-in decryption function:
    * <ul>
@@ -84,21 +84,21 @@ public class AgoraRecordingProperties {
    *
    * @note The decryption method of the recording server must be the same as that of the Native/Web SDK.
    */
-  private String decryptionMode;
+  private String decryptionMode = "";
 
   /** The decryption password when decryption mode is enabled. The default value is NULL. */
-  private String secret;
+  private String secret = "";
 
   /** Sets the path of AgoraCoreService.
    * The default path of AgoraCoreService is Agora_Recording_SDK_for_Linux_FULL/bin/.
    */
-  private String appliteDir;
+  private String appliteDir = "";
 
   /** Sets the path of the recorded files. The default value is NULL.
    *
    * After setting `recordFileRootDir`, the subdirectory will be automatically generated according to the date of the recording.
    */
-  private String recordFileRootDir;
+  private String recordFileRootDir = "";
 
   /** Sets the path of the configuration file. The default value is NULL. For example, `--cfgFilePath /home/guest/recording_dir/cfg.json`.
    *
@@ -118,7 +118,7 @@ public class AgoraRecordingProperties {
    * - Slicing occurs only when an I frame appears, therefore the actual slicing time interval may be slightly different from the set time interval.
    *
    */
-  private String cfgFilePath;
+  private String cfgFilePath = "";
 
   //decodeVideo: default 0 (0:save as file, 1:h.264 or h.265, 2:yuv, 3:jpg buffer, 4:jpg file, 5:jpg file and video file)
   /** Sets the video decoding format. See {@link Common#VIDEO_FORMAT_TYPE VIDEO_FORMAT_TYPE}.
@@ -134,10 +134,10 @@ public class AgoraRecordingProperties {
   private AUDIO_FORMAT_TYPE decodeAudio = AUDIO_FORMAT_TYPE.AUDIO_FORMAT_DEFAULT_TYPE;
 
   /** Sets the lowest UDP port. The default value is 0. Ensure that the value of highUdpPort - lowUdpPort &ge; 6. */
-  private int lowUdpPort;
+  private int lowUdpPort = 0;
 
   /** Sets the highest UDP port. The default value is 0. Ensure that the value of highUdpPort - lowUdpPort &ge; 6. */
-  private int highUdpPort;
+  private int highUdpPort = 0;
 
   /**
    * Sets the log level. Only logs in the selected level and levels preceding the selected level are generated.
@@ -198,7 +198,7 @@ public class AgoraRecordingProperties {
    *
    * If you wish to call {@link RecordingSDK#startService() startService} and {@link RecordingSDK#stopService() stopService}, then choose Manually.
    */
-  private int triggerMode;
+  private int triggerMode = 0;
 
   /** Sets the type of the proxy server:
    * <ul>
@@ -219,7 +219,7 @@ public class AgoraRecordingProperties {
    * </ul>
    * See <a href="https://docs.agora.io/en/Recording/cloudproxy_recording?platform=Linux">Use Cloud Proxy</a> for details.
   */
-  private String proxyServer; //format ipv4:port
+  private String proxyServer = ""; //format ipv4:port
 
   /** If you set {@link AgoraRecordingProperties#isMixingEnabled isMixingEnabled} as true, {@link AgoraRecordingProperties#mixResolution mixResolution} allows you to set the audio profile of the recording file:
    * <ul>
@@ -236,7 +236,7 @@ public class AgoraRecordingProperties {
    *
    * @note Only supports local images in JPEG format.
    */
-  private String defaultVideoBgPath;
+  private String defaultVideoBgPath = "";
 
   /** Sets the path of the default background image of users in composite recording mode.
    *
@@ -250,7 +250,7 @@ public class AgoraRecordingProperties {
    *   <li>The background image is not displayed for users using the Agora Web SDK.</li>
    * </ul>
    */
-  private String defaultUserBgPath;
+  private String defaultUserBgPath = "";
   /** Sets whether to record the streams of all users or specified users.
    * <ul>
    *   <li>true: (Default) Record the streams of all users.</li>
@@ -272,11 +272,11 @@ public class AgoraRecordingProperties {
   /** An array of UIDs whose video streams you want to record.
    *
    * If you set {@link AgoraRecordingProperties#autoSubscribe autoSubscribe} as false, `subscribeVideoUids` enables you to record the video streams of specified users. */
-  private String subscribeVideoUids;
+  private String subscribeVideoUids = "";
   /** An array of UIDs whose audio streams you want to record.
    *
    * If you set {@link AgoraRecordingProperties#autoSubscribe autoSubscribe} as false, `subscribeAudioUids` enables you to record the audio streams of specified users. */
-  private String subscribeAudioUids;
+  private String subscribeAudioUids = "";
 
   /** Sets whether to enable the keyframe request. The default value is `true`, which can improve the audio and video quality under poor network conditions. To play the video file recorded in individual recording mode from a specified position, you must set `enableIntraRequest` as false.
    *
