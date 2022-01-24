@@ -21,7 +21,26 @@ public class Common{
     * </ul>
     */
     ERR_INTERNAL_FAILED(3);
-    private ERROR_CODE_TYPE(int value){}
+
+    private final int value;
+
+    private ERROR_CODE_TYPE(int value){
+      this.value = value;
+    }
+
+    public int getValue() {
+      return value;
+    }
+
+    public static ERROR_CODE_TYPE getByCode(int code) {
+      ERROR_CODE_TYPE[] values = ERROR_CODE_TYPE.values();
+      for (ERROR_CODE_TYPE value : values) {
+        if (value.getValue() == code) {
+          return value;
+        }
+      }
+      return null;
+    }
   }
 
   /** State codes. */
@@ -46,7 +65,26 @@ public class Common{
     STAT_POLL_HANG_UP(16),
     /** 0x20: Invalid polling request. */
     STAT_POLL_NVAL(32);
-    private STAT_CODE_TYPE(int value) {}
+
+    private final int value;
+
+    private STAT_CODE_TYPE(int value){
+      this.value = value;
+    }
+
+    public int getValue() {
+      return value;
+    }
+
+    public static STAT_CODE_TYPE getByCode(int code) {
+      STAT_CODE_TYPE[] values = STAT_CODE_TYPE.values();
+      for (STAT_CODE_TYPE value : values) {
+        if (value.getValue() == code) {
+          return value;
+        }
+      }
+      return null;
+    }
   }
 
   /** The reasons why the recording server leaves the channel. You can perform a bitwise AND operation on the code and each enum value, and those with non-zero results are the reason for the exit. For example, if you perform a bit-by-bit AND operation on code 6 (binary 110) and each enum value, only `LEAVE_CODE_SIG` (binary 10) and `LEAVE_CODE_NO_USERS` (binary 100) get a non-zero result. The reasons for exiting, in this case, include a timeout and a signal triggering the exit. */
@@ -61,7 +99,27 @@ public class Common{
     LEAVE_CODE_TIMER_CATCH(1<<3),
     /** 16 (binary 10000): The recording server calls the {@link io.agora.recording.RecordingSDK.leaveChannel leaveChannel} method to leave the channel. */
     LEAVE_CODE_CLIENT_LEAVE(1<<4);
-    private LEAVE_PATH_CODE(int code) {}
+
+    private final int value;
+
+    private LEAVE_PATH_CODE(int value){
+      this.value = value;
+    }
+
+    public int getValue() {
+      return value;
+    }
+
+    public static LEAVE_PATH_CODE getByCode(int code) {
+      LEAVE_PATH_CODE[] values = LEAVE_PATH_CODE.values();
+      for (LEAVE_PATH_CODE value : values) {
+        if (value.getValue() == code) {
+          return value;
+        }
+      }
+      return null;
+    }
+
   }
 
   /** The states of the remote stream. */
@@ -70,12 +128,22 @@ public class Common{
     REMOTE_STREAM_STATE_RUNNING(0),
     /** The remote stream is stopped. */
     REMOTE_STREAM_STATE_STOPPED(1);
-    private int value;
+    private final int value;
     private REMOTE_STREAM_STATE(int value) {
       this.value = value;
     }
     public int getValue() {
       return value;
+    }
+
+    public static REMOTE_STREAM_STATE getByCode(int code) {
+      REMOTE_STREAM_STATE[] values = REMOTE_STREAM_STATE.values();
+      for (REMOTE_STREAM_STATE value : values) {
+        if (value.getValue() == code) {
+          return value;
+        }
+      }
+      return null;
     }
   }
 
@@ -85,13 +153,24 @@ public class Common{
     REASON_REMOTE_STREAM_STARTED(0),
     /** Stops pulling the stream of the remote user. */
     REASON_REMOTE_STREAM_STOPPED(1);
-    private int value;
+    private final int value;
     private REMOTE_STREAM_STATE_CHANGED_REASON(int value) {
       this.value = value;
     }
     public int getValue() {
       return value;
     }
+
+    public static REMOTE_STREAM_STATE_CHANGED_REASON getByCode(int code) {
+      REMOTE_STREAM_STATE_CHANGED_REASON[] values = REMOTE_STREAM_STATE_CHANGED_REASON.values();
+      for (REMOTE_STREAM_STATE_CHANGED_REASON value : values) {
+        if (value.getValue() == code) {
+          return value;
+        }
+      }
+      return null;
+    }
+
   }
 
   /** Warning codes.
@@ -123,7 +202,25 @@ public class Common{
     WARN_OPEN_CHANNEL_REJECTED(107),
     /** 108: An abnormal error occurs. The SDK would resume the recording. */
     WARN_RECOVERY_CORE_SERVICE_FAILURE(108);
-    private WARN_CODE_TYPE(int value){}
+
+    private final int value;
+    private WARN_CODE_TYPE(int value) {
+      this.value = value;
+    }
+    public int getValue() {
+      return value;
+    }
+
+    public static WARN_CODE_TYPE getByCode(int code) {
+      WARN_CODE_TYPE[] values = WARN_CODE_TYPE.values();
+      for (WARN_CODE_TYPE value : values) {
+        if (value.getValue() == code) {
+          return value;
+        }
+      }
+      return null;
+    }
+
   }
 
   /** Sets the channel mode.
@@ -138,13 +235,24 @@ public class Common{
      * only receives voice/video. Host and audience roles can be set by calling setClientRole.
      */
     CHANNEL_PROFILE_LIVE_BROADCASTING(1);
-    private int value;
+    private final int value;
     private CHANNEL_PROFILE_TYPE(int value) {
       this.value = value;
     }
     public int getValue() {
       return value;
     }
+
+    public static CHANNEL_PROFILE_TYPE getByCode(int code) {
+      CHANNEL_PROFILE_TYPE[] values = CHANNEL_PROFILE_TYPE.values();
+      for (CHANNEL_PROFILE_TYPE value : values) {
+        if (value.getValue() == code) {
+          return value;
+        }
+      }
+      return null;
+    }
+
   }
 
   /** Connection states. */
@@ -185,13 +293,24 @@ public class Common{
      * If the SDK is banned from joining the channel by the Agora server (through the RESTful API), the SDK triggers the {@link io.agora.recording.RecordingEventHandler#onConnectionStateChanged onConnectionStateChanged} callback and switch to the {@link CONNECTION_STATE_TYPE#CONNECTION_STATE_FAILED CONNECTION_STATE_FAILED} state.
      */
     CONNECTION_STATE_FAILED(5);
-    private int value;
+    private final int value;
     private CONNECTION_STATE_TYPE(int value) {
       this.value = value;
     }
     public int getValue() {
       return value;
     }
+
+    public static CONNECTION_STATE_TYPE getByCode(int code) {
+      CONNECTION_STATE_TYPE[] values = CONNECTION_STATE_TYPE.values();
+      for (CONNECTION_STATE_TYPE value : values) {
+        if (value.getValue() == code) {
+          return value;
+        }
+      }
+      return null;
+    }
+
   }
 
   /** Reasons for a connection state change. */
@@ -208,7 +327,7 @@ public class Common{
     CONNECTION_CHANGED_JOIN_FAILED(4),
     /** 5: The SDK has left the channel. */
     CONNECTION_CHANGED_LEAVE_CHANNEL(5);
-    private int value;
+    private final int value;
     private CONNECTION_CHANGED_REASON_TYPE(int value) {
       this.value = value;
     }
@@ -240,7 +359,7 @@ public class Common{
     REMOTE_VIDEO_STREAM_HIGH(0),
     /** 1: Low stream. */
     REMOTE_VIDEO_STREAM_LOW(1);
-    private int value;
+    private final int value;
     private REMOTE_VIDEO_STREAM_TYPE(int value) {
       this.value = value;
     }
