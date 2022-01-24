@@ -59,8 +59,15 @@ public class RecordingSDK {
 
   /** To remove previously registered observer. */
   public void unRegisterOberserver(RecordingEventHandler recordingEventHandler) {
-    if (recordingEventHandlers.containsKey(recordingEventHandler)) {
+    if (recordingEventHandlers.containsKey(recordingEventHandler.getChannel())) {
       recordingEventHandlers.remove(recordingEventHandler.getChannel());
+    }
+  }
+
+  /** To remove previously registered observer. */
+  public void unRegisterOberserver(String channelName) {
+    if (recordingEventHandlers.containsKey(channelName)) {
+      recordingEventHandlers.remove(channelName);
     }
   }
 
