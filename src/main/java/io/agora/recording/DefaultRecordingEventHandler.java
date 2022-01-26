@@ -37,9 +37,9 @@ import io.agora.spring.boot.AgoraRecordingProperties;
 import lombok.extern.slf4j.Slf4j;
 
 class RecordingCleanTimer extends TimerTask {
-	AgoraRecordingEventHandler rs;
+	DefaultRecordingEventHandler rs;
 
-	public RecordingCleanTimer(AgoraRecordingEventHandler rs) {
+	public RecordingCleanTimer(DefaultRecordingEventHandler rs) {
 		this.rs = rs;
 	}
 
@@ -63,7 +63,7 @@ class UserInfo {
  * @link {https://docs.agora.io/cn/Recording/API%20Reference/recording_java/interfaceio_1_1agora_1_1recording_1_1_recording_event_handler.html}
  */
 @Slf4j
-public class AgoraRecordingEventHandler implements RecordingEventHandler {
+public class DefaultRecordingEventHandler implements RecordingEventHandler {
 
 	private AgoraProperties agoraProperties;
 	private AgoraRecordingProperties recordingProperties;
@@ -104,7 +104,7 @@ public class AgoraRecordingEventHandler implements RecordingEventHandler {
 	 */
 	private String channelId;
 
-	public AgoraRecordingEventHandler(String channelId, AgoraProperties agoraProperties,
+	public DefaultRecordingEventHandler(String channelId, AgoraProperties agoraProperties,
 			AgoraRecordingProperties recordingProperties, RecordingSDK recording) {
 		this.channelId = channelId;
 		this.agoraProperties = agoraProperties;
