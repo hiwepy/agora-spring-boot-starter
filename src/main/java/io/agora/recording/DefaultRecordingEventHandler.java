@@ -34,6 +34,7 @@ import io.agora.recording.common.RecordingConfig;
 import io.agora.recording.common.RecordingResult;
 import io.agora.spring.boot.AgoraProperties;
 import io.agora.spring.boot.AgoraRecordingProperties;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 class RecordingCleanTimer extends TimerTask {
@@ -49,11 +50,18 @@ class RecordingCleanTimer extends TimerTask {
 	}
 }
 
+@Data
 class UserInfo {
-	long uid;
-	long last_receive_time;
-	FileOutputStream channel;
-	String fileName;
+	public long uid;
+	public long last_receive_time;
+	public FileOutputStream channel;
+	public String fileName;
+}
+
+@Data
+class RecordFile {
+	private long uid;
+	private String fileName;
 }
 
 /**
