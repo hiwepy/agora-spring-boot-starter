@@ -1,5 +1,8 @@
 package io.agora.recording;
 
+import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,28 +31,59 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RecordingSDK {
 
+  private static List<String> libCache = new LinkedList();
   private Map<String, RecordingEventHandler> recordingEventHandlers = null;
   private long nativeHandle = 0;
   /** The maximum length of the user account.  */
   public static int MAX_USER_ACCOUNT_LENGTH = 256;
 
-  /** Load Java library. */
-
-  static {
-    try {
-      String libraryPath = System.getProperty("java.library.path");
-      log.info("Agora Recording Load Lib From Path : {}  ! ", libraryPath);
-      System.loadLibrary("recording");
-      log.info("Agora Recording Lib Load Success ! ");
-    } catch (Throwable e) {
-      log.error("Agora Recording Lib Load Fail. ", e);
-      //e.printStackTrace();
-    }
-  }
-
   /** Main methods that can be invoked by your application.*/
   public RecordingSDK() {
+    this(null);
+  }
+
+  public RecordingSDK(String libPath) {
+    libraryLoad(libPath);
     recordingEventHandlers = new ConcurrentHashMap<>();
+  }
+
+  /** Load Java library. */
+  private static synchronized void libraryLoad(String libPath) {
+    String os;
+    if (libPath != null && libPath.length() != 0) {
+      try {
+
+        if (libPath.endsWith("/") || libPath.endsWith("\\")) {
+          libPath = libPath.substring(0, libPath.length() - 1);
+        }
+
+        libPath = libPath + File.separator;
+        if (!libCache.contains(libPath)) {
+          os = System.getProperty("os.name");
+          if (os.toLowerCase().startsWith("win")) {
+            log.info("Agora Recording Load Lib From Path : {}  ! ", libPath + "librecording.dll");
+            System.load(libPath + "librecording.dll");
+          } else {
+
+            log.info("Agora Recording Load Lib From Path : {}  ! ", libPath + "librecording.so");
+            System.load(libPath + "librecording.so");
+          }
+          libCache.add(libPath);
+        }
+      } catch (Throwable e) {
+        log.error("Agora Recording Lib Load Fail. ", e);
+      }
+    } else {
+      try {
+        String libraryPath = System.getProperty("java.library.path");
+        log.info("Agora Recording Load Lib From Path : {}  ! ", libraryPath);
+        System.loadLibrary("recording");
+        log.info("Agora Recording Lib Load Success ! ");
+      } catch (Throwable e) {
+        log.error("Agora Recording Lib Load Fail. ", e);
+        //e.printStackTrace();
+      }
+    }
   }
 
   /** To register observer to receive Recording event notification. */
