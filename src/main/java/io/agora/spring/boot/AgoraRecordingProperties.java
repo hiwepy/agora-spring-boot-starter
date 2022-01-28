@@ -297,4 +297,10 @@ public class AgoraRecordingProperties {
    * </ul>
    */
   private boolean enableH265Support = false;
+
+  /**
+   * SDK 库存放地址
+   */
+  private String libPath;
+
 }

@@ -1,3 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.agora.spring.boot.AgoraAutoConfiguration
+io.agora.spring.boot.AgoraAutoConfiguration,\
+io.agora.spring.boot.AgoraLocalRecordingConfiguration

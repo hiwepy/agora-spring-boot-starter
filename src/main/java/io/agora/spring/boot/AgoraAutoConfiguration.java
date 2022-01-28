@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import okhttp3.OkHttpClient;
 
 @Configuration
-@EnableConfigurationProperties({ AgoraProperties.class, AgoraRecordingProperties.class})
+@EnableConfigurationProperties({ AgoraProperties.class})
 public class AgoraAutoConfiguration {
 
 	@Bean
