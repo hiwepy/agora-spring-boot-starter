@@ -37,6 +37,8 @@ public class RecordingSDK {
 
   static {
     try {
+      String libraryPath = System.getProperty("java.library.path");
+      log.info("Agora Recording Load Lib From Path : {}  ! ", libraryPath);
       System.loadLibrary("recording");
       log.info("Agora Recording Lib Load Success ! ");
     } catch (Throwable e) {
