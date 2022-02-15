@@ -90,30 +90,29 @@ public class RecordingSDK {
 
   /** To register observer to receive Recording event notification. */
   public void registerOberserver(RecordingEventHandler recordingEventHandler) {
-    if (!recordingEventHandlers.containsKey(recordingEventHandler.getChannel())) {
-      recordingEventHandlers.put(recordingEventHandler.getChannel(), recordingEventHandler);
+    String channelName = recordingEventHandler.getChannel();
+    RecordingEventHandler oldRecordingEventHandler = recordingEventHandlers.get(channelName);
+    if(Objects.nonNull(oldRecordingEventHandler)){
+      log.info("Found Old Agora Recording Oberserver For {} ! ", channelName);
     }
+    log.info("Register New Agora Recording Oberserver For {}. ", channelName);
+    recordingEventHandlers.put(channelName, recordingEventHandler);
   }
 
   /** To remove previously registered observer. */
   public void unRegisterOberserver(RecordingEventHandler recordingEventHandler) {
-    if (recordingEventHandlers.containsKey(recordingEventHandler.getChannel())) {
-      recordingEventHandlers.remove(recordingEventHandler.getChannel());
-    }
+    String channelName = recordingEventHandler.getChannel();
+    this.unRegisterOberserver(channelName);
   }
 
   /** To remove previously registered observer. */
   public void unRegisterOberserver(String channelName) {
-    if (recordingEventHandlers.containsKey(channelName)) {
-      recordingEventHandlers.remove(channelName);
-    }
+    log.info("UnRegister Agora Recording Oberserver For {}. ", channelName);
+    recordingEventHandlers.remove(channelName);
   }
 
   public RecordingEventHandler getRegisterOberserver(String channelName) {
-    if (recordingEventHandlers.containsKey(channelName)) {
-      return recordingEventHandlers.get(channelName);
-    }
-    return null;
+    return recordingEventHandlers.get(channelName);
   }
 
   /** This method creates a channel and enables the recording server to join the channel.

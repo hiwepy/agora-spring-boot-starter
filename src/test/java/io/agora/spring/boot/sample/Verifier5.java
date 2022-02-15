@@ -1,4 +1,4 @@
-package io.agora.sample;
+package io.agora.spring.boot.sample;
 
 import io.agora.media.DynamicKey5;
 import org.apache.commons.codec.binary.Hex;

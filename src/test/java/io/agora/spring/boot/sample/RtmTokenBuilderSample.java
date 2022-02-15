@@ -1,4 +1,4 @@
-package io.agora.sample;
+package io.agora.spring.boot.sample;
 
 import io.agora.rtm.RtmTokenBuilder;
 import io.agora.rtm.RtmTokenBuilder.Role;
