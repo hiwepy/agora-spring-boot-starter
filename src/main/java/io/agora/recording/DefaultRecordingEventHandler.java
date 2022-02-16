@@ -1106,8 +1106,12 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 		cleanTimer = new Timer();
 		boolean isSuccess = false;
 		if (userAccount.length() > 0) {
+			log.info("Agora Local Recording createChannelWithUserAccount , AppId : {}, token : {}, channelId : {}, userAccount : {}, config : {}, logLevel : {}",
+					agoraProperties.getAppId(), token, channelId, userAccount, config, logLevel);
 			isSuccess = recordingSDKInstance.createChannelWithUserAccount(agoraProperties.getAppId(), token, channelId, userAccount, config, logLevel);
 		} else {
+			log.info("Agora Local Recording createChannel , AppId : {}, token : {}, channelId : {}, uid : {}, config : {}, logLevel : {}",
+					agoraProperties.getAppId(), token, channelId, uid, config, logLevel);
 			isSuccess = recordingSDKInstance.createChannel(agoraProperties.getAppId(), token, channelId, uid, config, logLevel);
 		}
 		if(isSuccess){
