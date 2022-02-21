@@ -16,6 +16,7 @@
 package io.agora.spring.boot;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -65,7 +66,17 @@ public abstract class AgoraOperations {
 		return agoraTemplate.getAgoraProperties();
 	}
 
-	protected <T extends AgoraResponse> T request(AgoraApiAddress address, String url, Object params, Class<T> cls) {
+	protected <T extends AgoraResponse> T request(AgoraApiAddress address, String url, Class<T> cls) {
+		T res =  getAgoraTemplate().requestInvoke(url, null, cls);
+		if (Objects.nonNull(res)) {
+			log.info("Agora {} >> Success, url : {}, Code : {}, Body : {}", address.getOpt(), url, res.getCode());
+		} else {
+			log.error("Agora {} >> Failure, url : {}, Code : {}", address.getOpt(), url, res.getCode());
+		}
+		return res;
+	}
+
+	protected <T extends AgoraResponse> T request(AgoraApiAddress address, String url, Map<String, Object> params, Class<T> cls) {
 		T res =  getAgoraTemplate().requestInvoke(url, params, cls);
 		if (Objects.nonNull(res)) {
 			log.info("Agora {} >> Success, url : {}, params : {}, Code : {}, Body : {}", address.getOpt(), url, params, res.getCode());
@@ -75,7 +86,7 @@ public abstract class AgoraOperations {
 		return res;
 	}
 
-	protected <T extends AgoraResponse> void asyncRequest(AgoraApiAddress address, String url, Object params, Class<T> cls, Consumer<T> consumer) {
+	protected <T extends AgoraResponse> void asyncRequest(AgoraApiAddress address, String url, Map<String, Object> params, Class<T> cls, Consumer<T> consumer) {
 		getAgoraTemplate().requestAsyncInvoke(url, params, (response) -> {
 			if (response.isSuccessful()) {
 				try {

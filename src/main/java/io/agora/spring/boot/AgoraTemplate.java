@@ -2,23 +2,19 @@ package io.agora.spring.boot;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import com.alibaba.fastjson.JSONObject;
 import io.agora.spring.boot.resp.AgoraResponse;
+import okhttp3.*;
 import org.springframework.beans.BeanUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.agora.media.RtcTokenBuilder;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * https://docs.agora.io/cn/Interactive%20Broadcast/rtc_channel_event?platform=RESTful
@@ -103,20 +99,32 @@ public class AgoraTemplate {
 		}
 	}
 
-    public <T extends AgoraResponse> T requestInvoke(String url, Object params, Class<T> cls) {
+
+	public <T extends AgoraResponse> T requestInvoke(String url, Map<String, Object> params, Class<T> cls) {
+
+	}
+
+    public <T extends AgoraResponse> T requestInvoke(String url, Map<String, Object> params, Object body, Class<T> cls) {
 		long start = System.currentTimeMillis();
 		T res = null;
 		try {
-
 	        String authorizationHeader = getAuthorizationHeader();
-			String paramStr = objectMapper.writeValueAsString(params);
-			log.info("Agora Request Authorization : {}, Param : {}", authorizationHeader, paramStr);
+			Request request = null;
+			if(Objects.nonNull(params)){
+				String bodyStr = objectMapper.writeValueAsString(body);
+				log.info("Agora Request Authorization : {}, Param : {}", authorizationHeader, bodyStr);
 
-			RequestBody requestBody = RequestBody.create(APPLICATION_JSON_UTF8, paramStr);
-			Request request = new Request.Builder().url(url)
-                    .header("Authorization", authorizationHeader)
-                    .header("Content-Type", APPLICATION_JSON_VALUE)
-					.post(requestBody).build();
+				RequestBody requestBody = RequestBody.create(APPLICATION_JSON_UTF8, bodyStr);
+				request = new Request.Builder().url(url)
+						.header("Authorization", authorizationHeader)
+						.header("Content-Type", APPLICATION_JSON_VALUE)
+						.post(requestBody).build();
+			} else {
+				request = new Request.Builder().url(url)
+						.header("Authorization", authorizationHeader)
+						.header("Content-Type", APPLICATION_JSON_VALUE)
+						.get().build();
+			}
 
 			try(Response response = okhttp3Client.newCall(request).execute();) {
 				if (response.isSuccessful()) {
@@ -137,7 +145,11 @@ public class AgoraTemplate {
 		return res;
 	}
 
-	public void requestAsyncInvoke(String url, Object params, Consumer<Response> consumer) {
+	public void requestAsyncInvoke(String url, Object body, Consumer<Response> consumer) {
+    	this.requestAsyncInvoke(url, null, body, consumer);
+	}
+
+	public void requestAsyncInvoke(String url, Map<String, Object> params, Object body, Consumer<Response> consumer) {
 
 		long start = System.currentTimeMillis();
 
