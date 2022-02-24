@@ -30,7 +30,8 @@ public class AgoraTemplate_Test {
 		properties.setAppCertificate("");
 		properties.setLoginKey("");
 		properties.setLoginSecret("");
-		template = new AgoraTemplate(properties, objectMapper, okhttp3Client, new AgoraUserIdProvider() {});
+		AgoraOkHttp3Template agoraOkHttp3Template = new AgoraOkHttp3Template(okhttp3Client, objectMapper, properties);
+		template = new AgoraTemplate(new AgoraUserIdProvider() {}, agoraOkHttp3Template, properties );
 
 	}
 

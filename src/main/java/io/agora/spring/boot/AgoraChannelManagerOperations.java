@@ -18,6 +18,8 @@ package io.agora.spring.boot;
 import io.agora.spring.boot.resp.ChannelUserListResponse;
 import io.agora.spring.boot.resp.ChannelUserStateResponse;
 
+import java.io.IOException;
+
 /**
  * 1、频道管理
  * https://docs.agora.io/cn/Video/channel_management_overview?platform=RESTful
@@ -39,9 +41,9 @@ public class AgoraChannelManagerOperations extends AgoraOperations {
 	 * @param channelName 频道名称
 	 * @return 操作结果
 	 */
-	public ChannelUserStateResponse getChannelUserState(String uid, String channelName) {
+	public ChannelUserStateResponse getChannelUserState(String uid, String channelName) throws IOException {
 		String reqUrl = AgoraApiAddress.CHANNEL_USER_STATE.getUrl(getAgoraProperties().getAppId(), uid, channelName);
-		ChannelUserStateResponse resp = super.request(AgoraApiAddress.CHANNEL_USER_STATE, reqUrl, ChannelUserStateResponse.class);
+		ChannelUserStateResponse resp = super.get(AgoraApiAddress.CHANNEL_USER_STATE, reqUrl, ChannelUserStateResponse.class);
 		return resp;
 	}
 
@@ -55,9 +57,9 @@ public class AgoraChannelManagerOperations extends AgoraOperations {
 	 * @param channelName 频道名称
 	 * @return 操作结果
 	 */
-	public ChannelUserListResponse getChannelUserList(String channelName) {
+	public ChannelUserListResponse getChannelUserList(String channelName) throws IOException {
 		String reqUrl = AgoraApiAddress.CHANNEL_USER_LIST.getUrl(getAgoraProperties().getAppId(), channelName);
-		ChannelUserListResponse resp = super.request(AgoraApiAddress.CHANNEL_USER_LIST, reqUrl, ChannelUserListResponse.class);
+		ChannelUserListResponse resp = super.get(AgoraApiAddress.CHANNEL_USER_LIST, reqUrl, ChannelUserListResponse.class);
 		return resp;
 	}
 
@@ -70,9 +72,9 @@ public class AgoraChannelManagerOperations extends AgoraOperations {
 	 * @param pageSize 每个页面显示的频道数量，取值范围为 [1,500]，默认值为 100。
 	 * @return 操作结果
 	 */
-	public ChannelUserListResponse getChannelList(Integer pageNo, Integer pageSize) {
+	public ChannelUserListResponse getChannelList(Integer pageNo, Integer pageSize) throws IOException {
 		String reqUrl = AgoraApiAddress.CHANNEL_LIST.getUrl(getAgoraProperties().getAppId());
-		ChannelUserListResponse resp = super.request(AgoraApiAddress.CHANNEL_LIST, reqUrl, ChannelUserListResponse.class);
+		ChannelUserListResponse resp = super.get(AgoraApiAddress.CHANNEL_LIST, reqUrl, ChannelUserListResponse.class);
 		return resp;
 	}
 

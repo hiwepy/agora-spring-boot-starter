@@ -2,8 +2,10 @@ package io.agora.spring.boot;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import com.alibaba.fastjson.JSONObject;
@@ -15,6 +17,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.agora.media.RtcTokenBuilder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * https://docs.agora.io/cn/Interactive%20Broadcast/rtc_channel_event?platform=RESTful
@@ -33,19 +37,17 @@ public class AgoraTemplate {
 
 	private static RtcTokenBuilder token = new RtcTokenBuilder();
 
-	private ObjectMapper objectMapper;
-	private OkHttpClient okhttp3Client;
-	private AgoraProperties agoraProperties;
 	private AgoraUserIdProvider userIdProvider;
+	private AgoraOkHttp3Template agoraOkHttp3Template;
+	private AgoraProperties agoraProperties;
 
 	private final AgoraChannelManagerAsyncOperations channelOps = new AgoraChannelManagerAsyncOperations(this);
 	private final AgoraCloudRecordingAsyncOperations cloudRecordingOps = new AgoraCloudRecordingAsyncOperations(this);
 
-	public AgoraTemplate(AgoraProperties agoraProperties, ObjectMapper objectMapper, OkHttpClient okhttp3Client, AgoraUserIdProvider userIdProvider) {
-		this.agoraProperties = agoraProperties;
-		this.objectMapper = objectMapper;
-		this.okhttp3Client = okhttp3Client;
+	public AgoraTemplate(AgoraUserIdProvider userIdProvider, AgoraOkHttp3Template agoraOkHttp3Template, AgoraProperties agoraProperties) {
 		this.userIdProvider = userIdProvider;
+		this.agoraOkHttp3Template = agoraOkHttp3Template;
+		this.agoraProperties = agoraProperties;
 	}
 
 	public AgoraChannelManagerAsyncOperations opsForChannel() {
@@ -78,115 +80,6 @@ public class AgoraTemplate {
 		return result;
 	}
 
-    /**
-     * restful请求认证
-     */
-    private String getAuthorizationHeader() {
-        // 1、拼接客户 ID 和客户密钥并使用 base64 编码
-        String plainCredentials = agoraProperties.getLoginKey() + ":" + agoraProperties.getLoginSecret();
-        String base64Credentials = new String(Base64.getEncoder().encode(plainCredentials.getBytes()));
-        // 2、创建 authorization header
-        return "Basic " + base64Credentials;
-    }
-
-    public <T> T readValue(String json, Class<T> cls) {
-		try {
-			return JSONObject.parseObject(json, cls);
-			//return objectMapper.readValue(json, cls);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			return BeanUtils.instantiateClass(cls);
-		}
-	}
-
-
-	public <T extends AgoraResponse> T requestInvoke(String url, Map<String, Object> params, Class<T> cls) {
-
-	}
-
-    public <T extends AgoraResponse> T requestInvoke(String url, Map<String, Object> params, Object body, Class<T> cls) {
-		long start = System.currentTimeMillis();
-		T res = null;
-		try {
-	        String authorizationHeader = getAuthorizationHeader();
-			Request request = null;
-			if(Objects.nonNull(params)){
-				String bodyStr = objectMapper.writeValueAsString(body);
-				log.info("Agora Request Authorization : {}, Param : {}", authorizationHeader, bodyStr);
-
-				RequestBody requestBody = RequestBody.create(APPLICATION_JSON_UTF8, bodyStr);
-				request = new Request.Builder().url(url)
-						.header("Authorization", authorizationHeader)
-						.header("Content-Type", APPLICATION_JSON_VALUE)
-						.post(requestBody).build();
-			} else {
-				request = new Request.Builder().url(url)
-						.header("Authorization", authorizationHeader)
-						.header("Content-Type", APPLICATION_JSON_VALUE)
-						.get().build();
-			}
-
-			try(Response response = okhttp3Client.newCall(request).execute();) {
-				if (response.isSuccessful()) {
-					String body = response.body().string();
-					log.info("Agora Request Success : url : {}, params : {}, code : {}, body : {} , use time : {} ", url, params, response.code(), body , System.currentTimeMillis() - start);
-					res = this.readValue(body, cls);
-	            } else {
-	            	log.error("Agora Request Failure : url : {}, params : {}, code : {}, message : {}, use time : {} ", url, params, response.code(), response.message(), System.currentTimeMillis() - start);
-	            	res = BeanUtils.instantiateClass(cls);
-				}
-				res.setCode(response.code());
-			}
-		} catch (Exception e) {
-			log.error("Agora Request Error : url : {}, params : {}, use time : {} ,  {}", url, params, e.getMessage(), System.currentTimeMillis() - start);
-			res = BeanUtils.instantiateClass(cls);
-			res.setCode(500);
-		}
-		return res;
-	}
-
-	public void requestAsyncInvoke(String url, Object body, Consumer<Response> consumer) {
-    	this.requestAsyncInvoke(url, null, body, consumer);
-	}
-
-	public void requestAsyncInvoke(String url, Map<String, Object> params, Object body, Consumer<Response> consumer) {
-
-		long start = System.currentTimeMillis();
-
-		try {
-
-			String authorizationHeader = getAuthorizationHeader();
-			String paramStr = objectMapper.writeValueAsString(params);
-			log.info("Agora Async Request Authorization : {}, Param : {}", authorizationHeader, paramStr);
-
-			RequestBody requestBody = RequestBody.create(APPLICATION_JSON_UTF8, paramStr);
-			Request request = new Request.Builder()
-					.url(url)
-					.header("Authorization", authorizationHeader)
-                    .header("Content-Type", APPLICATION_JSON_VALUE)
-					.post(requestBody).build();
-			okhttp3Client.newCall(request).enqueue(new Callback() {
-
-	            @Override
-	            public void onFailure(Call call, IOException e) {
-	            	log.error("Agora Async Request Failure : url : {}, params : {}, message : {}, use time : {} ", url, params, e.getMessage(), System.currentTimeMillis() - start);
-	            }
-
-	            @Override
-	            public void onResponse(Call call, Response response) {
-                	if (response.isSuccessful()) {
-    					log.info("Agora Async Request Success : url : {}, params : {}, code : {}, message : {} , use time : {} ", url, params, response.code(), response.message(), System.currentTimeMillis() - start);
-    					consumer.accept(response);
-                    } else {
-                    	log.error("Agora Async Request Failure : url : {}, params : {}, code : {}, message : {}, use time : {} ", url, params, response.code(), response.message(), System.currentTimeMillis() - start);
-        			}
-	            }
-
-	        });
-		} catch (Exception e) {
-			log.error("Agora Async Request Error : url : {}, params : {}, message : {} , use time : {} ", url, params, e.getMessage(), System.currentTimeMillis() - start);
-		}
-	}
 
 	/**
 	 * 根据Agora频道名称获取用户id
@@ -212,4 +105,7 @@ public class AgoraTemplate {
 		return agoraProperties;
 	}
 
+	public AgoraOkHttp3Template getAgoraOkHttp3Template() {
+		return agoraOkHttp3Template;
+	}
 }

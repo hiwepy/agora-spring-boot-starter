@@ -21,7 +21,6 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import io.agora.spring.boot.resp.AgoraResponse;
-import org.springframework.beans.BeanUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -66,8 +65,12 @@ public abstract class AgoraOperations {
 		return agoraTemplate.getAgoraProperties();
 	}
 
-	protected <T extends AgoraResponse> T request(AgoraApiAddress address, String url, Class<T> cls) {
-		T res =  getAgoraTemplate().requestInvoke(url, null, cls);
+	protected AgoraOkHttp3Template getAgoraOkHttp3Template(){
+		return agoraTemplate.getAgoraOkHttp3Template();
+	}
+
+	protected <T extends AgoraResponse> T get(AgoraApiAddress address, String url, Class<T> cls) throws IOException {
+		T res = getAgoraOkHttp3Template().get(url, cls);
 		if (Objects.nonNull(res)) {
 			log.info("Agora {} >> Success, url : {}, Code : {}, Body : {}", address.getOpt(), url, res.getCode());
 		} else {
@@ -76,40 +79,28 @@ public abstract class AgoraOperations {
 		return res;
 	}
 
-	protected <T extends AgoraResponse> T request(AgoraApiAddress address, String url, Map<String, Object> params, Class<T> cls) {
-		T res =  getAgoraTemplate().requestInvoke(url, params, cls);
+	protected <T extends AgoraResponse> T post(AgoraApiAddress address, String url, Class<T> cls) throws IOException {
+		T res = getAgoraOkHttp3Template().post(url, cls);
 		if (Objects.nonNull(res)) {
-			log.info("Agora {} >> Success, url : {}, params : {}, Code : {}, Body : {}", address.getOpt(), url, params, res.getCode());
+			log.info("Agora {} >> Success, url : {}, Code : {}, Body : {}", address.getOpt(), url, res.getCode());
 		} else {
-			log.error("Agora {} >> Failure, url : {}, params : {}, Code : {}", address.getOpt(), url, params, res.getCode());
+			log.error("Agora {} >> Failure, url : {}, Code : {}", address.getOpt(), url, res.getCode());
 		}
 		return res;
 	}
 
-	protected <T extends AgoraResponse> void asyncRequest(AgoraApiAddress address, String url, Map<String, Object> params, Class<T> cls, Consumer<T> consumer) {
-		getAgoraTemplate().requestAsyncInvoke(url, params, (response) -> {
-			if (response.isSuccessful()) {
-				try {
-					String body = response.body().string();
-					T res = getAgoraTemplate().readValue(body, cls);
-					res.setCode(response.code());
-					if (res.isSuccess()) {
-						log.info("Agora {} >> Success, url : {}, params : {}, Code : {}, Body : {}", address.getOpt(), url, params, res.getCode(), body);
-					} else {
-						log.error("Agora {} >> Failure, url : {}, params : {}, Code : {}", address.getOpt(), url, params, res.getCode());
-					}
-					consumer.accept(res);
-				} catch (IOException e) {
-					log.error("Agora {} >> Response Parse Error : {}", address.getOpt(), e.getMessage());
-					T res = BeanUtils.instantiateClass(cls);
-					consumer.accept(res);
-				}
-            } else {
-            	T res = BeanUtils.instantiateClass(cls);
-				res.setCode(response.code());
-				consumer.accept(res);
-            }
-		});
+	protected <T extends AgoraResponse> T post(AgoraApiAddress address, String url, Map<String, Object> requestBody, Class<T> cls) throws IOException {
+		T res = getAgoraOkHttp3Template().post(url, null, null , requestBody, cls);
+		if (Objects.nonNull(res)) {
+			log.info("Agora {} >> Success, url : {}, requestBody : {}, Code : {}, Body : {}", address.getOpt(), url, requestBody, res.getCode());
+		} else {
+			log.error("Agora {} >> Failure, url : {}, requestBody : {}, Code : {}", address.getOpt(), url, requestBody, res.getCode());
+		}
+		return res;
+	}
+
+	protected <T extends AgoraResponse> void asyncPost(AgoraApiAddress address, String url, Map<String, Object> bodyContent, Class<T> cls, Consumer<T> success) throws IOException {
+		getAgoraOkHttp3Template().doAsyncRequest(url, AgoraOkHttp3Template.HttpMethod.POST, null,  null, bodyContent, success, null, cls);
 	}
 
 	public AgoraTemplate getAgoraTemplate() {

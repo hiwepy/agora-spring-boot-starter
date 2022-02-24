@@ -15,6 +15,7 @@
  */
 package io.agora.spring.boot;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -59,7 +60,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      * @return 云端录制操作结果
      */
 	public void asyncStartRecording(String channelName, String uid, String token, String resourceId, RecordingStorageConfig storageConfig,
-			Consumer<CloudRecordingStartResponse> consumer) {
+			Consumer<CloudRecordingStartResponse> consumer) throws IOException {
 		this.asyncStartRecording(channelName, uid, token, resourceId, RecordingMode.MIX, null, null, null, null, storageConfig, null, consumer);
 	}
 
@@ -82,7 +83,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
 									RecordingConfig recordingConfig,
 		    RecordingFileConfig recordingFileConfig,
 			RecordingStorageConfig storageConfig,
-			Consumer<CloudRecordingStartResponse> consumer) {
+			Consumer<CloudRecordingStartResponse> consumer) throws IOException {
 		this.asyncStartRecording(channelName, uid, token, resourceId, RecordingMode.MIX, null, recordingConfig, recordingFileConfig, null, storageConfig, null, consumer);
 	}
 
@@ -109,7 +110,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
 			RecordingConfig recordingConfig,
 		    RecordingFileConfig recordingFileConfig,
 			RecordingStorageConfig storageConfig,
-			Consumer<CloudRecordingStartResponse> consumer) {
+			Consumer<CloudRecordingStartResponse> consumer) throws IOException {
 		this.asyncStartRecording(channelName, uid, token, resourceId, mode, null, recordingConfig, recordingFileConfig, null, storageConfig, null, consumer);
 	}
 
@@ -138,7 +139,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
 			RecordingConfig recordingConfig,
 		    RecordingFileConfig recordingFileConfig,
 			RecordingStorageConfig storageConfig,
-			Consumer<CloudRecordingStartResponse> consumer) {
+			Consumer<CloudRecordingStartResponse> consumer) throws IOException {
 		this.asyncStartRecording(channelName, uid, token, resourceId, mode, appsCollection, recordingConfig, recordingFileConfig, null, storageConfig, null, consumer);
 	}
 
@@ -169,7 +170,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
 		    RecordingFileConfig recordingFileConfig,
 		    RecordingSnapshotConfig snapshotConfig,
 			RecordingStorageConfig storageConfig,
-			Consumer<CloudRecordingStartResponse> consumer) {
+			Consumer<CloudRecordingStartResponse> consumer) throws IOException {
 		this.asyncStartRecording(channelName, uid, token, resourceId, mode, appsCollection, recordingConfig, recordingFileConfig, snapshotConfig, storageConfig, null, consumer);
 	}
 
@@ -202,7 +203,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
 		    RecordingSnapshotConfig snapshotConfig,
 			RecordingStorageConfig storageConfig,
 			RecordingExtensionServiceConfig extensionServiceConfig,
-			Consumer<CloudRecordingStartResponse> consumer) {
+			Consumer<CloudRecordingStartResponse> consumer) throws IOException {
 
 		HashMap<String, Object> hashMap = new HashMap<>();
 		if(StringUtils.hasText(token)){
@@ -242,7 +243,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
 				.build();
 
         String reqUrl = AgoraApiAddress.START_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, mode.getName());
-        super.asyncRequest(AgoraApiAddress.START_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingStartResponse.class, consumer);
+        super.asyncPost(AgoraApiAddress.START_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingStartResponse.class, consumer);
 	}
 
 	/**
@@ -260,7 +261,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      */
 	public void asyncUpdateMixRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode,
 			RecordingUpdateStreamSubscribe streamSubscribe,
-			Consumer<CloudRecordingUpdateResponse> consumer) {
+			Consumer<CloudRecordingUpdateResponse> consumer) throws IOException {
 		this.asyncUpdateRecording(channelName, uid, resourceId, sid, RecordingMode.MIX, streamSubscribe, null, null, consumer);
 	}
 
@@ -279,7 +280,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      */
 	public void asyncUpdateIndividualRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode,
 			RecordingUpdateStreamSubscribe streamSubscribe,
-			Consumer<CloudRecordingUpdateResponse> consumer) {
+			Consumer<CloudRecordingUpdateResponse> consumer) throws IOException {
         this.asyncUpdateRecording(channelName, uid, resourceId, sid, RecordingMode.INDIVIDUAL, streamSubscribe, null, null, consumer);
 	}
 
@@ -306,7 +307,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
 		    RecordingUpdateStreamSubscribe streamSubscribe,
 			RecordingUpdateWebConfig webRecordingConfig,
 		    RecordingUpdateRtmpPublishConfig rtmpPublishConfig,
-			Consumer<CloudRecordingUpdateResponse> consumer) {
+			Consumer<CloudRecordingUpdateResponse> consumer) throws IOException {
 
 		HashMap<String, Object> hashMap = new HashMap<>();
 		// 1、用于更新订阅名单。仅适用于单流录制模式 individual和合流录制模式 mix
@@ -329,7 +330,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
 				.build();
 
         String reqUrl = AgoraApiAddress.UPDATE_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
-        super.asyncRequest(AgoraApiAddress.UPDATE_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingUpdateResponse.class, consumer);
+        super.asyncPost(AgoraApiAddress.UPDATE_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingUpdateResponse.class, consumer);
 	}
 
 	/**
@@ -351,7 +352,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      */
 	public void asyncUpdateLayout(String channelName, String uid, String resourceId, String sid, RecordingMode mode,
 			RecordingUpdateTranscodingConfig transcodingConfig,
-			Consumer<CloudRecordingUpdateLayoutResponse> consumer) {
+			Consumer<CloudRecordingUpdateLayoutResponse> consumer) throws IOException {
 
 		Map<String, Object> requestBody = new ImmutableMap.Builder<String, Object>()
 				.put("cname", channelName)
@@ -360,7 +361,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
 				.build();
 
         String reqUrl = AgoraApiAddress.UPDATE_CLOUD_RECORDING_LAYOUT.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
-        super.asyncRequest(AgoraApiAddress.UPDATE_CLOUD_RECORDING_LAYOUT, reqUrl, requestBody, CloudRecordingUpdateLayoutResponse.class, consumer);
+        super.asyncPost(AgoraApiAddress.UPDATE_CLOUD_RECORDING_LAYOUT, reqUrl, requestBody, CloudRecordingUpdateLayoutResponse.class, consumer);
 	}
 
 	/**
@@ -382,7 +383,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
 	 * @param consumer 响应处理回调函数
      * @return 停止云端录制操作结果
      */
-	public void asyncStopRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode, boolean asyncStop, Consumer<CloudRecordingStopResponse> consumer) {
+	public void asyncStopRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode, boolean asyncStop, Consumer<CloudRecordingStopResponse> consumer) throws IOException {
 
 		Map<String, Object> requestBody = new ImmutableMap.Builder<String, Object>()
 				.put("cname", channelName)
@@ -391,7 +392,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
 				.build();
 
 		String reqUrl = AgoraApiAddress.STOP_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
-        this.asyncRequest(AgoraApiAddress.STOP_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingStopResponse.class, consumer);
+        this.asyncPost(AgoraApiAddress.STOP_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingStopResponse.class, consumer);
 	}
 
 }

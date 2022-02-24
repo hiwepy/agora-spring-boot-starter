@@ -18,10 +18,9 @@ import okhttp3.OkHttpClient;
 public class AgoraAutoConfiguration {
 
 	@Bean
-	public AgoraTemplate agoraTemplate(AgoraProperties poolProperties,
-			   ObjectProvider<OkHttpClient> okhttp3ClientProvider,
-			   ObjectProvider<ObjectMapper> objectMapperProvider,
-				ObjectProvider<AgoraUserIdProvider> agoraUserIdProvider) {
+	public AgoraOkHttp3Template agoraOkHttp3Template(ObjectProvider<OkHttpClient> okhttp3ClientProvider,
+													 ObjectProvider<ObjectMapper> objectMapperProvider,
+													 AgoraProperties poolProperties) {
 
 		OkHttpClient okhttp3Client = okhttp3ClientProvider.getIfAvailable(() -> new OkHttpClient.Builder().build());
 
@@ -35,9 +34,16 @@ public class AgoraAutoConfiguration {
 			return objectMapperDef;
 		});
 
-		return new AgoraTemplate(poolProperties, objectMapper, okhttp3Client, agoraUserIdProvider.getIfAvailable(() -> {
+		return new AgoraOkHttp3Template(okhttp3Client, objectMapper, poolProperties);
+	}
+
+	@Bean
+	public AgoraTemplate agoraTemplate(ObjectProvider<AgoraUserIdProvider> agoraUserIdProvider,
+									   AgoraOkHttp3Template agoraOkHttp3Template,
+									   AgoraProperties poolProperties) {
+		return new AgoraTemplate(agoraUserIdProvider.getIfAvailable(() -> {
 			return new AgoraUserIdProvider() {};
-		}));
+		}), agoraOkHttp3Template, poolProperties );
 	}
 
 }

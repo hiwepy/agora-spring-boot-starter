@@ -15,6 +15,7 @@
  */
 package io.agora.spring.boot;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -66,7 +67,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 	 * c、云端录制不支持 String 用户 ID（User Account），请确保该字段引号内为整型 UID，且频道内所有用户均使用整型 UID。
 	 * @return 操作结果
 	 */
-	public AcquireResourceResponse acquireId(String userId, String uid) {
+	public AcquireResourceResponse acquireId(String userId, String uid) throws IOException {
 
 		HashMap<String, Object> hashMap = new HashMap<>();
 		hashMap.put("resourceExpiredHour", 24);
@@ -80,7 +81,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 				.build();
 
         String reqUrl = AgoraApiAddress.ACQUIRE_RESOURCE_ID.getUrl(getAgoraProperties().getAppId());
-        AcquireResourceResponse resp = super.request(AgoraApiAddress.ACQUIRE_RESOURCE_ID, reqUrl, requestBody, AcquireResourceResponse.class);
+        AcquireResourceResponse resp = super.post(AgoraApiAddress.ACQUIRE_RESOURCE_ID, reqUrl, requestBody, AcquireResourceResponse.class);
         resp.setCname(cnameString);
         return resp;
 	}
@@ -101,7 +102,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 	 * 2：延时转码。设置该场景后，录制服务会在录制后 24 小时内对录制文件进行转码生成 MP4 文件，并将 MP4 文件上传至你指定的第三方云存储（不支持七牛云）。该场景仅适用于单流录制模式。你需要同时在 start 方法中设置 appsCollection 参数
 	 * @return 操作结果
 	 */
-	public AcquireResourceResponse acquireId(String userId, String uid, String region, int expiredHour, int scene) {
+	public AcquireResourceResponse acquireId(String userId, String uid, String region, int expiredHour, int scene) throws IOException {
 
 		HashMap<String, Object> hashMap = new HashMap<>();
 		hashMap.put("region", region);
@@ -116,7 +117,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 				.build();
 
         String reqUrl = AgoraApiAddress.ACQUIRE_RESOURCE_ID.getUrl(getAgoraProperties().getAppId());
-        AcquireResourceResponse resp = super.request(AgoraApiAddress.ACQUIRE_RESOURCE_ID, reqUrl, requestBody, AcquireResourceResponse.class);
+        AcquireResourceResponse resp = super.post(AgoraApiAddress.ACQUIRE_RESOURCE_ID, reqUrl, requestBody, AcquireResourceResponse.class);
         resp.setCname(cnameString);
         return resp;
 	}
@@ -133,7 +134,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param storageConfig  第三方云存储的设置
      * @return 云端录制操作结果
      */
-	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId, RecordingStorageConfig storageConfig) {
+	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId, RecordingStorageConfig storageConfig) throws IOException {
 		return this.startRecording(channelName, uid, token, resourceId, RecordingMode.MIX, null, null, null, null, storageConfig, null);
 	}
 
@@ -154,7 +155,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId,
 													  RecordingConfig recordingConfig,
 		    RecordingFileConfig recordingFileConfig,
-			RecordingStorageConfig storageConfig) {
+			RecordingStorageConfig storageConfig) throws IOException {
 		return this.startRecording(channelName, uid, token, resourceId, RecordingMode.MIX, null, recordingConfig, recordingFileConfig, null, storageConfig, null);
 	}
 
@@ -179,7 +180,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId, RecordingMode mode,
 			RecordingConfig recordingConfig,
 		    RecordingFileConfig recordingFileConfig,
-			RecordingStorageConfig storageConfig) {
+			RecordingStorageConfig storageConfig) throws IOException {
 		return this.startRecording(channelName, uid, token, resourceId, mode, null, recordingConfig, recordingFileConfig, null, storageConfig, null);
 	}
 
@@ -207,7 +208,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 			RecordingAppsCollectionConfig appsCollection,
 			RecordingConfig recordingConfig,
 		    RecordingFileConfig recordingFileConfig,
-			RecordingStorageConfig storageConfig) {
+			RecordingStorageConfig storageConfig) throws IOException {
 		return this.startRecording(channelName, uid, token, resourceId, mode, appsCollection, recordingConfig, recordingFileConfig, null, storageConfig, null);
 	}
 
@@ -236,7 +237,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 			RecordingConfig recordingConfig,
 		    RecordingFileConfig recordingFileConfig,
 		    RecordingSnapshotConfig snapshotConfig,
-			RecordingStorageConfig storageConfig) {
+			RecordingStorageConfig storageConfig) throws IOException {
 		return this.startRecording(channelName, uid, token, resourceId, mode, appsCollection, recordingConfig, recordingFileConfig, snapshotConfig, storageConfig, null);
 	}
 
@@ -267,7 +268,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 		    RecordingFileConfig recordingFileConfig,
 		    RecordingSnapshotConfig snapshotConfig,
 			RecordingStorageConfig storageConfig,
-			RecordingExtensionServiceConfig extensionServiceConfig) {
+			RecordingExtensionServiceConfig extensionServiceConfig) throws IOException {
 
 		HashMap<String, Object> hashMap = new HashMap<>();
 		if(StringUtils.hasText(token)){
@@ -307,7 +308,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 				.build();
 
         String reqUrl = AgoraApiAddress.START_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, mode.getName());
-        CloudRecordingStartResponse resp = super.request(AgoraApiAddress.START_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingStartResponse.class);
+        CloudRecordingStartResponse resp = super.post(AgoraApiAddress.START_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingStartResponse.class);
         return resp;
 	}
 
@@ -323,7 +324,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param streamSubscribe  用于更新订阅名单。仅适用于单流录制模式 individual和合流录制模式 mix
      * @return 更新云端录制制操作结果
      */
-	public CloudRecordingUpdateResponse updateMixRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode, RecordingUpdateStreamSubscribe streamSubscribe) {
+	public CloudRecordingUpdateResponse updateMixRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode, RecordingUpdateStreamSubscribe streamSubscribe) throws IOException {
 		return this.updateRecording(channelName, uid, resourceId, sid, RecordingMode.MIX, streamSubscribe, null, null);
 	}
 
@@ -339,7 +340,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param streamSubscribe  用于更新订阅名单。仅适用于单流录制模式 individual和合流录制模式 mix
      * @return 更新云端录制操作结果
      */
-	public CloudRecordingUpdateResponse updateIndividualRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode, RecordingUpdateStreamSubscribe streamSubscribe) {
+	public CloudRecordingUpdateResponse updateIndividualRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode, RecordingUpdateStreamSubscribe streamSubscribe) throws IOException {
         return this.updateRecording(channelName, uid, resourceId, sid, RecordingMode.INDIVIDUAL, streamSubscribe, null, null);
 	}
 
@@ -364,7 +365,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 	public CloudRecordingUpdateResponse updateRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode,
 		    RecordingUpdateStreamSubscribe streamSubscribe,
 			RecordingUpdateWebConfig webRecordingConfig,
-		    RecordingUpdateRtmpPublishConfig rtmpPublishConfig) {
+		    RecordingUpdateRtmpPublishConfig rtmpPublishConfig) throws IOException {
 
 		HashMap<String, Object> hashMap = new HashMap<>();
 		// 1、用于更新订阅名单。仅适用于单流录制模式 individual和合流录制模式 mix
@@ -387,7 +388,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 				.build();
 
         String reqUrl = AgoraApiAddress.UPDATE_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
-        CloudRecordingUpdateResponse resp = super.request(AgoraApiAddress.UPDATE_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingUpdateResponse.class);
+        CloudRecordingUpdateResponse resp = super.post(AgoraApiAddress.UPDATE_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingUpdateResponse.class);
         return resp;
 	}
 
@@ -408,7 +409,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @return 更新合流布局操作结果
      */
 	public CloudRecordingUpdateLayoutResponse updateLayout(String channelName, String uid, String resourceId, String sid, RecordingMode mode,
-			RecordingUpdateTranscodingConfig transcodingConfig) {
+			RecordingUpdateTranscodingConfig transcodingConfig) throws IOException {
 
 		Map<String, Object> requestBody = new ImmutableMap.Builder<String, Object>()
 				.put("cname", channelName)
@@ -417,7 +418,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 				.build();
 
         String reqUrl = AgoraApiAddress.UPDATE_CLOUD_RECORDING_LAYOUT.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
-        CloudRecordingUpdateLayoutResponse resp = super.request(AgoraApiAddress.UPDATE_CLOUD_RECORDING_LAYOUT, reqUrl, requestBody, CloudRecordingUpdateLayoutResponse.class);
+        CloudRecordingUpdateLayoutResponse resp = super.post(AgoraApiAddress.UPDATE_CLOUD_RECORDING_LAYOUT, reqUrl, requestBody, CloudRecordingUpdateLayoutResponse.class);
 		if(Objects.isNull(resp.getData())) {
 			resp.setData(new CloudRecordingUpdateLayoutResponse.DataBody());
 		}
@@ -439,9 +440,9 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * c、页面录制模式 web：将指定网页的页面内容和音频混合录制为一个音视频文件。
      * @return 云端录制状态结果
      */
-	public CloudRecordingQueryResponse queryRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode) {
+	public CloudRecordingQueryResponse queryRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode) throws IOException {
         String reqUrl = AgoraApiAddress.QUERY_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
-        CloudRecordingQueryResponse resp = super.request(AgoraApiAddress.QUERY_CLOUD_RECORDING, reqUrl, Maps.newHashMap(), CloudRecordingQueryResponse.class);
+        CloudRecordingQueryResponse resp = super.post(AgoraApiAddress.QUERY_CLOUD_RECORDING, reqUrl, Maps.newHashMap(), CloudRecordingQueryResponse.class);
         return resp;
 	}
 
@@ -463,7 +464,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * false：同步。调用 stop 后，需等待所有录制文件上传至第三方云存储方可收到响应。（默认）
      * @return 停止云端录制操作结果
      */
-	public CloudRecordingStopResponse stopRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode, boolean asyncStop) {
+	public CloudRecordingStopResponse stopRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode, boolean asyncStop) throws IOException {
 
 		Map<String, Object> requestBody = new ImmutableMap.Builder<String, Object>()
 				.put("cname", channelName)
@@ -472,7 +473,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 				.build();
 
 		String reqUrl = AgoraApiAddress.STOP_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
-        CloudRecordingStopResponse resp = super.request(AgoraApiAddress.STOP_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingStopResponse.class);
+        CloudRecordingStopResponse resp = super.post(AgoraApiAddress.STOP_CLOUD_RECORDING, reqUrl, requestBody, CloudRecordingStopResponse.class);
         return resp;
 	}
 
