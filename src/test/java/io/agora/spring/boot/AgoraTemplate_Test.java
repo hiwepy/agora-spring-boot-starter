@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
+import io.agora.spring.boot.resp.ChannelUserStateResponse;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,7 +36,7 @@ public class AgoraTemplate_Test {
 
 	}
 
-	@Test
+	//@Test
 	public void testAcquireId() throws Exception {
 
 		AcquireResourceResponse response =  template.opsForCloudRecording().acquireId("10000", "121212");
@@ -43,7 +44,7 @@ public class AgoraTemplate_Test {
 
 	}
 
-	@Test
+	//@Test
     public void testStartRecording() throws Exception {
 
 		String token = template.generateToken("10000", "121212");
@@ -71,5 +72,13 @@ public class AgoraTemplate_Test {
     	template.opsForCloudRecording().startRecording(channelName, uid, token, resourceId, recordingConfig, recordingFileConfig, storageConfig);
 
     }
+
+	@Test
+	public void testGetChannelUserState() throws Exception {
+
+		ChannelUserStateResponse response =  template.opsForChannel().getChannelUserState("10", "912740950978068480");
+		System.out.println(objectMapper.writeValueAsString(response));
+
+	}
 
 }

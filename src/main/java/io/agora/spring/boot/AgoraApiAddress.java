@@ -102,7 +102,7 @@ public enum AgoraApiAddress {
 	 * 查询用户状态
 	 * URL:  https://api.agora.io/v1/channel/user/property/{appid}/{uid}/{channelName}
 	 */
-	CHANNEL_USER_STATE("查询用户状态", RequestMethod.GET,"https://api.agora.io/v1/channel/user/property/{0}/{1}/{2}"),
+	CHANNEL_USER_STATE("查询用户状态", RequestMethod.GET,"https://api.agora.io/dev/v1/channel/user/property/{0}/{1}/{2}"),
 	/**
 	 * 获取用户列表
 	 * URL:  https://api.agora.io/v1/channel/user/{appid}/{channelName}
@@ -112,7 +112,7 @@ public enum AgoraApiAddress {
 	 * 分页查询项目的频道列表
 	 * URL:  https://api.agora.io/v1/channel/{appid}
 	 */
-	CHANNEL_LIST("分页查询项目的频道列表", RequestMethod.GET,"https://api.agora.io/v1/channel/{0}"),
+	CHANNEL_LIST("分页查询项目的频道列表", RequestMethod.GET,"https://api.agora.io/dev/v1/channel/{0}"),
 
 	 ;
 
