@@ -17,9 +17,10 @@ public class RecordingResult {
     private int fps = 0;
     private int kbps = 0;
     private int count = 0;
-    private long keepMediaTime = 0;
-    private long lastKeepAudioTime = 0;
-    private long lastKeepVideoTime = 0;
+    private long firstReceiveAudioTime = 0;
+    private long firstReceiveAudioElapsed = 0;
+    private long firstReceiveVideoTime = 0;
+    private long firstReceiveVideoElapsed = 0;
     private String storageDir;
 
 }

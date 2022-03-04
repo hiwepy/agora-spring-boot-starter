@@ -106,7 +106,10 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 	private long keepMediaTime = 0;
 	private long lastKeepAudioTime = 0;
 	private long lastKeepVideoTime = 0;
-
+	private long firstReceiveAudioTime = 0;
+	private long firstReceiveAudioElapsed = 0;
+	private long firstReceiveVideoTime = 0;
+	private long firstReceiveVideoElapsed = 0;
 	/**
 	 * 当前对象录制的频道名称
 	 */
@@ -469,9 +472,9 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 	 */
 	@Override
 	public void onAudioVolumeIndication(AudioVolumeInfo[] infos) {
-		if (infos.length == 0)
+		if (infos.length == 0) {
 			return;
-
+		}
 		for (int i = 0; i < infos.length; i++) {
 			log.info("User:" + Long.toString(infos[i].uid) + ", audio volume:" + infos[i].volume);
 		}
@@ -489,6 +492,8 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 	public void onFirstRemoteVideoDecoded(long uid, int width, int height, int elapsed) {
 		log.info("onFirstRemoteVideoDecoded User:" + Long.toString(uid) + ", width:" + width + ", height:"
 				+ height + ", elapsed:" + elapsed);
+		this.firstReceiveVideoTime = this.firstReceiveVideoTime == 0 ? System.currentTimeMillis() : this.firstReceiveVideoTime;
+		this.firstReceiveVideoElapsed = this.firstReceiveVideoTime == 0 ? elapsed : this.firstReceiveVideoElapsed;
 	}
 
 	/**
@@ -499,6 +504,8 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 	@Override
 	public void onFirstRemoteAudioFrame(long uid, int elapsed) {
 		log.info("onFirstRemoteAudioFrame User:" + Long.toString(uid) + ", elapsed:" + elapsed);
+		this.firstReceiveAudioTime = this.firstReceiveAudioTime == 0 ? System.currentTimeMillis() : this.firstReceiveAudioTime;
+		this.firstReceiveAudioElapsed = this.firstReceiveAudioTime == 0 ? elapsed : this.firstReceiveAudioElapsed;
 	}
 
 	/**
@@ -509,7 +516,7 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 	 */
 	@Override
 	public void audioFrameReceived(long uid, AudioFrame frame) {
-		// log.info("java demo audioFrameReceived,uid:"+uid+",type:"+type);
+		log.info("java demo audioFrameReceived,uid:"+uid+",type:"+ frame.type);
 		byte[] buf = null;
 		long size = 0;
 		checkUser(uid, true, frame.type.ordinal());
@@ -1133,9 +1140,10 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 				.kbps(this.kbps)
 				.height(this.height)
 				.width(this.width)
-				.keepMediaTime(this.keepMediaTime)
-				.lastKeepAudioTime(this.lastKeepAudioTime)
-				.lastKeepVideoTime(this.lastKeepVideoTime)
+				.firstReceiveVideoTime(this.firstReceiveVideoTime)
+				.firstReceiveVideoElapsed(this.firstReceiveVideoElapsed)
+				.firstReceiveAudioTime(this.firstReceiveAudioTime)
+				.firstReceiveAudioElapsed(this.firstReceiveAudioElapsed)
 				.storageDir(this.storageDir)
 				.build();
 	}
