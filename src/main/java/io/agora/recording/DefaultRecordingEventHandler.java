@@ -1133,6 +1133,9 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 				.kbps(this.kbps)
 				.height(this.height)
 				.width(this.width)
+				.keepMediaTime(this.keepMediaTime)
+				.lastKeepAudioTime(this.lastKeepAudioTime)
+				.lastKeepVideoTime(this.lastKeepVideoTime)
 				.storageDir(this.storageDir)
 				.build();
 	}
