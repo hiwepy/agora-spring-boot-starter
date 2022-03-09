@@ -114,10 +114,14 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 	 * 当前对象录制的频道名称
 	 */
 	private String channelId;
+	private long anchorUid;
+	private long recordingUid;
 
-	public DefaultRecordingEventHandler(String channelId, AgoraProperties agoraProperties,
+	public DefaultRecordingEventHandler(String channelId, long anchorUid, long recordingUid, AgoraProperties agoraProperties,
 			AgoraRecordingProperties recordingProperties, RecordingSDK recording) {
 		this.channelId = channelId;
+		this.anchorUid = anchorUid;
+		this.recordingUid = recordingUid;
 		this.agoraProperties = agoraProperties;
 		this.recordingProperties = recordingProperties;
 		this.recordingSDKInstance = recording;
@@ -127,6 +131,14 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 	@Override
 	public String getChannel() {
 		return channelId;
+	}
+
+	public long getAnchorUid() {
+		return anchorUid;
+	}
+
+	public long getRecordingUid() {
+		return recordingUid;
 	}
 
 	public Vector<Long> getMPeers(){
