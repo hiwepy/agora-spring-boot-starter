@@ -129,6 +129,10 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 		return channelId;
 	}
 
+	public Vector<Long> getMPeers(){
+		return this.m_peers;
+	}
+
 	public void unRegister() {
 		recordingSDKInstance.unRegisterOberserver(this);
 	}
@@ -350,6 +354,7 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 	public void onRemoteVideoStreamStateChanged(long uid, REMOTE_STREAM_STATE state,
 			REMOTE_STREAM_STATE_CHANGED_REASON reason) {
 		log.info("OnRemoteVideoStreamState changed, state " + state + ", reason :" + reason);
+
 	}
 
 	/**
