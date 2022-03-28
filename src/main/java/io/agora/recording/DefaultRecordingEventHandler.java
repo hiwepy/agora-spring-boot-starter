@@ -116,6 +116,7 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 	private String channelId;
 	private long anchorUid;
 	private long recordingUid;
+	private Long recordingId;
 
 	public DefaultRecordingEventHandler(String channelId, long anchorUid, long recordingUid, AgoraProperties agoraProperties,
 			AgoraRecordingProperties recordingProperties, RecordingSDK recording) {
@@ -139,6 +140,14 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 
 	public long getRecordingUid() {
 		return recordingUid;
+	}
+
+	public void setRecordingId(Long recordingId) {
+		this.recordingId = recordingId;
+	}
+
+	public Long getRecordingId() {
+		return recordingId;
 	}
 
 	public Vector<Long> getMPeers(){
