@@ -28,8 +28,8 @@ public interface RecordingEventHandler {
    * The SDK cannot fix the issue or resume running, which requires intervention
    * from the application and informs the user on the issue.
    *
-   * @param error {@link io.agora.recording.common.Common#ERROR_CODE_TYPE Error codes}.
-   * @param stat_code {@link io.agora.recording.common.Common#STAT_CODE_TYPE State codes}.
+   * @param error {@link io.agora.recording.common.Common.ERROR_CODE_TYPE Error codes}.
+   * @param stat_code {@link io.agora.recording.common.Common.STAT_CODE_TYPE State codes}.
    */
   void onError(int error, int stat_code);
 
@@ -38,14 +38,14 @@ public interface RecordingEventHandler {
    * In most cases, the application can ignore the warnings reported by the SDK because
    * the SDK can usually fix the issue and resume running.
    *
-   * @param warn {@link io.agora.recording.common.Common#WARN_CODE_TYPE Warning codes}.
+   * @param warn {@link io.agora.recording.common.Common.WARN_CODE_TYPE Warning codes}.
    */
   void onWarning(int warn);
 
   /** This callback is triggered when the recording server successfully joins the specified
    * channel with an assigned Channel ID and user ID.
    *
-   * @param channelId The Channel ID assigned based on the channel name specified in {@link RecordingSDK#createChannel() createChannel}.
+   * @param channelId The Channel ID assigned based on the channel name specified in {@link RecordingSDK#createChannel(String, String, String, int, RecordingConfig, int)}.
    * @param uid	User ID of the user.
    */
   void onJoinChannelSuccess(String channelId, long uid);
@@ -73,16 +73,16 @@ public interface RecordingEventHandler {
    * A poor network connection may lead to false detections, so use signaling for reliable offline detection.
    *
    * @param uid The `uid` of the user.
-   * @param reason The rerasons why the user leaves the channel or goes offline. See {@link io.agora.recording.common.Common#USER_OFFLINE_REASON_TYPE USER_OFFLINE_REASON_TYPE}.
+   * @param reason The rerasons why the user leaves the channel or goes offline. See {@link io.agora.recording.common.Common.USER_OFFLINE_REASON_TYPE USER_OFFLINE_REASON_TYPE}.
    */
   void onUserOffline(long uid, int reason);
 
   /** This callback is triggered when a remote user/host joins the channel and reports the UID of the new user.
    *
-   * <ul>
-   *   <li>Communication profile: This callback notifies the recording server that a remote user joins the channel and reports the user's UID and information.</li>
-   *   <li>Live broadcast profile: This callback notifies the recording server that a host joins the channel and reports the user's UID and information.</li>
-   * </ul>
+   * &lt;ul&gt;
+   *   &lt;li&gt;Communication profile: This callback notifies the recording server that a remote user joins the channel and reports the user's UID and information.&lt;/li&gt;
+   *   &lt;li&gt;Live broadcast profile: This callback notifies the recording server that a host joins the channel and reports the user's UID and information.&lt;/li&gt;
+   * &lt;/ul&gt;
    *
    * If there are users/hosts in the channel before the recording server joins the channel, the SDK also reports on the UIDs and information of the existing users/hosts. This callback is triggered as many times as the number of the users/hosts in the channel.
    *
@@ -93,13 +93,13 @@ public interface RecordingEventHandler {
 
   /** This callback reports the user who speaks loudest.
    *
-   * If you set the {@link io::agora::recording::common::RecordingConfig#audioIndicationInterval audioIndicationInterval} parameter in {@link io::agora::recording::common::RecordingConfig RecordingConfig} to be greater than 0, this callback returns the `uid` of the user with the highest voice volume over a certain time period.
+   * If you set the {@link io.agora.recording.common.RecordingConfig#audioIndicationInterval audioIndicationInterval} parameter in {@link io.agora.recording.common.RecordingConfig RecordingConfig} to be greater than 0, this callback returns the `uid` of the user with the highest voice volume over a certain time period.
    *
    * @param uid The `uid` of the user with the highest voice volume over a certain time period.
    */
   void onActiveSpeaker(long uid);
 
-  /** Occurs when the raw audio data is received. If you set {@link io::agora::recording::common::RecordingConfig::decodeAudio decodeAudio} in {@link io::agora::recording::common::RecordingConfig RecordingConfig} as `1`, `2`, or `3`, you receive audio frames from this callback.
+  /** Occurs when the raw audio data is received. If you set {@link io.agora.recording.common.RecordingConfig.decodeAudio decodeAudio} in {@link io.agora.recording.common.RecordingConfig RecordingConfig} as `1`, `2`, or `3`, you receive audio frames from this callback.
    *
    * @param uid The `uid` of the user.
    * @param frame Received raw audio data in PCM or AAC format. See {@link AudioFrame AudioFrame}.
@@ -108,9 +108,9 @@ public interface RecordingEventHandler {
 
   /** Occurs when the video frame is received.
    *
-   * If you set {@link io::agora::recording::common::RecordingConfig::decodeVideo decodeVideo} in {@link io::agora::recording::common::RecordingConfig RecordingConfig} as `1`, `2`, or `3`, you receive raw video data from this callback.
+   * If you set {@link io.agora.recording.common.RecordingConfig.decodeVideo decodeVideo} in {@link io.agora.recording.common.RecordingConfig RecordingConfig} as `1`, `2`, or `3`, you receive raw video data from this callback.
    *
-   * If you set {@link io::agora::recording::common::RecordingConfig::decodeVideo decodeVideo} in {@link io::agora::recording::common::RecordingConfig RecordingConfig} as `4` or `5`, you receive video frames in JPG file format from this callback.
+   * If you set {@link io.agora.recording.common.RecordingConfig.decodeVideo decodeVideo} in {@link io.agora.recording.common.RecordingConfig RecordingConfig} as `4` or `5`, you receive video frames in JPG file format from this callback.
    *
    * This callback is triggered for every received video frame and can be used
    * to detect sexually explicit content, if necessary.
@@ -120,13 +120,13 @@ public interface RecordingEventHandler {
    * @param uid The `uid` of the remote user as specified in the createChannel() method.
    * If no `uid` is previously assigned, the Agora server automatically assigns a uid.
    * @param type The format of the received video frame:
-   * <ul>
-   *  <li>0: YUV</li>
-   *  <li>1: H.264</li>
-   *  <li>2: JPG</li>
-   *  <li>3: H.265</li>
-   *  <li>4: JPG file</li>
-   * </ul>
+   * &lt;ul&gt;
+   *  &lt;li&gt;0: YUV&lt;/li&gt;
+   *  &lt;li&gt;1: H.264&lt;/li&gt;
+   *  &lt;li&gt;2: JPG&lt;/li&gt;
+   *  &lt;li&gt;3: H.265&lt;/li&gt;
+   *  &lt;li&gt;4: JPG file&lt;/li&gt;
+   * &lt;/ul&gt;
    * @param frame Received video frame. See {@link VideoFrame VideoFrame}.
    * @param rotation Rotational angle: 0, 90, 180, or 270.
    */
@@ -140,9 +140,9 @@ public interface RecordingEventHandler {
 
   /** This callback reports the list of users who are speaking and their volumes.
    *
-   * This callback works only when {@link RecordingConfig#audioIndicationInterval audioIndicationInterval} > 0.
+   * This callback works only when {@link RecordingConfig#audioIndicationInterval audioIndicationInterval} &gt; 0.
    *
-   * @param infos    An array containing the user ID and volume information for each speaker. For more information, see {@link io.agora.recording.common.Common#AudioVolumeInfo AudioVolumeInfo}.
+   * @param infos    An array containing the user ID and volume information for each speaker. For more information, see {@link io.agora.recording.common.Common.AudioVolumeInfo AudioVolumeInfo}.
    */
   void onAudioVolumeIndication(AudioVolumeInfo[] infos);
 
@@ -151,14 +151,14 @@ public interface RecordingEventHandler {
    * @param uid     The user ID.
    * @param width   The width of the video frame.
    * @param height  The height of the video frame.
-   * @param elapsed Time elapsed (ms) from the local user calling {@link RecordingSDK#createChannel() createChannel} until this callback is triggered.
+   * @param elapsed Time elapsed (ms) from the local user calling {@link RecordingSDK#createChannel(String, String, String, int, RecordingConfig, int) createChannel} until this callback is triggered.
    */
   void onFirstRemoteVideoDecoded(long uid, int width, int height, int elapsed);
 
   /** This callback is triggered when the first remote audio frame is received.
    *
    * @param uid      The user ID.
-   * @param elapsed  Time elapsed (ms) from the local user calling {@link RecordingSDK#createChannel() createChannel} until this callback is triggered.
+   * @param elapsed  Time elapsed (ms) from the local user calling {@link RecordingSDK#createChannel(String, String, String, int, RecordingConfig, int) createChannel} until this callback is triggered.
    */
   void onFirstRemoteAudioFrame(long uid, int elapsed);
 
@@ -171,26 +171,26 @@ public interface RecordingEventHandler {
 
   /** This callback is triggered when the SDK cannot reconnect to Agora's edge server 10 seconds after its connection to the server is interrupted.
    *
-   * The SDK triggers this callback when it cannot connect to the server 10 seconds after calling {@link RecordingSDK#createChannel() createChannel} regardless of whether it is in the channel or not.
+   * The SDK triggers this callback when it cannot connect to the server 10 seconds after calling {@link RecordingSDK#createChannel(String, String, String, int, RecordingConfig, int) createChannel} regardless of whether it is in the channel or not.
    *
    * This callback is different from {@link RecordingEventHandler#onConnectionInterrupted onConnectionInterrupted}:
-   * <ul>
-   *  <li> The SDK triggers the {@link RecordingEventHandler#onConnectionInterrupted onConnectionInterrupted} callback when the SDK loses connection with the server for more than 4 seconds after it joins the channel.</li>
-   *  <li> The SDK triggers the {@link RecordingEventHandler#onConnectionLost onConnectionLost} callback when the SDK loses connection with the server for more than 10 seconds, regardless of whether it joins the channel or not.</li>
-   * </ul>
+   * &lt;ul&gt;
+   *  &lt;li&gt; The SDK triggers the {@link RecordingEventHandler#onConnectionInterrupted onConnectionInterrupted} callback when the SDK loses connection with the server for more than 4 seconds after it joins the channel.&lt;/li&gt;
+   *  &lt;li&gt; The SDK triggers the {@link RecordingEventHandler#onConnectionLost onConnectionLost} callback when the SDK loses connection with the server for more than 10 seconds, regardless of whether it joins the channel or not.&lt;/li&gt;
+   * &lt;/ul&gt;
    * For both callbacks, the SDK tries to reconnect to the server until the application calls {@link RecordingSDK#leaveChannel() leaveChannel}.
    */
   void onConnectionLost();
 
   /** This callback is triggered when the connection between the SDK and the server is interrupted.
    *
-   * The SDK triggers this callback when it cannot connect to the server 10 seconds after calling {@link RecordingSDK#createChannel() createChannel} regardless of whether it is in the channel or not.
+   * The SDK triggers this callback when it cannot connect to the server 10 seconds after calling {@link RecordingSDK#createChannel(String, String, String, int, RecordingConfig, int) createChannel} regardless of whether it is in the channel or not.
    *
    * This callback is different from {@link RecordingEventHandler#onConnectionLost onConnectionLost}:
-   * <ul>
-   *  <li> The SDK triggers the {@link RecordingEventHandler#onConnectionInterrupted onConnectionInterrupted} callback when the SDK loses connection with the server for more than 4 seconds after it joins the channel.</li>
-   *  <li> The SDK triggers the {@link RecordingEventHandler#onConnectionLost onConnectionLost} callback when the SDK loses connection with the server for more than 10 seconds, regardless of whether it joins the channel or not.</li>
-   * </ul>
+   * &lt;ul&gt;
+   *  &lt;li&gt; The SDK triggers the {@link RecordingEventHandler#onConnectionInterrupted onConnectionInterrupted} callback when the SDK loses connection with the server for more than 4 seconds after it joins the channel.&lt;/li&gt;
+   *  &lt;li&gt; The SDK triggers the {@link RecordingEventHandler#onConnectionLost onConnectionLost} callback when the SDK loses connection with the server for more than 10 seconds, regardless of whether it joins the channel or not.&lt;/li&gt;
+   * &lt;/ul&gt;
    * For both callbacks, the SDK tries to reconnect to the server until the application calls {@link RecordingSDK#leaveChannel() leaveChannel}.
    */
   void onConnectionInterrupted();
