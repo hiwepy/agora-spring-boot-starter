@@ -1,8 +1,7 @@
 package io.agora.spring.boot;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * ons 多线程发送配置参数 corePoolSize 线程池核心池的大小 maximumPoolSize 线程池中允许的最大线程数量
@@ -13,7 +12,7 @@ import lombok.Data;
 public class AgoraProperties {
 
 	/**
-	 * The prefix of the property of {@link AgoraProperties}.
+	 * The prefix of the property of { AgoraProperties}.
 	 */
 	public static final String PREFIX = "agora";
 

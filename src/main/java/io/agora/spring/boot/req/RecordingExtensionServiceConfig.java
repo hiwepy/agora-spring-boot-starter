@@ -1,11 +1,10 @@
 package io.agora.spring.boot.req;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * 扩展服务的设置，目前包括阿里云视频点播服务和页面录制的设置

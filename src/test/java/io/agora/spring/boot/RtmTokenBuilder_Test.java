@@ -1,12 +1,11 @@
 package io.agora.spring.boot;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import io.agora.media.AccessToken;
 import io.agora.rtm.RtmTokenBuilder;
 import io.agora.rtm.RtmTokenBuilder.Role;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class RtmTokenBuilder_Test {
     private String appId = "";

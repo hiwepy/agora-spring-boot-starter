@@ -1,21 +1,19 @@
 package io.agora.spring.boot;
 
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-
-import io.agora.spring.boot.resp.ChannelUserStateResponse;
-import org.junit.Before;
-import org.junit.Test;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.agora.spring.boot.req.RecordingConfig;
 import io.agora.spring.boot.req.RecordingFileConfig;
 import io.agora.spring.boot.req.RecordingStorageConfig;
 import io.agora.spring.boot.resp.AcquireResourceResponse;
+import io.agora.spring.boot.resp.ChannelUserStateResponse;
 import okhttp3.OkHttpClient;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
 
 public class AgoraTemplate_Test {
 

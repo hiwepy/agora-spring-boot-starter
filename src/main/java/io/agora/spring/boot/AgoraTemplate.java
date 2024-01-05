@@ -1,24 +1,8 @@
 package io.agora.spring.boot;
 
-import java.io.IOException;
-import java.util.Base64;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-
-import com.alibaba.fastjson.JSONObject;
-import io.agora.spring.boot.resp.AgoraResponse;
-import okhttp3.*;
-import org.springframework.beans.BeanUtils;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.agora.media.RtcTokenBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
+import okhttp3.MediaType;
 
 /**
  * https://docs.agora.io/cn/Interactive%20Broadcast/rtc_channel_event?platform=RESTful

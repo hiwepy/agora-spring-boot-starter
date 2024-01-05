@@ -1,10 +1,9 @@
 package io.agora.spring.boot;
 
-import static org.junit.Assert.assertEquals;
-
+import io.agora.media.DynamicKey5;
 import org.junit.Test;
 
-import io.agora.media.DynamicKey5;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Li on 10/1/2016.

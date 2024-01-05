@@ -15,14 +15,13 @@
  */
 package io.agora.spring.boot;
 
+import io.agora.spring.boot.resp.AgoraResponse;
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
-
-import io.agora.spring.boot.resp.AgoraResponse;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Tim 接口集成

@@ -15,30 +15,19 @@
  */
 package io.agora.spring.boot;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Consumer;
-
 import com.google.common.collect.ImmutableMap;
-
-import io.agora.spring.boot.req.RecordingAppsCollectionConfig;
-import io.agora.spring.boot.req.RecordingConfig;
-import io.agora.spring.boot.req.RecordingExtensionServiceConfig;
-import io.agora.spring.boot.req.RecordingFileConfig;
-import io.agora.spring.boot.req.RecordingMode;
-import io.agora.spring.boot.req.RecordingSnapshotConfig;
-import io.agora.spring.boot.req.RecordingStorageConfig;
-import io.agora.spring.boot.req.RecordingUpdateRtmpPublishConfig;
-import io.agora.spring.boot.req.RecordingUpdateStreamSubscribe;
-import io.agora.spring.boot.req.RecordingUpdateTranscodingConfig;
-import io.agora.spring.boot.req.RecordingUpdateWebConfig;
+import io.agora.spring.boot.req.*;
 import io.agora.spring.boot.resp.CloudRecordingStartResponse;
 import io.agora.spring.boot.resp.CloudRecordingStopResponse;
 import io.agora.spring.boot.resp.CloudRecordingUpdateLayoutResponse;
 import io.agora.spring.boot.resp.CloudRecordingUpdateResponse;
 import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOperations {
 

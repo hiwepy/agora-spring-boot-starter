@@ -1,10 +1,9 @@
 package io.agora.spring.boot;
 
-import static org.junit.Assert.assertEquals;
-
+import io.agora.media.AccessToken;
 import org.junit.Test;
 
-import io.agora.media.AccessToken;
+import static org.junit.Assert.assertEquals;
 
 public class AccessToken_Test {
     private String appId = "";

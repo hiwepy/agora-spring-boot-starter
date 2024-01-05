@@ -1,41 +1,18 @@
 package io.agora.recording;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.Vector;
-
-import io.agora.recording.RecordingEventHandler;
-import io.agora.recording.RecordingSDK;
 import io.agora.recording.common.Common;
-import io.agora.recording.common.Common.AUDIO_FORMAT_TYPE;
-import io.agora.recording.common.Common.AUDIO_FRAME_TYPE;
-import io.agora.recording.common.Common.AudioFrame;
-import io.agora.recording.common.Common.AudioVolumeInfo;
-import io.agora.recording.common.Common.CHANNEL_PROFILE_TYPE;
-import io.agora.recording.common.Common.CONNECTION_CHANGED_REASON_TYPE;
-import io.agora.recording.common.Common.CONNECTION_STATE_TYPE;
-import io.agora.recording.common.Common.REMOTE_STREAM_STATE;
-import io.agora.recording.common.Common.REMOTE_STREAM_STATE_CHANGED_REASON;
-import io.agora.recording.common.Common.RecordingStats;
-import io.agora.recording.common.Common.RemoteAudioStats;
-import io.agora.recording.common.Common.RemoteVideoStats;
-import io.agora.recording.common.Common.VIDEO_FORMAT_TYPE;
-import io.agora.recording.common.Common.VideoFrame;
-import io.agora.recording.common.Common.VideoMixingLayout;
+import io.agora.recording.common.Common.*;
 import io.agora.recording.common.RecordingConfig;
 import io.agora.recording.common.RecordingResult;
 import io.agora.spring.boot.AgoraProperties;
 import io.agora.spring.boot.AgoraRecordingProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 class RecordingCleanTimer extends TimerTask {
 	DefaultRecordingEventHandler rs;
@@ -67,8 +44,8 @@ class RecordFile {
 /**
  * Agora应用程序发送回调通知
  *
- * @link {https://docs.agora.io/cn/Recording/API%20Reference/recording_java/index.html}
- * @link {https://docs.agora.io/cn/Recording/API%20Reference/recording_java/interfaceio_1_1agora_1_1recording_1_1_recording_event_handler.html}
+ *  {https://docs.agora.io/cn/Recording/API%20Reference/recording_java/index.html}
+ *  {https://docs.agora.io/cn/Recording/API%20Reference/recording_java/interfaceio_1_1agora_1_1recording_1_1_recording_event_handler.html}
  */
 @Slf4j
 public class DefaultRecordingEventHandler implements RecordingEventHandler {

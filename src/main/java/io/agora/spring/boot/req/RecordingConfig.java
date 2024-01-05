@@ -1,11 +1,10 @@
 package io.agora.spring.boot.req;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * 录制设置：用于设置媒体流订阅的 JSON Object。云端录制会根据此设置订阅频道内的媒体流，并生成录制文件或截图

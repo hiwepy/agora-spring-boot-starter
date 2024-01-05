@@ -1,7 +1,5 @@
 package io.agora.recording.common;
 
-import io.agora.recording.RecordingSDK;
-
 import java.nio.ByteBuffer;
 
 public class Common{
@@ -99,7 +97,7 @@ public class Common{
     LEAVE_CODE_NO_USERS(1<<2),
     /* 8 (binary 1000): Ignore it. */
     LEAVE_CODE_TIMER_CATCH(1<<3),
-    /* 16 (binary 10000): The recording server calls the {@link io.agora.recording.RecordingSDK#leaveChannel() leaveChannel} method to leave the channel. */
+    /* 16 (binary 10000): The recording server calls the { io.agora.recording.RecordingSDK#leaveChannel() leaveChannel} method to leave the channel. */
     LEAVE_CODE_CLIENT_LEAVE(1<<4);
 
     private final int value;
@@ -261,38 +259,38 @@ public class Common{
   public enum CONNECTION_STATE_TYPE {
     /* 1: The SDK is disconnected from Agora's edge server.
      * <ul>
-     *  <li>This is the initial state before calling the {@link io.agora.recording.RecordingSDK#createChannel createChannel} method.</li>
-     *  <li>The SDK also enters this state when the app calls the {@link io.agora.recording.RecordingSDK#leaveChannel() leaveChannel} method.</li>
+     *  <li>This is the initial state before calling the { io.agora.recording.RecordingSDK#createChannel createChannel} method.</li>
+     *  <li>The SDK also enters this state when the app calls the { io.agora.recording.RecordingSDK#leaveChannel() leaveChannel} method.</li>
      * </ul>
      */
     CONNECTION_STATE_DISCONNECTED(1),
     /* 2: The SDK is connecting to Agora's edge server.
      * <ul>
-     *  <li>When the app calls the {@link io.agora.recording.RecordingSDK#createChannel createChannel} method, the SDK starts to establish a connection to the specified channel, triggers the {@link io.agora.recording.RecordingEventHandler#onConnectionStateChanged onConnectionStateChanged} callback, and switches to the {@link CONNECTION_STATE_TYPE#CONNECTION_STATE_CONNECTING CONNECTION_STATE_CONNECTING} state.
-     *  <li>When a user successfully joins a channel, the SDK triggers the {@link io.agora.recording.RecordingEventHandler#onConnectionStateChanged onConnectionStateChanged} callback and switches to the {@link CONNECTION_STATE_TYPE#CONNECTION_STATE_CONNECTED CONNECTION_STATE_CONNECTED} state.
-     *  <li>After the SDK joins the channel and when it finishes initializing the media engine, the SDK triggers the {@link io.agora.recording.RecordingEventHandler#onJoinChannelSuccess onJoinChannelSuccess} callback.
+     *  <li>When the app calls the { io.agora.recording.RecordingSDK#createChannel createChannel} method, the SDK starts to establish a connection to the specified channel, triggers the { io.agora.recording.RecordingEventHandler#onConnectionStateChanged onConnectionStateChanged} callback, and switches to the { CONNECTION_STATE_TYPE#CONNECTION_STATE_CONNECTING CONNECTION_STATE_CONNECTING} state.
+     *  <li>When a user successfully joins a channel, the SDK triggers the { io.agora.recording.RecordingEventHandler#onConnectionStateChanged onConnectionStateChanged} callback and switches to the { CONNECTION_STATE_TYPE#CONNECTION_STATE_CONNECTED CONNECTION_STATE_CONNECTED} state.
+     *  <li>After the SDK joins the channel and when it finishes initializing the media engine, the SDK triggers the { io.agora.recording.RecordingEventHandler#onJoinChannelSuccess onJoinChannelSuccess} callback.
      * </ul>
      */
     CONNECTION_STATE_CONNECTING(2),
     /* 3: The SDK is connected to Agora's edge server and has joined a channel. You can now publish or subscribe to a media stream in the channel.
      *  If the connection to the channel is lost because, for example, the network is down or switched, the SDK triggers:
      * <ul>
-     * <li>The {@link io.agora.recording.RecordingEventHandler#onConnectionInterrupted onConnectionInterrupted} callback.
-     * <li>The {@link io.agora.recording.RecordingEventHandler#onConnectionStateChanged onConnectionStateChanged} callback, and switches to the {@link CONNECTION_STATE_TYPE#CONNECTION_STATE_RECONNECTING CONNECTION_STATE_RECONNECTING} state.
+     * <li>The { io.agora.recording.RecordingEventHandler#onConnectionInterrupted onConnectionInterrupted} callback.
+     * <li>The { io.agora.recording.RecordingEventHandler#onConnectionStateChanged onConnectionStateChanged} callback, and switches to the { CONNECTION_STATE_TYPE#CONNECTION_STATE_RECONNECTING CONNECTION_STATE_RECONNECTING} state.
      * </ul>
      */
     CONNECTION_STATE_CONNECTED(3),
     /* 4: The SDK keeps rejoining the channel after being disconnected from a joined channel because of network issues.
      * <ul>
-     *  <li>If the SDK cannot join the channel within 10 seconds after being disconnected from Agora's edge server, the SDK triggers the {@link io.agora.recording.RecordingEventHandler#onConnectionLost onConnectionLost} callback, stays in the {@link CONNECTION_STATE_TYPE#CONNECTION_STATE_RECONNECTING CONNECTION_STATE_RECONNECTING} state, and keeps rejoining the channel.
-     *  <li>If the SDK fails to rejoin the channel 20 minutes after being disconnected from Agora's edge server, the SDK triggers the {@link io.agora.recording.RecordingEventHandler#onConnectionStateChanged onConnectionStateChanged} callback, switches to the {@link CONNECTION_STATE_TYPE#CONNECTION_STATE_FAILED CONNECTION_STATE_FAILED} state, and keeps rejoining the channel.
+     *  <li>If the SDK cannot join the channel within 10 seconds after being disconnected from Agora's edge server, the SDK triggers the { io.agora.recording.RecordingEventHandler#onConnectionLost onConnectionLost} callback, stays in the { CONNECTION_STATE_TYPE#CONNECTION_STATE_RECONNECTING CONNECTION_STATE_RECONNECTING} state, and keeps rejoining the channel.
+     *  <li>If the SDK fails to rejoin the channel 20 minutes after being disconnected from Agora's edge server, the SDK triggers the { io.agora.recording.RecordingEventHandler#onConnectionStateChanged onConnectionStateChanged} callback, switches to the { CONNECTION_STATE_TYPE#CONNECTION_STATE_FAILED CONNECTION_STATE_FAILED} state, and keeps rejoining the channel.
      * </ul>
      */
     CONNECTION_STATE_RECONNECTING(4),
     /* 5: The SDK fails to connect to Agora's edge server or join the channel.
-     * You must call the {@link io.agora.recording.RecordingSDK#leaveChannel() leaveChannel} method to leave this state and call the {@link io.agora.recording.RecordingSDK#createChannel createChannel} method again to rejoin the channel.
+     * You must call the { io.agora.recording.RecordingSDK#leaveChannel() leaveChannel} method to leave this state and call the { io.agora.recording.RecordingSDK#createChannel createChannel} method again to rejoin the channel.
      *
-     * If the SDK is banned from joining the channel by the Agora server (through the RESTful API), the SDK triggers the {@link io.agora.recording.RecordingEventHandler#onConnectionStateChanged onConnectionStateChanged} callback and switch to the {@link CONNECTION_STATE_TYPE#CONNECTION_STATE_FAILED CONNECTION_STATE_FAILED} state.
+     * If the SDK is banned from joining the channel by the Agora server (through the RESTful API), the SDK triggers the { io.agora.recording.RecordingEventHandler#onConnectionStateChanged onConnectionStateChanged} callback and switch to the { CONNECTION_STATE_TYPE#CONNECTION_STATE_FAILED CONNECTION_STATE_FAILED} state.
      */
     CONNECTION_STATE_FAILED(5);
     private final int value;
@@ -385,20 +383,20 @@ public class Common{
      * @deprecated From v2.9.0. Use VIDEO_FORMAT_ENCODED_FRAME_TYPE(1) instead.
      */
     VIDEO_FORMAT_H264_FRAME_TYPE(1),
-    /* 2: Video frame in YUV format. You receive video frames from the {@link io.agora.recording.RecordingEventHandler.videoFrameReceived videoFrameReceived} callback.*/
+    /* 2: Video frame in YUV format. You receive video frames from the { io.agora.recording.RecordingEventHandler.videoFrameReceived videoFrameReceived} callback.*/
     VIDEO_FORMAT_YUV_FRAME_TYPE(2),
-    /* 3: Video frame in JPG format. You receive video frames from the {@link io.agora.recording.RecordingEventHandler.videoFrameReceived videoFrameReceived} callback. */
+    /* 3: Video frame in JPG format. You receive video frames from the { io.agora.recording.RecordingEventHandler.videoFrameReceived videoFrameReceived} callback. */
     VIDEO_FORMAT_JPG_FRAME_TYPE(3),
     /* 4: JPG file format. */
     VIDEO_FORMAT_JPG_FILE_TYPE(4),
     /* 5: JPG file format and MP4 or WebM video.
      * <ul>
-     *   <li>Individual mode ({@link RecordingConfig#isMixingEnabled isMixingEnabled} is set as `false`): MP4 or WebM video and JPG files are supported. </li>
-     *   <li>Composite mode ({@link RecordingConfig#isMixingEnabled isMixingEnabled} is set as `true`): MP4 or WebM video files for combined streams and JPG files for individual streams are supported. </li>
+     *   <li>Individual mode ({ RecordingConfig#isMixingEnabled isMixingEnabled} is set as `false`): MP4 or WebM video and JPG files are supported. </li>
+     *   <li>Composite mode ({ RecordingConfig#isMixingEnabled isMixingEnabled} is set as `true`): MP4 or WebM video files for combined streams and JPG files for individual streams are supported. </li>
      * </ul>
      */
     VIDEO_FORMAT_JPG_VIDEO_FILE_TYPE(5),
-    /* 6: Video frame in H.264 or H.265 format. You receive video frames from the {@link io.agora.recording.RecordingEventHandler.videoFrameReceived videoFrameReceived} callback.*/
+    /* 6: Video frame in H.264 or H.265 format. You receive video frames from the { io.agora.recording.RecordingEventHandler.videoFrameReceived videoFrameReceived} callback.*/
     VIDEO_FORMAT_ENCODED_FRAME_TYPE(6);
     private int value;
     private VIDEO_FORMAT_TYPE(int value) {
@@ -413,11 +411,11 @@ public class Common{
   public enum AUDIO_FORMAT_TYPE {
     /* 0: Default audio file format (ACC). */
     AUDIO_FORMAT_DEFAULT_TYPE(0),
-    /* 1: Audio frame in AAC format. You receive audio frames from the {@link io.agora.recording.RecordingEventHandler.audioFrameReceived audioFrameReceived} callback. */
+    /* 1: Audio frame in AAC format. You receive audio frames from the { io.agora.recording.RecordingEventHandler.audioFrameReceived audioFrameReceived} callback. */
     AUDIO_FORMAT_AAC_FRAME_TYPE(1),
-    /* 2: Audio frame in PCM format. You receive audio frames from the {@link io.agora.recording.RecordingEventHandler.audioFrameReceived audioFrameReceived} callback. */
+    /* 2: Audio frame in PCM format. You receive audio frames from the { io.agora.recording.RecordingEventHandler.audioFrameReceived audioFrameReceived} callback. */
     AUDIO_FORMAT_PCM_FRAME_TYPE(2),
-    /* 3: Audio frame in PCM audio-mixing format. You receive audio frames from the {@link io.agora.recording.RecordingEventHandler.audioFrameReceived audioFrameReceived} callback.*/
+    /* 3: Audio frame in PCM audio-mixing format. You receive audio frames from the { io.agora.recording.RecordingEventHandler.audioFrameReceived audioFrameReceived} callback.*/
     AUDIO_FORMAT_MIXED_PCM_FRAME_TYPE(3);
     private int value;
     private AUDIO_FORMAT_TYPE(int value) {
@@ -493,8 +491,8 @@ public class Common{
   public enum TRIGGER_MODE_TYPE {
     /* 0: (Default) Automatically. */
     AUTOMATICALLY_MODE(0),
-    /* 1: Manually. To start and stop recording, call {@link RecordingSDK#startService() startService}
-     * and {@link io.agora.recording.RecordingSDK#stopService() stopService} respectively.
+    /* 1: Manually. To start and stop recording, call { RecordingSDK#startService() startService}
+     * and { io.agora.recording.RecordingSDK#stopService() stopService} respectively.
      */
     MANUALLY_MODE(1);
     private int value;
@@ -551,9 +549,9 @@ public class Common{
   public class AudioFrame {
     /* AUDIO_FRAME_TYPE indicates the audio frame format, PCM or AAC. */
     public AUDIO_FRAME_TYPE type;
-    /* If type is AUDIO_FRAME_RAW_PCM, then PCM field points to PCM format audio data, AAC should not be used. See the structure of {@link Common.AudioPcmFrame AudioPcmFrame}. */
+    /* If type is AUDIO_FRAME_RAW_PCM, then PCM field points to PCM format audio data, AAC should not be used. See the structure of { Common.AudioPcmFrame AudioPcmFrame}. */
     public AudioPcmFrame pcm;
-    /* If type is AUDIO_FRAME_AAC, then AAC field points to AAC format audio data, PCM should not be used. See the structure of {@link Common.AudioAacFrame AudioAacFrame}. */
+    /* If type is AUDIO_FRAME_AAC, then AAC field points to AAC format audio data, PCM should not be used. See the structure of { Common.AudioAacFrame AudioAacFrame}. */
     public AudioAacFrame aac;
   }
 
@@ -691,15 +689,15 @@ public class Common{
 
   /* The video frame format. */
   public class VideoFrame {
-    /* If `VideoFrame` is in YUV format, then YUV points to video data in YUV format. See {@link Common.VideoYuvFrame VideoYuvFrame}. */
+    /* If `VideoFrame` is in YUV format, then YUV points to video data in YUV format. See { Common.VideoYuvFrame VideoYuvFrame}. */
     public VideoYuvFrame yuv;
-    /* If `VideoFrame` is in H.264 format, then H.264 points to video data in H.264 format. See {@link Common.VideoH264Frame VideoH264Frame}. */
+    /* If `VideoFrame` is in H.264 format, then H.264 points to video data in H.264 format. See { Common.VideoH264Frame VideoH264Frame}. */
     public VideoH264Frame h264;
-    /* If `VideoFrame` is in H.265 format, then H.265 points to video data in H.265 format. See {@link Common.VideoH265Frame VideoH265Frame}. */
+    /* If `VideoFrame` is in H.265 format, then H.265 points to video data in H.265 format. See { Common.VideoH265Frame VideoH265Frame}. */
     public VideoH265Frame h265;
-    /* If `VideoFrame` is in JPG format, then JPG points to video data in JPG format. See {@link Common.VideoJpgFrame VideoJpgFrame}. */
+    /* If `VideoFrame` is in JPG format, then JPG points to video data in JPG format. See { Common.VideoJpgFrame VideoJpgFrame}. */
     public VideoJpgFrame jpg;
-    /* If `VideoFrame` is in JPG file format, then JPG file points to video data in JPG file format. See {@link Common.VideoJpgFile VideoJpgFile}. */
+    /* If `VideoFrame` is in JPG file format, then JPG file points to video data in JPG file format. See { Common.VideoJpgFile VideoJpgFile}. */
     public VideoJpgFile jpg_file;
     /* Indicates the rotation of the video frame. */
     public int rotation; // 0, 90, 180, 270
@@ -878,12 +876,12 @@ public class Common{
     public int canvasHeight = 0;
     /* The background color of the canvas (the display window or screen) in RGB hex value.
      *
-     * note： If you set the {@link RecordingConfig#defaultVideoBgPath defaultVideoBgPath} parameter in recordingconfig when calling the {@link io.agora.recording.RecordingSDK#createChannel createChannel} method, the `backgroundColor` parameter does not take effect.
+     * note： If you set the { RecordingConfig#defaultVideoBgPath defaultVideoBgPath} parameter in recordingconfig when calling the { io.agora.recording.RecordingSDK#createChannel createChannel} method, the `backgroundColor` parameter does not take effect.
      */
     public String backgroundColor = "";//e.g. "#C0C0C0" in RGB
     /* The number of the users (communication mode) or hosts (live broadcast mode) in the channel. */
     public int regionCount = 0;
-    /* The users (communication mode) or hosts (live broadcast mode) list of VideoMixingLayout. Each user (communication mode) or host (live broadcast mode) in the channel has a region to display the video on the screen. See {@link Common.VideoMixingLayout.Region Region} to set parameters. */
+    /* The users (communication mode) or hosts (live broadcast mode) list of VideoMixingLayout. Each user (communication mode) or host (live broadcast mode) in the channel has a region to display the video on the screen. See { Common.VideoMixingLayout.Region Region} to set parameters. */
     public Region[] regions;
     /* User-defined data. */
     public String appData = "";
@@ -896,17 +894,17 @@ public class Common{
      * </ul>
      */
     public int keepLastFrame = 0;
-    /* Configurates text watermarks. Pointer to an array of {@link Common.LiteraWatermarkConfig LiteraWatermarkConfig}.
+    /* Configurates text watermarks. Pointer to an array of { Common.LiteraWatermarkConfig LiteraWatermarkConfig}.
      *
      * note： You can add up to ten text watermarks.
      */
     public LiteraWatermarkConfig[] literalWms;
-    /* Configurates a timestamp watermark. Pointer to {@link Common.TimestampWatermarkConfig TimestampWatermarkConfig}.
+    /* Configurates a timestamp watermark. Pointer to { Common.TimestampWatermarkConfig TimestampWatermarkConfig}.
      *
      * note： You can only add one timestamp watermark.
      */
     public TimestampWatermarkConfig[] timestampWms;
-    /* Configurates image watermarks. Pointer to an array of {@link Common.ImageWatermarkConfig ImageWatermarkConfig}.
+    /* Configurates image watermarks. Pointer to an array of { Common.ImageWatermarkConfig ImageWatermarkConfig}.
      *
      * note： You can add up to four image watermarks.
      */

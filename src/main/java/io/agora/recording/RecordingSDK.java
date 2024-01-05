@@ -1,30 +1,17 @@
 package io.agora.recording;
 
+import io.agora.recording.common.Common.*;
+import io.agora.recording.common.RecordingConfig;
+import io.agora.recording.common.RecordingEngineProperties;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
+
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
-
-import io.agora.recording.common.Common.AudioFrame;
-import io.agora.recording.common.Common.VideoFrame;
-import io.agora.recording.common.Common.VideoMixingLayout;
-import io.agora.recording.common.RecordingConfig;
-import io.agora.recording.common.RecordingEngineProperties;
-import io.agora.recording.common.Common.AudioVolumeInfo;
-import io.agora.recording.common.Common.LiteraWatermarkConfig;
-import io.agora.recording.common.Common.TimestampWatermarkConfig;
-import io.agora.recording.common.Common.ImageWatermarkConfig;
-import io.agora.recording.common.Common.RemoteAudioStats;
-import io.agora.recording.common.Common.RemoteVideoStats;
-import io.agora.recording.common.Common.RecordingStats;
-import io.agora.recording.common.Common.REMOTE_STREAM_STATE;
-import io.agora.recording.common.Common.REMOTE_STREAM_STATE_CHANGED_REASON;
-import io.agora.recording.common.Common.CONNECTION_STATE_TYPE;
-import io.agora.recording.common.Common.CONNECTION_CHANGED_REASON_TYPE;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.StringUtils;
 
 /**
  * Java 的 API 是对 C++ 的 sample code 通过 jni 做的二次封装，因此和 C++ 提供的录制 API 在结构上稍有差异：Agora SDK （C++ 和 java 共有的 sample code）实现 C++ 录制 API 的接口，以及对 Callback 的处理，然后 jni 层封装 Agora SDK，最后通过 jni proxy 层提供 Native 的 Java 接口和类。
@@ -49,7 +36,10 @@ public class RecordingSDK {
     recordingEventHandlers = new ConcurrentHashMap<>();
   }
 
-  /** Load Java library. */
+  /**
+   * Load Java library.
+   * @param libPath The path of the Java library.
+   */
   private static synchronized void libraryLoad(String libPath) {
     String os;
     if (StringUtils.hasText(libPath)) {
@@ -88,7 +78,10 @@ public class RecordingSDK {
     }
   }
 
-  /** To register observer to receive Recording event notification. */
+  /**
+   * To register observer to receive Recording event notification.
+   * @param recordingEventHandler The EventHandler instance.
+   * */
   public void registerOberserver(RecordingEventHandler recordingEventHandler) {
     String channelName = recordingEventHandler.getChannel();
     RecordingEventHandler oldRecordingEventHandler = recordingEventHandlers.get(channelName);
@@ -99,18 +92,29 @@ public class RecordingSDK {
     recordingEventHandlers.put(channelName, recordingEventHandler);
   }
 
-  /** To remove previously registered observer. */
+  /**
+   * To remove previously registered observer.
+   * @param recordingEventHandler The EventHandler instance.
+   */
   public void unRegisterOberserver(RecordingEventHandler recordingEventHandler) {
     String channelName = recordingEventHandler.getChannel();
     this.unRegisterOberserver(channelName);
   }
 
-  /** To remove previously registered observer. */
+  /**
+   * To remove previously registered observer.
+   * @param channelName The channel name.
+   */
   public void unRegisterOberserver(String channelName) {
     log.info("UnRegister Agora Recording Oberserver For {}. ", channelName);
     recordingEventHandlers.remove(channelName);
   }
 
+    /**
+     * To get previously registered observer.
+     * @param channelName The channel name.
+     * @return The EventHandler instance.
+     */
   public RecordingEventHandler getRegisterOberserver(String channelName) {
     return recordingEventHandlers.get(channelName);
   }
@@ -125,10 +129,10 @@ public class RecordingSDK {
    *
    * @param uid The unique identifier of a user. A channel does not accept duplicate uids. Otherwise, there will be unpredictable behaviors.
    * &lt;ul&gt;
-   *   &lt;li&gt;If you set `uid` as 0, the SDK randomly assigns a uid and returns it in the {@link RecordingEventHandler#onJoinChannelSuccess onJoinChannelSuccess}.&lt;/li&gt;
+   *   &lt;li&gt;If you set `uid` as 0, the SDK randomly assigns a uid and returns it in the { RecordingEventHandler#onJoinChannelSuccess onJoinChannelSuccess}.&lt;/li&gt;
    *   &lt;li&gt;If you set your own `uid`, it should be a 32-bit unsigned integer ranging from 1 to (2&lt;sup&gt;32&lt;/sup&gt;-1).User ID.&lt;/li&gt;
    * &lt;/ul&gt;
-   * @param config Detailed recording configuration. See {@link RecordingConfig RecordingConfig}.
+   * @param config Detailed recording configuration. See { RecordingConfig RecordingConfig}.
    *
    * @param logLevel Sets the log level. Only logs in the selected level and levels preceding the selected level are generated.
    * &lt;ul&gt;
@@ -150,7 +154,7 @@ public class RecordingSDK {
 
   /** This method creates a channel and enables the recording server to join with the user account.
    *
-   * After the recording server successfully joins the channel, the SDK triggers the {@link RecordingEventHandler#onLocalUserRegistered onLocalUserRegistered} and {@link RecordingEventHandler#onJoinChannelSuccess onJoinChannelSuccess} callbacks on the local client.
+   * After the recording server successfully joins the channel, the SDK triggers the { RecordingEventHandler#onLocalUserRegistered onLocalUserRegistered} and { RecordingEventHandler#onJoinChannelSuccess onJoinChannelSuccess} callbacks on the local client.
    *
    * note: To ensure smooth communication, use the same parameter type to identify the users in the same channel. Hence, the parameter type of the recording server's identifier should be the same as that of the other users joining the channel with the Agora Native/Web SDK.
    *
@@ -169,7 +173,7 @@ public class RecordingSDK {
    *   &lt;li&gt;"!", "#", "$", "%", "&", "(", ")", "+", "-", ":", ";", "&lt;", "=", ".", "&gt;", "?", "@", "[", "]", "^", "_", " {", "}", "|", "~", ",".&lt;/li&gt;
    * &lt;/ul&gt;
    *
-   * @param config Detailed recording configuration. See {@link RecordingConfig RecordingConfig}.
+   * @param config Detailed recording configuration. See { RecordingConfig RecordingConfig}.
    *
    * @param logLevel Sets the log level. Only logs in the selected level and levels preceding the selected level are generated.
    * &lt;ul&gt;
@@ -191,9 +195,9 @@ public class RecordingSDK {
 
   /** Gets the user ID by passing in the user account.
    *
-   * After a remote user joins the channel, the SDK gets the user ID and user account of the remote user and triggers the {@link RecordingEventHandler#onUserInfoUpdated onUserInfoUpdated} callback on the local client.
+   * After a remote user joins the channel, the SDK gets the user ID and user account of the remote user and triggers the { RecordingEventHandler#onUserInfoUpdated onUserInfoUpdated} callback on the local client.
    *
-   * After receiving the {@link RecordingEventHandler#onUserInfoUpdated onUserInfoUpdated} callback, you can call the `getUidByUserAccount` method to get the user ID of the remote user by passing in the user account.
+   * After receiving the { RecordingEventHandler#onUserInfoUpdated onUserInfoUpdated} callback, you can call the `getUidByUserAccount` method to get the user ID of the remote user by passing in the user account.
    *
    * @param userAccount The user account of the remote user. Ensure that you set this parameter.
    *
@@ -210,9 +214,9 @@ public class RecordingSDK {
 
   /** Gets the user account by passing in the user ID.
    *
-   * After a remote user joins the channel, the SDK gets the user ID and user account of the remote user and triggers the {@link RecordingEventHandler#onUserInfoUpdated onUserInfoUpdated} callback on the local client.
+   * After a remote user joins the channel, the SDK gets the user ID and user account of the remote user and triggers the { RecordingEventHandler#onUserInfoUpdated onUserInfoUpdated} callback on the local client.
    *
-   * After receiving the {@link RecordingEventHandler#onUserInfoUpdated onUserInfoUpdated} callback, you can call the `getUserAccountByUid` method to get the user account of the remote user from the UserInfo object by passing in the user ID.
+   * After receiving the { RecordingEventHandler#onUserInfoUpdated onUserInfoUpdated} callback, you can call the `getUserAccountByUid` method to get the user account of the remote user from the UserInfo object by passing in the user ID.
    *
    * @param uid The user ID of the remote user. Ensure that you set this parameter.
    *
@@ -250,7 +254,7 @@ public class RecordingSDK {
    *
    * note: If you record video in composite recording mode, you must call this method to set the video layout.
    *
-   * @param layout Layout setting. See {@link VideoMixingLayout VideoMixingLayout}.
+   * @param layout Layout setting. See { VideoMixingLayout VideoMixingLayout}.
    *
    * @return
    * &lt;ul&gt;
@@ -272,17 +276,17 @@ public class RecordingSDK {
    * The Agora Recording SDK supports three types of watermarks: text watermarks, timestamp watermarks, and image watermarks.
    *
    * &lt;ul&gt;
-   * &lt;li&gt;If you do not set `LiteraWatermarkConfig`, `TimestampWatermarkConfig`, or `ImageWatermarkConfig` to add watermarks when calling the {@link RecordingSDK#setVideoMixingLayout setVideoMixingLayout} method, you can directly call the `updateWatermarkConfigs` method to add watermarks. &lt;/li&gt;
-   * &lt;li&gt;If you set `LiteraWatermarkConfig`, `TimestampWatermarkConfig`, or `ImageWatermarkConfig` to add watermarks when calling the {@link RecordingSDK#setVideoMixingLayout setVideoMixingLayout} method, you can call the `updateWatermarkConfigs` method to add, update, or delete watermarks. If you pass null as parameters in the `updateWatermarkConfigs` method, you delete watermarks that have been added. &lt;/li&gt;
+   * &lt;li&gt;If you do not set `LiteraWatermarkConfig`, `TimestampWatermarkConfig`, or `ImageWatermarkConfig` to add watermarks when calling the { RecordingSDK#setVideoMixingLayout setVideoMixingLayout} method, you can directly call the `updateWatermarkConfigs` method to add watermarks. &lt;/li&gt;
+   * &lt;li&gt;If you set `LiteraWatermarkConfig`, `TimestampWatermarkConfig`, or `ImageWatermarkConfig` to add watermarks when calling the { RecordingSDK#setVideoMixingLayout setVideoMixingLayout} method, you can call the `updateWatermarkConfigs` method to add, update, or delete watermarks. If you pass null as parameters in the `updateWatermarkConfigs` method, you delete watermarks that have been added. &lt;/li&gt;
    * &lt;/ul&gt;
    *
-   * note: Watermarks apply only to the videos recorded in composite recording mode (the {@link RecordingConfig#isMixingEnabled isMixingEnabled} parameter in the {@link RecordingConfig RecordingConfig} is set as true).
+   * note: Watermarks apply only to the videos recorded in composite recording mode (the { RecordingConfig#isMixingEnabled isMixingEnabled} parameter in the { RecordingConfig RecordingConfig} is set as true).
    *
-   * @param literaWms Adds text watermarks. Pointer to an array of {@link io.agora.recording.common.Common.LiteraWatermarkConfig LiteraWatermarkConfig}. You can add up to ten text watermarks.
+   * @param literaWms Adds text watermarks. Pointer to an array of { io.agora.recording.common.Common.LiteraWatermarkConfig LiteraWatermarkConfig}. You can add up to ten text watermarks.
    *
-   * @param timestampWms Adds a timestamp watermark. Pointer to {@link io.agora.recording.common.Common.TimestampWatermarkConfig TimestampWatermarkConfig}. You can only add one timestamp watermark.
+   * @param timestampWms Adds a timestamp watermark. Pointer to { io.agora.recording.common.Common.TimestampWatermarkConfig TimestampWatermarkConfig}. You can only add one timestamp watermark.
    *
-   * @param imgWms Adds image watermarks. Pointer to an array of {@link io.agora.recording.common.Common.ImageWatermarkConfig ImageWatermarkConfig}. You can add up to four image watermarks.
+   * @param imgWms Adds image watermarks. Pointer to an array of { io.agora.recording.common.Common.ImageWatermarkConfig ImageWatermarkConfig}. You can add up to four image watermarks.
    *
    * @return
    * &lt;ul&gt;
@@ -301,7 +305,7 @@ public class RecordingSDK {
 
   /** This method updates the UIDs of the users whose video streams you want to record.
    *
-   * note: Ensure that you set the {@link RecordingConfig#autoSubscribe autoSubscribe} parameter in the {@link RecordingConfig RecordingConfig} as false before calling this method.
+   * note: Ensure that you set the { RecordingConfig#autoSubscribe autoSubscribe} parameter in the { RecordingConfig RecordingConfig} as false before calling this method.
    *
    * @param uids An array of UIDs whose video streams you want to record in the string format, such as {"1","2","3"}.
    *
@@ -322,7 +326,7 @@ public class RecordingSDK {
 
   /** This method updates the UIDs of the users whose audio streams you want to record.
    *
-   * note: Ensure that you set the {@link RecordingConfig#autoSubscribe autoSubscribe} parameter in the {@link RecordingConfig RecordingConfig} as false before calling this method.
+   * note: Ensure that you set the { RecordingConfig#autoSubscribe autoSubscribe} parameter in the { RecordingConfig RecordingConfig} as false before calling this method.
    *
    * @param uids An array of UIDs whose audio streams you want to record in the string format, such as {"1","2","3"}.
    *
@@ -343,7 +347,7 @@ public class RecordingSDK {
 
   /** This method manually starts a recording.
    *
-   * The method is only valid when you set {@link RecordingConfig#triggerMode triggerMode} in {@link RecordingConfig RecrordingConfig} as 1 (manually) when joining the channel.
+   * The method is only valid when you set { RecordingConfig#triggerMode triggerMode} in { RecordingConfig RecrordingConfig} as 1 (manually) when joining the channel.
    *
    * @return
    * &lt;ul&gt;
@@ -362,7 +366,7 @@ public class RecordingSDK {
 
   /** This method manually pauses the recording.
    *
-   * The method is only valid when you set {@link RecordingConfig#triggerMode triggerMode} in {@link RecordingConfig RecordingConfig} as 1 (manually) when joining the channel.
+   * The method is only valid when you set { RecordingConfig#triggerMode triggerMode} in { RecordingConfig RecordingConfig} as 1 (manually) when joining the channel.
    *
    * @return
    * &lt;ul&gt;
@@ -385,10 +389,10 @@ public class RecordingSDK {
    * &lt;ul&gt;
    *   &lt;li&gt;Call this method after joining the channel.&lt;/li&gt;
    *   &lt;li&gt;The recording properties only include the relative path of the recording files.&lt;/li&gt;
-   *   &lt;li&gt;Both the `getProperties` method and the {@link RecordingEventHandler#onUserJoined onUserJoined} callback report the relative path of the recorded files and recording log. The difference between these two functions is that the recording SDK only triggers the {@link RecordingEventHandler#onUserJoined onUserJoined} callback when a remote user joins the channel. &lt;/li&gt;
+   *   &lt;li&gt;Both the `getProperties` method and the { RecordingEventHandler#onUserJoined onUserJoined} callback report the relative path of the recorded files and recording log. The difference between these two functions is that the recording SDK only triggers the { RecordingEventHandler#onUserJoined onUserJoined} callback when a remote user joins the channel. &lt;/li&gt;
    * &lt;/ul&gt;
    *
-   * @return See {@link RecordingEngineProperties RecordingEngineProperties}.
+   * @return See { RecordingEngineProperties RecordingEngineProperties}.
    */
   public RecordingEngineProperties getProperties() {
     if (nativeHandle != 0) {
