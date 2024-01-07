@@ -3,9 +3,10 @@ package io.agora.spring.boot;
 import io.agora.media.AccessToken;
 import io.agora.rtm.RtmTokenBuilder;
 import io.agora.rtm.RtmTokenBuilder.Role;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class RtmTokenBuilder_Test {
     private String appId = "";

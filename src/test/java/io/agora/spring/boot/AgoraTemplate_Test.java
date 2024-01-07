@@ -8,8 +8,9 @@ import io.agora.spring.boot.req.RecordingStorageConfig;
 import io.agora.spring.boot.resp.AcquireResourceResponse;
 import io.agora.spring.boot.resp.ChannelUserStateResponse;
 import okhttp3.OkHttpClient;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -22,7 +23,7 @@ public class AgoraTemplate_Test {
 	AgoraProperties properties = new AgoraProperties();
 	AgoraTemplate template;
 
-	@Before
+	@BeforeAll
 	public void setup() {
 		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		properties.setAppId("");

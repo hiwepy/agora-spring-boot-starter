@@ -15,7 +15,7 @@
  */
 package io.agora.spring.boot;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.agora.spring.boot.resp.AgoraResponse;
 import lombok.extern.slf4j.Slf4j;

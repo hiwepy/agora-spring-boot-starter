@@ -4,7 +4,8 @@ import io.agora.signal.SignalingToken;
 
 import java.security.NoSuchAlgorithmException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 public class SignalingToken_Test {
 
