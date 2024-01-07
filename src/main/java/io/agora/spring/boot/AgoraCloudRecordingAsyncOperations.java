@@ -46,7 +46,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      * @param resourceId  通过 acquire 请求获取的 resource ID
      * @param storageConfig  第三方云存储的设置
 	 * @param consumer 响应处理回调函数
-     * @return 云端录制操作结果
+	 * @throws IOException 异常
      */
 	public void asyncStartRecording(String channelName, String uid, String token, String resourceId, RecordingStorageConfig storageConfig,
 			Consumer<CloudRecordingStartResponse> consumer) throws IOException {
@@ -66,7 +66,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      * @param recordingFileConfig  录制文件的设置
      * @param storageConfig  第三方云存储的设置
 	 * @param consumer 响应处理回调函数
-     * @return 云端录制操作结果
+	 * @throws IOException 异常
      */
 	public void asyncStartRecording(String channelName, String uid, String token, String resourceId,
 									RecordingConfig recordingConfig,
@@ -93,7 +93,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      * @param recordingFileConfig  录制文件的设置
      * @param storageConfig  第三方云存储的设置
 	 * @param consumer 响应处理回调函数
-     * @return 云端录制操作结果
+	 * @throws IOException 异常
      */
 	public void asyncStartRecording(String channelName, String uid, String token, String resourceId, RecordingMode mode,
 			RecordingConfig recordingConfig,
@@ -121,7 +121,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      * @param recordingFileConfig  录制文件的设置
      * @param storageConfig  第三方云存储的设置
 	 * @param consumer 响应处理回调函数
-     * @return 云端录制操作结果
+	 * @throws IOException 异常
      */
 	public void asyncStartRecording(String channelName, String uid, String token, String resourceId, RecordingMode mode,
 			RecordingAppsCollectionConfig appsCollection,
@@ -151,7 +151,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      * @param snapshotConfig 截图周期、截图文件的设置
      * @param storageConfig  第三方云存储的设置
 	 * @param consumer 响应处理回调函数
-     * @return 云端录制操作结果
+	 * @throws IOException 异常
      */
 	public void asyncStartRecording(String channelName, String uid, String token, String resourceId, RecordingMode mode,
 			RecordingAppsCollectionConfig appsCollection,
@@ -183,7 +183,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      * @param storageConfig  第三方云存储的设置
      * @param extensionServiceConfig 扩展服务的设置，目前包括阿里云视频点播服务和页面录制的设置
 	 * @param consumer 响应处理回调函数
-     * @return 云端录制操作结果
+	 * @throws IOException 异常
      */
 	public void asyncStartRecording(String channelName, String uid, String token, String resourceId, RecordingMode mode,
 			RecordingAppsCollectionConfig appsCollection,
@@ -244,9 +244,13 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      * @param uid  字符串内容为云端录制服务使用的 UID，用于标识该录制服务，需要和你在 acquire 请求中输入的 UID 相同
      * @param resourceId  通过 acquire 请求获取的 resource ID
 	 * @param sid 录制 ID。成功开始云端录制后，会得到一个 sid （录制 ID)。该 ID 是一次录制周期的唯一标识
+	 * @param mode 录制模式，支持以下几种录制模式：
+	 * a、单流模式individual：分开录制频道内每个 UID 的音频流和视频流，每个 UID 均有其对应的音频文件和视频文件。
+	 * b、合流模式 mix ：（默认模式）频道内所有 UID 的音视频混合录制为一个音视频文件。
+	 * c、页面录制模式 web：将指定网页的页面内容和音频混合录制为一个音视频文件。
      * @param streamSubscribe  用于更新订阅名单。仅适用于单流录制模式 individual和合流录制模式 mix
 	 * @param consumer 响应处理回调函数
-     * @return 更新云端录制制操作结果
+	 * @throws IOException 异常
      */
 	public void asyncUpdateMixRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode,
 			RecordingUpdateStreamSubscribe streamSubscribe,
@@ -263,9 +267,13 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      * @param uid  字符串内容为云端录制服务使用的 UID，用于标识该录制服务，需要和你在 acquire 请求中输入的 UID 相同
      * @param resourceId  通过 acquire 请求获取的 resource ID
 	 * @param sid 录制 ID。成功开始云端录制后，会得到一个 sid （录制 ID)。该 ID 是一次录制周期的唯一标识
+	 * @param mode 录制模式，支持以下几种录制模式：
+	 * a、单流模式individual：分开录制频道内每个 UID 的音频流和视频流，每个 UID 均有其对应的音频文件和视频文件。
+	 * b、合流模式 mix ：（默认模式）频道内所有 UID 的音视频混合录制为一个音视频文件。
+	 * c、页面录制模式 web：将指定网页的页面内容和音频混合录制为一个音视频文件。
      * @param streamSubscribe  用于更新订阅名单。仅适用于单流录制模式 individual和合流录制模式 mix
 	 * @param consumer 响应处理回调函数
-     * @return 更新云端录制操作结果
+	 * @throws IOException 异常
      */
 	public void asyncUpdateIndividualRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode,
 			RecordingUpdateStreamSubscribe streamSubscribe,
@@ -290,7 +298,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      * @param webRecordingConfig 用于更新页面录制参数。仅适用于页面录制模式 web
      * @param rtmpPublishConfig  用于更新页面录制并推流到 CDN 的参数。仅适用于页面录制模式 web
 	 * @param consumer 响应处理回调函数
-     * @return 更新云端录制操作结果
+	 * @throws IOException 异常
      */
 	public void asyncUpdateRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode,
 		    RecordingUpdateStreamSubscribe streamSubscribe,
@@ -337,7 +345,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      * c、页面录制模式 web：将指定网页的页面内容和音频混合录制为一个音视频文件。
      * @param transcodingConfig  用于更新合流布局的参数
 	 * @param consumer 响应处理回调函数
-     * @return 更新合流布局操作结果
+	 * @throws IOException 异常
      */
 	public void asyncUpdateLayout(String channelName, String uid, String resourceId, String sid, RecordingMode mode,
 			RecordingUpdateTranscodingConfig transcodingConfig,
@@ -370,7 +378,7 @@ public class AgoraCloudRecordingAsyncOperations extends AgoraCloudRecordingOpera
      * true：异步。调用 stop 后立即收到响应。
      * false：同步。调用 stop 后，需等待所有录制文件上传至第三方云存储方可收到响应。（默认）
 	 * @param consumer 响应处理回调函数
-     * @return 停止云端录制操作结果
+	 * @throws IOException 异常
      */
 	public void asyncStopRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode, boolean asyncStop, Consumer<CloudRecordingStopResponse> consumer) throws IOException {
 

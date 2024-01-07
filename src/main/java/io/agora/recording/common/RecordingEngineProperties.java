@@ -4,8 +4,13 @@ package io.agora.recording.common;
 public class RecordingEngineProperties{
   /** The relative path of the recorded files and recording log. */
   private String storageDir;
-  /** Get the relative path of the recorded files and recording log. */
-  public String GetStorageDir(){
+
+  /**
+   * Get the relative path of the recorded files and recording log.
+   * @return The relative path of the recorded files and recording log.
+   */
+  public String getStorageDir(){
     return storageDir;
   }
+
 }

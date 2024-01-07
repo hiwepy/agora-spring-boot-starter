@@ -164,7 +164,7 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 	 * <p>WARN_OPEN_CHANNEL_TIMEOUT (106): 打开频道超时。查找到指定频道后，SDK 接着打开该频道，超时一般是因为网络太差，连接不到服务器 </p>
 	 * <p>WARN_OPEN_CHANNEL_REJECTED (107): 打开频道请求被服务器拒绝。服务器可能没有办法处理该请求或该请求是非法的 </p>
 	 * <p>WARN_RECOVERY_CORE_SERVICE_FAILURE (108): 录制程序出现了异常错误（例如崩溃），录制 SDK 会重新恢复录制 </p>
-	 * @param warn
+	 * @param warn 警告代码
 	 */
 	@Override
 	public void onWarning(int warn) {
@@ -998,6 +998,7 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 		}
 	}
 
+
 	private void WriteBytesToFileClassic(long uid, byte[] byteBuffer, long size, boolean isAudio) {
 		if (byteBuffer == null) {
 			log.info("WriteBytesToFileClassic but byte buffer is null!");
@@ -1035,6 +1036,12 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 		}
 	}
 
+	/**
+	 * 创建录制频道
+	 * @param token 用于鉴权的token
+	 * @param uid  用户ID
+	 * @return 是否创建成功
+	 */
 	public boolean createChannel(String token, int uid) {
 		if(Objects.isNull(token)) {
 			token = "";
@@ -1133,6 +1140,7 @@ public class DefaultRecordingEventHandler implements RecordingEventHandler {
 		log.info("jni layer has been exited...");
 		return isSuccess;
 	}
+
 
 	public RecordingResult leaveChannel() {
 		boolean leaveState = recordingSDKInstance.leaveChannel();

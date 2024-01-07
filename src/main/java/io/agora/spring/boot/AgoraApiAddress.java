@@ -5,7 +5,7 @@ import java.text.MessageFormat;
 /**
  * https://docs.agora.io/cn/cloud-recording/cloud_recording_api_rest?platform=RESTful
  * https://docs.agora.io/cn/Video/channel_management_overview?platform=RESTful
- * @author 		： <a href="https://github.com/hiwepy">hiwepy</a>
+ * @author 		： &lt;a href="https://github.com/hiwepy"&gt;hiwepy&lt;/a&gt;
  */
 public enum AgoraApiAddress {
 
@@ -18,27 +18,27 @@ public enum AgoraApiAddress {
 	ACQUIRE_RESOURCE_ID("获取云端录制资源ID", RequestMethod.POST,"https://api.agora.io/v1/apps/{0}/cloud_recording/acquire"),
 	/**
 	 * 开始云端录制
-	 * URL: https://api.agora.io/v1/apps/&lt;yourappid&gt;/cloud_recording/resourceid/<resourceid>/mode/<mode>/start
+	 * URL: https://api.agora.io/v1/apps/&lt;yourappid&gt;/cloud_recording/resourceid/&lt;resourceid&gt;/mode/&lt;mode&gt;/start
 	 */
 	START_CLOUD_RECORDING("开始云端录制", RequestMethod.POST,"https://api.agora.io/v1/apps/{0}/cloud_recording/resourceid/{1}/mode/{2}/start"),
 	/**
 	 * 更新云端录制
-	 * URL: https://api.agora.io/v1/apps/<appid>/cloud_recording/resourceid/<resourceid>/sid/<sid>/mode/<mode>/updateLayout
+	 * URL: https://api.agora.io/v1/apps/&lt;appid&gt;/cloud_recording/resourceid/&lt;resourceid&gt;/sid/&lt;sid&gt;/mode/&lt;mode&gt;/updateLayout
 	 */
 	UPDATE_CLOUD_RECORDING("更新云端录制", RequestMethod.POST,"https://api.agora.io/v1/apps/{0}/cloud_recording/resourceid/{1}/sid/{2}/mode/{3}/updateLayout"),
 	/**
 	 * 更新合流布局
-	 * URL: https://api.agora.io/v1/apps/<appid>/cloud_recording/resourceid/<resourceid>/sid/<sid>/mode/<mode>/update
+	 * URL: https://api.agora.io/v1/apps/&lt;appid&gt;/cloud_recording/resourceid/&lt;resourceid&gt;/sid/&lt;sid&gt;/mode/&lt;mode&gt;/update
 	 */
 	UPDATE_CLOUD_RECORDING_LAYOUT("更新合流布局", RequestMethod.POST,"https://api.agora.io/v1/apps/{0}/cloud_recording/resourceid/{1}/sid/{2}/mode/{3}/update"),
 	/**
 	 * 查询云端录制状态
-	 * URL: https://api.agora.io/v1/apps/&lt;yourappid&gt;/cloud_recording/resourceid/<resourceid>/sid/<sid>/mode/<mode>/query
+	 * URL: https://api.agora.io/v1/apps/&lt;yourappid&gt;/cloud_recording/resourceid/&lt;resourceid&gt;/sid/&lt;sid&gt;/mode/&lt;mode&gt;/query
 	 */
 	QUERY_CLOUD_RECORDING("查询云端录制状态", RequestMethod.POST,"https://api.agora.io/v1/apps/{0}/cloud_recording/resourceid/{1}/sid/{2}/mode/{3}/query"),
 	/**
 	 * 停止云端录制
-	 * URL:  https://api.agora.io/v1/apps/&lt;yourappid&gt;/cloud_recording/resourceid/<resourceid>/sid/<sid>/mode/<mode>/stop
+	 * URL:  https://api.agora.io/v1/apps/&lt;yourappid&gt;/cloud_recording/resourceid/&lt;resourceid&gt;/sid/&lt;sid&gt;/mode/&lt;mode&gt;/stop
 	 */
 	STOP_CLOUD_RECORDING("停止云端录制", RequestMethod.POST,"https://api.agora.io/v1/apps/{0}/cloud_recording/resourceid/{1}/sid/{2}/mode/{3}/stop"),
 

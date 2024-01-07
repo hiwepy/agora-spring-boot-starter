@@ -12,6 +12,8 @@ public class DynamicKey3 {
      * @param channelName name of channel to join
      * @param unixTs      unix timestamp by seconds
      * @param randomInt   random uint32 salt for generating dynamic key
+     * @param uid         user id, 0:32bits
+     * @param expiredTs   unix timestamp by seconds when the key will expire, set to 0xffffffff if do not need expiration
      * @return String representation of dynamic key to join Agora media server
      * @throws Exception if any error occurs
      */
@@ -26,6 +28,18 @@ public class DynamicKey3 {
         return String.format("%s%s%s%s%s%s%s", version, signature, appID, unixTsStr, randomIntStr, uidStr, expiredTsStr);
     }
 
+    /**
+     * Generate Dynamic Key for media channel service
+     * @param appID App ID assigned by Agora
+     * @param appCertificate App Certificate assigned by Agora
+     * @param channelName name of channel to join, limited to 64 bytes and should be printable ASCII characters
+     * @param unixTsStr unix timestamp in seconds when generating the Dynamic Key
+     * @param randomIntStr salt for generating dynamic key
+     * @param uidStr user id
+     * @param expiredTsStr unix timestamp in seconds when the key will expire, set to 0xffffffff if do not need expiration
+     * @return String representation of dynamic key
+     * @throws Exception if any error occurs
+     */
     private static String generateSignature3(String appID, String appCertificate, String channelName, String unixTsStr, String randomIntStr, String uidStr, String expiredTsStr) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         baos.write(appID.getBytes());

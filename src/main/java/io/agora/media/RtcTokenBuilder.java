@@ -28,7 +28,7 @@ public class RtcTokenBuilder {
         }
     }
 
-    /**
+    /*
      * Builds an RTC token using an int uid.
      *
      * @param appId The App ID issued to you by Agora. 
@@ -61,7 +61,7 @@ public class RtcTokenBuilder {
     			account, role, privilegeTs);
     }
     
-    /**
+    /*
      * Builds an RTC token using a string userAccount.
      * 
      * @param appId The App ID issued to you by Agora. 

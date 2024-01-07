@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
  * Util to generate Agora media dynamic key.
  */
 public class DynamicKey {
+
     /**
      * Generate Dynamic Key for media channel service
      * @param appID App ID assigned by Agora
@@ -15,7 +16,7 @@ public class DynamicKey {
      * @param unixTs unix timestamp in seconds when generating the Dynamic Key
      * @param randomInt salt for generating dynamic key
      * @return String representation of dynamic key
-     * @throws Exception
+     * @throws Exception if any error occurs
      */
     public static String generate(String appID, String appCertificate, String channelName, int unixTs, int randomInt) throws Exception {
         String unixTsStr = ("0000000000" + Integer.toString(unixTs)).substring(Integer.toString(unixTs).length());
@@ -24,6 +25,16 @@ public class DynamicKey {
         return String.format("%s%s%s%s", signature, appID, unixTsStr, randomIntStr);
     }
 
+    /**
+     * Generate Dynamic Key for media channel service
+     * @param appID App ID assigned by Agora
+     * @param appCertificate App Certificate assigned by Agora
+     * @param channelName name of channel to join, limited to 64 bytes and should be printable ASCII characters
+     * @param unixTsStr unix timestamp in seconds when generating the Dynamic Key
+     * @param randomIntStr salt for generating dynamic key
+     * @return String representation of dynamic key
+     * @throws Exception if any error occurs
+     */
     private static String generateSignature(String appID, String appCertificate, String channelName, String unixTsStr, String randomIntStr) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         baos.write(appID.getBytes());

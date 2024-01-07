@@ -49,6 +49,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 	 * b、不能与当前频道内的任何 UID 重复。
 	 * c、云端录制不支持 String 用户 ID（User Account），请确保该字段引号内为整型 UID，且频道内所有用户均使用整型 UID。
 	 * @return 操作结果
+	 * @throws IOException 抛出异常
 	 */
 	public AcquireResourceResponse acquireId(String userId, String uid) throws IOException {
 
@@ -84,6 +85,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
 	 * 1：页面录制。
 	 * 2：延时转码。设置该场景后，录制服务会在录制后 24 小时内对录制文件进行转码生成 MP4 文件，并将 MP4 文件上传至你指定的第三方云存储（不支持七牛云）。该场景仅适用于单流录制模式。你需要同时在 start 方法中设置 appsCollection 参数
 	 * @return 操作结果
+	 * @throws IOException 抛出异常
 	 */
 	public AcquireResourceResponse acquireId(String userId, String uid, String region, int expiredHour, int scene) throws IOException {
 
@@ -116,6 +118,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param resourceId  通过 acquire 请求获取的 resource ID
      * @param storageConfig  第三方云存储的设置
      * @return 云端录制操作结果
+	 * @throws IOException 抛出异常
      */
 	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId, RecordingStorageConfig storageConfig) throws IOException {
 		return this.startRecording(channelName, uid, token, resourceId, RecordingMode.MIX, null, null, null, null, storageConfig, null);
@@ -134,6 +137,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param recordingFileConfig  录制文件的设置
      * @param storageConfig  第三方云存储的设置
      * @return 云端录制操作结果
+	 * @throws IOException 抛出异常
      */
 	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId,
 													  RecordingConfig recordingConfig,
@@ -159,6 +163,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param recordingFileConfig  录制文件的设置
      * @param storageConfig  第三方云存储的设置
      * @return 云端录制操作结果
+	 * @throws IOException 抛出异常
      */
 	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId, RecordingMode mode,
 			RecordingConfig recordingConfig,
@@ -186,6 +191,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param recordingFileConfig  录制文件的设置
      * @param storageConfig  第三方云存储的设置
      * @return 云端录制操作结果
+	 * @throws IOException 抛出异常
      */
 	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId, RecordingMode mode,
 			RecordingAppsCollectionConfig appsCollection,
@@ -214,6 +220,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param snapshotConfig 截图周期、截图文件的设置
      * @param storageConfig  第三方云存储的设置
      * @return 云端录制操作结果
+	 * @throws IOException 抛出异常
      */
 	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId, RecordingMode mode,
 			RecordingAppsCollectionConfig appsCollection,
@@ -244,6 +251,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param storageConfig  第三方云存储的设置
      * @param extensionServiceConfig 扩展服务的设置，目前包括阿里云视频点播服务和页面录制的设置
      * @return 云端录制操作结果
+	 * @throws IOException 抛出异常
      */
 	public CloudRecordingStartResponse startRecording(String channelName, String uid, String token, String resourceId, RecordingMode mode,
 			RecordingAppsCollectionConfig appsCollection,
@@ -304,8 +312,13 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param uid  字符串内容为云端录制服务使用的 UID，用于标识该录制服务，需要和你在 acquire 请求中输入的 UID 相同
      * @param resourceId  通过 acquire 请求获取的 resource ID
 	 * @param sid 录制 ID。成功开始云端录制后，会得到一个 sid （录制 ID)。该 ID 是一次录制周期的唯一标识
-     * @param streamSubscribe  用于更新订阅名单。仅适用于单流录制模式 individual和合流录制模式 mix
+	 * @param mode 录制模式，支持以下几种录制模式：
+	 * a、单流模式individual：分开录制频道内每个 UID 的音频流和视频流，每个 UID 均有其对应的音频文件和视频文件。
+	 * b、合流模式 mix ：（默认模式）频道内所有 UID 的音视频混合录制为一个音视频文件。
+	 * c、页面录制模式 web：将指定网页的页面内容和音频混合录制为一个音视频文件。
+	 * @param streamSubscribe  用于更新订阅名单。仅适用于单流录制模式 individual和合流录制模式 mix
      * @return 更新云端录制制操作结果
+	 * @throws IOException 抛出异常
      */
 	public CloudRecordingUpdateResponse updateMixRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode, RecordingUpdateStreamSubscribe streamSubscribe) throws IOException {
 		return this.updateRecording(channelName, uid, resourceId, sid, RecordingMode.MIX, streamSubscribe, null, null);
@@ -320,8 +333,13 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param uid  字符串内容为云端录制服务使用的 UID，用于标识该录制服务，需要和你在 acquire 请求中输入的 UID 相同
      * @param resourceId  通过 acquire 请求获取的 resource ID
 	 * @param sid 录制 ID。成功开始云端录制后，会得到一个 sid （录制 ID)。该 ID 是一次录制周期的唯一标识
+	 * @param mode 录制模式，支持以下几种录制模式：
+	 * a、单流模式individual：分开录制频道内每个 UID 的音频流和视频流，每个 UID 均有其对应的音频文件和视频文件。
+	 * b、合流模式 mix ：（默认模式）频道内所有 UID 的音视频混合录制为一个音视频文件。
+	 * c、页面录制模式 web：将指定网页的页面内容和音频混合录制为一个音视频文件。
      * @param streamSubscribe  用于更新订阅名单。仅适用于单流录制模式 individual和合流录制模式 mix
      * @return 更新云端录制操作结果
+	 * @throws IOException 抛出异常
      */
 	public CloudRecordingUpdateResponse updateIndividualRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode, RecordingUpdateStreamSubscribe streamSubscribe) throws IOException {
         return this.updateRecording(channelName, uid, resourceId, sid, RecordingMode.INDIVIDUAL, streamSubscribe, null, null);
@@ -344,6 +362,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * @param webRecordingConfig 用于更新页面录制参数。仅适用于页面录制模式 web
      * @param rtmpPublishConfig  用于更新页面录制并推流到 CDN 的参数。仅适用于页面录制模式 web
      * @return 更新云端录制操作结果
+	 * @throws IOException 抛出异常
      */
 	public CloudRecordingUpdateResponse updateRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode,
 		    RecordingUpdateStreamSubscribe streamSubscribe,
@@ -390,6 +409,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * c、页面录制模式 web：将指定网页的页面内容和音频混合录制为一个音视频文件。
      * @param transcodingConfig  用于更新合流布局的参数
      * @return 更新合流布局操作结果
+	 * @throws IOException 抛出异常
      */
 	public CloudRecordingUpdateLayoutResponse updateLayout(String channelName, String uid, String resourceId, String sid, RecordingMode mode,
 			RecordingUpdateTranscodingConfig transcodingConfig) throws IOException {
@@ -422,6 +442,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * b、合流模式 mix ：（默认模式）频道内所有 UID 的音视频混合录制为一个音视频文件。
      * c、页面录制模式 web：将指定网页的页面内容和音频混合录制为一个音视频文件。
      * @return 云端录制状态结果
+	 * @throws IOException 抛出异常
      */
 	public CloudRecordingQueryResponse queryRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode) throws IOException {
         String reqUrl = AgoraApiAddress.QUERY_CLOUD_RECORDING.getUrl(getAgoraProperties().getAppId(), resourceId, sid, mode.getName());
@@ -446,6 +467,7 @@ public class AgoraCloudRecordingOperations extends AgoraOperations {
      * true：异步。调用 stop 后立即收到响应。
      * false：同步。调用 stop 后，需等待所有录制文件上传至第三方云存储方可收到响应。（默认）
      * @return 停止云端录制操作结果
+	 * @throws IOException 抛出异常
      */
 	public CloudRecordingStopResponse stopRecording(String channelName, String uid, String resourceId, String sid, RecordingMode mode, boolean asyncStop) throws IOException {
 

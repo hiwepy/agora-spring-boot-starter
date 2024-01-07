@@ -152,7 +152,7 @@ public class RecordingSDK {
    */
   public native boolean createChannel(String appId, String channelKey, String name, int uid, RecordingConfig config, int logLevel);
 
-  /** This method creates a channel and enables the recording server to join with the user account.
+  /* This method creates a channel and enables the recording server to join with the user account.
    *
    * After the recording server successfully joins the channel, the SDK triggers the { RecordingEventHandler#onLocalUserRegistered onLocalUserRegistered} and { RecordingEventHandler#onJoinChannelSuccess onJoinChannelSuccess} callbacks on the local client.
    *

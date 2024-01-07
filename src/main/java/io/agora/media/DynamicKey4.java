@@ -7,6 +7,7 @@ public class DynamicKey4 {
     private static final String PUBLIC_SHARING_SERVICE = "APSS";
     private static final String RECORDING_SERVICE = "ARS";
     private static final String MEDIA_CHANNEL_SERVICE = "ACS";
+
     /**
      * Generate Dynamic Key for Public Sharing Service
      * @param appID App IDassigned by Agora

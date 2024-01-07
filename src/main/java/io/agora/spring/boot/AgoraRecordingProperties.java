@@ -1,6 +1,5 @@
 package io.agora.spring.boot;
 
-import io.agora.recording.common.Common;
 import io.agora.recording.common.Common.*;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
