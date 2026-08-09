@@ -18,13 +18,13 @@ import java.util.Date;
 
 public class AgoraTemplate_Test {
 
-	ObjectMapper objectMapper = new ObjectMapper();
-	OkHttpClient okhttp3Client = new OkHttpClient.Builder().build();
-	AgoraProperties properties = new AgoraProperties();
-	AgoraTemplate template;
+	static ObjectMapper objectMapper = new ObjectMapper();
+	static OkHttpClient okhttp3Client = new OkHttpClient.Builder().build();
+	static AgoraProperties properties = new AgoraProperties();
+	static AgoraTemplate template;
 
 	@BeforeAll
-	public void setup() {
+	public static void setup() {
 		objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		properties.setAppId("");
 		properties.setAppCertificate("");
