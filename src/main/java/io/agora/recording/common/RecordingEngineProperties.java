@@ -3,7 +3,7 @@ package io.agora.recording.common;
 /**
  * Engine properties for the local Agora recording SDK.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class RecordingEngineProperties{

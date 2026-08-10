@@ -44,7 +44,7 @@ class RecordFile {
 /**
  * Default {@link RecordingEventHandler} implementation that tracks recording state and files.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 @Slf4j

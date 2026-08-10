@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;/**
  * State of a cloud recording extension service.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 

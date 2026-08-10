@@ -5,7 +5,7 @@ import io.agora.recording.common.Common.*;
 import lombok.Data;/**
  * Media stream subscription, transcoding and output configuration for a cloud recording.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 
