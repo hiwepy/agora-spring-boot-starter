@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Subscription list update used when updating a recording.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
