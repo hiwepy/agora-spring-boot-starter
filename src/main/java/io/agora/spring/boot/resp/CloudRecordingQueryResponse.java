@@ -22,7 +22,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;/**
  * Response of a cloud recording status query.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 

@@ -8,7 +8,7 @@ import lombok.Data;
 /**
  * Base response envelope for all Agora REST API calls.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 @Data

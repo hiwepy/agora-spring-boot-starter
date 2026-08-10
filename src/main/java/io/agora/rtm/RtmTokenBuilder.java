@@ -3,7 +3,7 @@ package io.agora.rtm;
 import io.agora.media.AccessToken;/**
  * Builder for Agora RTM (real-time messaging) tokens.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 

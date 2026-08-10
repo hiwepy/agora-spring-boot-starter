@@ -3,7 +3,7 @@ package io.agora.media;
 import java.io.ByteArrayOutputStream;/**
  * Agora dynamic key (version 4) generator.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 
