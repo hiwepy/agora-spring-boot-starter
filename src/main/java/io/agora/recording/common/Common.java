@@ -3,7 +3,7 @@ package io.agora.recording.common;
 import java.nio.ByteBuffer;/**
  * Constants and shared types used by the Agora recording SDK binding.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 

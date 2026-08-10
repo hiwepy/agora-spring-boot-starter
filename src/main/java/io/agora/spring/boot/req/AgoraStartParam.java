@@ -6,7 +6,7 @@ import lombok.Data;
 /**
  * Parameters required to start an Agora operation.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 @JsonInclude( JsonInclude.Include.NON_NULL)
