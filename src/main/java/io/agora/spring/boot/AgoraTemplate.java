@@ -12,7 +12,7 @@ import okhttp3.MediaType;
  * cloud recording ({@link #opsForCloudRecording()}).
  * </p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  * @see <a href="https://docs.agora.io/cn/Interactive%20Broadcast/rtc_channel_event?platform=RESTful">Agora channel events</a>
  */

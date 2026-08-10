@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Utility helpers shared by the dynamic key generators.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class DynamicKeyUtil {

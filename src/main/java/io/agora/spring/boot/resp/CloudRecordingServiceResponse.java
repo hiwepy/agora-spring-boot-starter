@@ -22,7 +22,7 @@ import lombok.Data;
 import java.util.List;/**
  * Service-level information returned for a cloud recording.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 

@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;/**
  * Result object describing the outcome of a recording operation.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 
