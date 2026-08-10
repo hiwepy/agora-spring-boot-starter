@@ -5,7 +5,7 @@ import java.text.MessageFormat;
 /**
  * https://docs.agora.io/cn/cloud-recording/cloud_recording_api_rest?platform=RESTful
  * https://docs.agora.io/cn/Video/channel_management_overview?platform=RESTful
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  */
 public enum AgoraApiAddress {
 
