@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests for Spring Boot configuration classes.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public class SpringBootClasses_Test {

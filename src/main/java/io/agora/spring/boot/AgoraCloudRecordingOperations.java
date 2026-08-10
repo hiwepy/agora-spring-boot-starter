@@ -31,7 +31,7 @@ import java.util.Objects;
  * <p>Covers the full lifecycle: resource acquisition, recording start, update,
  * layout update, status query and stop.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  * @see <a href="https://docs.agora.io/cn/cloud-recording/cloud_recording_api_rest?platform=RESTful">cloud recording REST API</a>
  * @see <a href="https://docs.agora.io/cn/cloud-recording/cloud_recording_individual_mode?platform=RESTful">individual mode</a>

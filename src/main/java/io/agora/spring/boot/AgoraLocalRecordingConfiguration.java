@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * recording integration is required. The bean wiring is currently commented
  * out and left as an extension point.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 @Configuration

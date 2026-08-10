@@ -20,7 +20,7 @@ package io.agora.spring.boot;
  * <p>The default implementation is an identity mapping, suitable when channel
  * names and user ids coincide.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public interface AgoraUserIdProvider {
