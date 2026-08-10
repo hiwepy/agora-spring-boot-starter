@@ -7,7 +7,7 @@ import java.util.TreeMap;
 import static io.agora.media.Utils.crc32;/**
  * Agora access token builder used to sign RTC/RTM dynamic keys.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 

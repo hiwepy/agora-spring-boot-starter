@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Configuration;
  *   <li>{@code agora.oss-region} — recording region (e.g. {@code 7} Hong Kong, {@code 10} Singapore)</li>
  * </ul>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 @Configuration

@@ -25,7 +25,7 @@ import java.io.IOException;
  * <p>Exposes queries for user state, channel user lists and paginated channel
  * lists.</p>
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  * @see <a href="https://docs.agora.io/cn/Video/channel_management_overview?platform=RESTful">channel management overview</a>
  */

@@ -23,7 +23,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;/**
  * Response of the {@code acquire} cloud recording request, carrying the resource id.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 
