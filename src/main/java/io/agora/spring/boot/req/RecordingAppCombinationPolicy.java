@@ -18,7 +18,7 @@ package io.agora.spring.boot.req;
 /**
  * Application combination policy used by the {@code appsCollection} recording setting.
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public enum RecordingAppCombinationPolicy {

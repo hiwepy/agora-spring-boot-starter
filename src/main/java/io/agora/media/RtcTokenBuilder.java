@@ -1,7 +1,7 @@
 package io.agora.media;/**
  * Builder for Agora RTC tokens (uid and user account variants).
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 

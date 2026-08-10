@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Cloud recording mode (individual, mix or web).
  *
- * @author [@Loong Wan](https://github.com/loong10k)
+ * @author <a href="https://github.com/loong10k">Loong Wan</a>
  * @since 1.0.0
  */
 public enum RecordingMode {
