@@ -45,7 +45,7 @@
 | Capability | Status | Description |
 |---|:---:|---|
 | Auto-configuration | ✅ Stable | Registers agora beans automatically |
-| Property Binding | ✅ Stable | Binds `agora.*` to `RecordingEngineProperties` |
+| Property Binding | ✅ Stable | Binds `agora.*` to `AgoraProperties` (inherited from agora-java-sdk POJO) |
 | `AgoraOkHttp3Template` bean | ✅ Stable | Auto-registered via AgoraAutoConfiguration |
 
 ## 3. Requirements and Compatibility
@@ -64,6 +64,12 @@ The starter auto-configures the following beans:
 |---|---|---|
 | `AgoraOkHttp3Template` | classpath + property | not created |
 | `AgoraTemplate` | classpath + property | not created |
+| `AgoraProperties` | property | not bound |
+| `AgoraRecordingProperties` | via `AgoraLocalRecordingConfiguration` | not bound |
+
+`AgoraTemplate` / `AgoraOkHttp3Template` / `AgoraUserIdProvider` classes are provided by the
+[`agora-java-sdk`](https://github.com/easy-4-java/agora-java-sdk) dependency (packages `io.agora.cloud`,
+`io.agora.media`, `io.agora.recording`); the starter only registers beans and binds properties.
 
 Auto-configuration registration:
 
@@ -80,7 +86,9 @@ Auto-configuration registration:
 </dependency>
 ```
 
-No additional easy4j component dependencies.
+The starter depends on [`agora-java-sdk`](https://github.com/easy-4-java/agora-java-sdk), which provides
+the `AgoraTemplate` REST facade, token builders and the on-premise recording bridge. All SDK classes are
+pulled in transitively — no extra coordinates needed.
 
 ## 6. Quick Start
 
@@ -124,6 +132,13 @@ private AgoraOkHttp3Template agoraOkHttp3Template;
 | Property | Type | Default | Required | Description | Sensitive |
 |---|---|---|:---:|---|:---:|
 | `agora.enabled` | boolean | `true` | No | Enable the starter | No |
+| `agora.app-id` | String | - | Yes | Agora application id | No |
+| `agora.app-certificate` | String | - | Yes | Agora application certificate used to sign tokens | Yes |
+| `agora.login-key` | String | - | Yes | Agora REST API login key | Yes |
+| `agora.login-secret` | String | - | Yes | Agora REST API login secret | Yes |
+| `agora.expiration-time-in-seconds` | int | `3600` | No | Token validity in seconds | No |
+| `agora.oss-region` | Integer | - | No | Recording region, e.g. `7` Hong Kong, `10` Singapore | No |
+| `agora.view-width` / `agora.view-height` | Integer | - | No | Recording video canvas size in pixels | No |
 <!-- additional properties below -->
 
 ## 8. Version Lines and Compatibility

@@ -273,20 +273,6 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
-                        <configuration>
-                            <excludes>
-                                <exclude>io/agora/recording/RecordingSDK.class</exclude>
-                                <exclude>io/agora/recording/DefaultRecordingEventHandler.class</exclude>
-                                <exclude>io/agora/recording/RecordingCleanTimer.class</exclude>
-                                <exclude>io/agora/spring/boot/AgoraCloudRecordingOperations.class</exclude>
-                                <exclude>io/agora/spring/boot/AgoraCloudRecordingAsyncOperations.class</exclude>
-                                <exclude>io/agora/spring/boot/AgoraOkHttp3Template*.class</exclude>
-                                <exclude>io/agora/spring/boot/AgoraAutoConfiguration*.class</exclude>
-                                <exclude>io/agora/spring/boot/AgoraOperations.class</exclude>
-                                <exclude>io/agora/spring/boot/AgoraTemplate.class</exclude>
-                                <exclude>io/agora/spring/boot/AgoraChannelManagerOperations.class</exclude>
-                            </excludes>
-                        </configuration>
                     </execution>
                     <!-- 强制覆盖率 >= 90% -->
                     <execution>
@@ -297,20 +283,6 @@
                         </goals>
                         <configuration>
                             <haltOnFailure>true</haltOnFailure>
-                            <excludes>
-                                <!-- Exclude JNI-dependent classes that cannot be unit tested -->
-                                <exclude>io/agora/recording/RecordingSDK.class</exclude>
-                                <exclude>io/agora/recording/DefaultRecordingEventHandler.class</exclude>
-                                <exclude>io/agora/recording/RecordingCleanTimer.class</exclude>
-                                <!-- Exclude HTTP integration classes that require network access -->
-                                <exclude>io/agora/spring/boot/AgoraCloudRecordingOperations.class</exclude>
-                                <exclude>io/agora/spring/boot/AgoraCloudRecordingAsyncOperations.class</exclude>
-                                <exclude>io/agora/spring/boot/AgoraOkHttp3Template*.class</exclude>
-                                <exclude>io/agora/spring/boot/AgoraAutoConfiguration*.class</exclude>
-                                <exclude>io/agora/spring/boot/AgoraOperations.class</exclude>
-                                <exclude>io/agora/spring/boot/AgoraTemplate.class</exclude>
-                                <exclude>io/agora/spring/boot/AgoraChannelManagerOperations.class</exclude>
-                            </excludes>
                             <rules>
                                 <rule>
                                     <element>BUNDLE</element>
@@ -544,39 +516,17 @@
         <maven-war-plugin.version>3.4.0</maven-war-plugin.version>
         
         <activation.version>1.1.1</activation.version>
-        <commons-codec.version>1.17.1</commons-codec.version>
-        <fastjson2.version>2.0.53</fastjson2.version>
-        <guava.version>33.2.1-jre</guava.version>
-                <commons-io.version>2.22.0</commons-io.version>
                 <okhttp.version>4.12.0</okhttp.version>
                 <slf4j.version>2.0.18</slf4j.version>
+        <agora-java-sdk.version>3.0.x.20260630-SNAPSHOT</agora-java-sdk.version>
     </properties>
 
     <dependencyManagement>
 
         <dependencies>
-            
-            <!-- For Commons Codec -->
+
+            <!-- For Slf4j -->
             <dependency>
-                <groupId>commons-codec</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>${commons-codec.version}</version>
-            </dependency>
-            
-            <!-- For Guava -->
-            <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
-            
-            <!-- For Fastjson2 -->
-            <dependency>
-                <groupId>com.alibaba.fastjson2</groupId>
-                <artifactId>fastjson2</artifactId>
-                <version>${fastjson2.version}</version>
-            </dependency>
-                <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
@@ -587,10 +537,9 @@
             <version>${okhttp.version}</version>
         </dependency>
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io.version}</version>
-            <scope>test</scope>
+            <groupId>io.github.easy4j</groupId>
+            <artifactId>agora-java-sdk</artifactId>
+            <version>${agora-java-sdk.version}</version>
         </dependency>
 </dependencies>
     </dependencyManagement>
@@ -606,13 +555,6 @@
         </dependency>
 
         
-        <!-- For Servlet Api -->
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <optional>true</optional>
-        </dependency>
-
         <!-- For Slf4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -620,7 +562,12 @@
             <version>${slf4j.version}</version>
         </dependency>
 
-        
+        <!-- Source: https://github.com/easy-4-java/agora-java-sdk — easy4j agora-java-sdk -->
+        <dependency>
+            <groupId>io.github.easy4j</groupId>
+            <artifactId>agora-java-sdk</artifactId>
+        </dependency>
+
         <!-- For Spring Boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -647,28 +594,6 @@
             <scope>test</scope>
         </dependency>
 
-          <!-- For Commons Codec -->
-          <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-        </dependency>
-        <!-- For Guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        
-        <!-- For Jackson -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        
-        <!-- For Jackson -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
         <!-- For Jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -680,26 +605,7 @@
             <artifactId>okhttp</artifactId>
             <version>${okhttp.version}</version>
         </dependency>
-        
-        <!-- For Fastjson2 -->
-        <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
-        </dependency>
 
-            <!-- For JUnit Jupiter -->
-            <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!-- For Commons IO -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
 <distributionManagement><repository><id>2624322-release-6F6h6R</id><name>Maven Release Repository</name><url>https://packages.aliyun.com/6927b116e6c3e0425dbdf60d/maven/2624322-release-6f6h6r</url><releases><enabled>true</enabled></releases><snapshots><enabled>false</enabled></snapshots></repository><snapshotRepository><id>2624322-snapshot-3EoOv3</id><name>Maven Snapshot Repository</name><url>https://packages.aliyun.com/6927b116e6c3e0425dbdf60d/maven/2624322-snapshot-3eoov3</url><releases><enabled>false</enabled></releases><snapshots><enabled>true</enabled></snapshots><uniqueVersion>true</uniqueVersion></snapshotRepository></distributionManagement></project>

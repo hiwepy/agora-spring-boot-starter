@@ -5,8 +5,14 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import io.agora.cloud.AgoraOkHttp3Template;
+import io.agora.cloud.AgoraTemplate;
+import io.agora.cloud.AgoraUserIdProvider;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +39,9 @@ import org.springframework.context.annotation.Configuration;
  * @since 1.0.0
  */
 @Configuration
-@EnableConfigurationProperties({ AgoraProperties.class})
+@ConditionalOnClass(AgoraTemplate.class)
+@ConditionalOnProperty(prefix = AgoraProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
+@EnableConfigurationProperties({ AgoraProperties.class })
 public class AgoraAutoConfiguration {
 
 	/**
@@ -43,13 +51,14 @@ public class AgoraAutoConfiguration {
 	 *
 	 * @param okhttp3ClientProvider optional OkHttpClient provider
 	 * @param objectMapperProvider  optional ObjectMapper provider
-	 * @param poolProperties        the bound {@code agora.*} properties
+	 * @param agoraProperties       the bound {@code agora.*} properties
 	 * @return a configured {@link AgoraOkHttp3Template}
 	 */
 	@Bean
+	@ConditionalOnMissingBean
 	public AgoraOkHttp3Template agoraOkHttp3Template(ObjectProvider<OkHttpClient> okhttp3ClientProvider,
 													 ObjectProvider<ObjectMapper> objectMapperProvider,
-													 AgoraProperties poolProperties) {
+													 AgoraProperties agoraProperties) {
 
 		OkHttpClient okhttp3Client = okhttp3ClientProvider.getIfAvailable(() -> new OkHttpClient.Builder().build());
 
@@ -63,7 +72,7 @@ public class AgoraAutoConfiguration {
 			return objectMapperDef;
 		});
 
-		return new AgoraOkHttp3Template(okhttp3Client, objectMapper, poolProperties);
+		return new AgoraOkHttp3Template(okhttp3Client, objectMapper, agoraProperties);
 	}
 
 	/**
@@ -71,18 +80,19 @@ public class AgoraAutoConfiguration {
 	 * <p>Falls back to a no-op {@link AgoraUserIdProvider} when the application
 	 * does not provide one.</p>
 	 *
-	 * @param agoraUserIdProvider    optional user id provider
-	 * @param agoraOkHttp3Template   the OkHttp template
-	 * @param poolProperties         the bound {@code agora.*} properties
+	 * @param agoraUserIdProvider  optional user id provider
+	 * @param agoraOkHttp3Template the OkHttp template
+	 * @param agoraProperties      the bound {@code agora.*} properties
 	 * @return a configured {@link AgoraTemplate}
 	 */
 	@Bean
+	@ConditionalOnMissingBean
 	public AgoraTemplate agoraTemplate(ObjectProvider<AgoraUserIdProvider> agoraUserIdProvider,
 									   AgoraOkHttp3Template agoraOkHttp3Template,
-									   AgoraProperties poolProperties) {
+									   AgoraProperties agoraProperties) {
 		return new AgoraTemplate(agoraUserIdProvider.getIfAvailable(() -> {
 			return new AgoraUserIdProvider() {};
-		}), agoraOkHttp3Template, poolProperties );
+		}), agoraOkHttp3Template, agoraProperties );
 	}
 
 }

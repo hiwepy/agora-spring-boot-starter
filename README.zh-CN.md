@@ -45,7 +45,7 @@
 | 能力 | 状态 | 说明 |
 |---|:---:|---|
 | 自动装配 | ✅ 稳定 | 自动注册 agora 相关 Bean |
-| 属性绑定 | ✅ 稳定 | 绑定 `agora.*` 到 `RecordingEngineProperties` |
+| 属性绑定 | ✅ 稳定 | 绑定 `agora.*` 到 `AgoraProperties`（字段继承自 agora-java-sdk 的 POJO） |
 | `AgoraOkHttp3Template` Bean | ✅ 稳定 | 通过 AgoraAutoConfiguration 自动注册 |
 
 ## 3. 运行要求与兼容性
@@ -64,6 +64,12 @@ Starter 自动装配以下 Bean：
 |---|---|---|
 | `AgoraOkHttp3Template` | classpath + property | 不创建 |
 | `AgoraTemplate` | classpath + property | 不创建 |
+| `AgoraProperties` | property | 不绑定 |
+| `AgoraRecordingProperties` | 经 `AgoraLocalRecordingConfiguration` | 不绑定 |
+
+`AgoraTemplate` / `AgoraOkHttp3Template` / `AgoraUserIdProvider` 等类由
+[`agora-java-sdk`](https://github.com/easy-4-java/agora-java-sdk) 依赖提供（包 `io.agora.cloud`、
+`io.agora.media`、`io.agora.recording`）；本 Starter 只负责注册 Bean 与绑定属性。
 
 自动装配注册：
 
@@ -80,7 +86,9 @@ Starter 自动装配以下 Bean：
 </dependency>
 ```
 
-无其他 easy4j 组件依赖。
+本 Starter 依赖 [`agora-java-sdk`](https://github.com/easy-4-java/agora-java-sdk)，
+由其提供 `AgoraTemplate` REST 门面、Token 构造器与本地录制桥接等能力，
+SDK 类通过传递依赖引入，无需额外坐标。
 
 ## 6. 快速开始
 
@@ -124,6 +132,13 @@ private AgoraOkHttp3Template agoraOkHttp3Template;
 | 属性 | 类型 | 默认值 | 必填 | 说明 | 敏感 |
 |---|---|---|:---:|---|:---:|
 | `agora.enabled` | boolean | `true` | 否 | 是否启用 Starter | 否 |
+| `agora.app-id` | String | - | 是 | Agora 应用 ID | 否 |
+| `agora.app-certificate` | String | - | 是 | 用于签发 Token 的应用证书 | 是 |
+| `agora.login-key` | String | - | 是 | 声网 RESTful 登录 Key | 是 |
+| `agora.login-secret` | String | - | 是 | 声网 RESTful 登录密钥 | 是 |
+| `agora.expiration-time-in-seconds` | int | `3600` | 否 | Token 有效期（秒） | 否 |
+| `agora.oss-region` | Integer | - | 否 | 录制区域，`7` 香港、`10` 新加坡 | 否 |
+| `agora.view-width` / `agora.view-height` | Integer | - | 否 | 录制视频画布宽高（像素） | 否 |
 <!-- 更多属性见下方 -->
 
 ## 8. 版本线与兼容性
